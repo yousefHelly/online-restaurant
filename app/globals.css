@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700&display=swap');
+
+
+html{
+  @apply scroll-smooth transition duration-150
+}
+body{
+  @apply transition duration-150
+}
+body{
+  font-family: 'Cairo', sans-serif;
+}
+::-webkit-scrollbar-thumb{
+  @apply bg-main  rounded-2xl
+}
+::-webkit-scrollbar{
+  @apply bg-transparent dark:bg-stone-900 w-2
+}
+::selection{
+  @apply bg-main
+}
+svg.star-svg {
+  display: inline;
+}
+.style-module_emptyIcons__Bg-FZ svg{
+  @apply dark:fill-stone-500
+}
