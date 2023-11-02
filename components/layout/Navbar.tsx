@@ -22,8 +22,9 @@ function Navbar({}: Props) {
     const circle = useRef<SVGCircleElement>(null)
     const [scrollProgress, setScrollProgress] = useState<string>(`${circfrn}`)
     useMotionValueEvent(scrollYProgress, 'change', (latest)=>{
+        const prev = scrollYProgress.getPrevious()
         latest>0?setTopScreen(false):setTopScreen(true);
-        latest>0.15?setShowBtn(true):setShowBtn(false);
+        (latest<=prev&&latest>0.15)?setShowBtn(true):setShowBtn(false);
         setScrollProgress(`${circfrn - (circfrn*latest)}px`)
     })
     const [hovered, setHovered] = useState(pathname)

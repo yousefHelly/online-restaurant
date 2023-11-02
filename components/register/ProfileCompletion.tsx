@@ -34,7 +34,8 @@ function ProfileCompletion({ setIsOpen, setSelectedAddress }: Props) {
     <motion.div key={3} initial={{opacity:0, x:-25}} animate={{opacity:1, x:0}} className='w-4/5 mx-auto'>
                 <h3 className='text-3xl font-bold text-header dark:text-stone-300 font-header'>إكمال بيانات الحساب</h3>
                 <div className='flex flex-col w-full my-10'>
-                    <div className='flex flex-col w-full '>
+                { 
+                session?.user.provider==='credentials'&&<div className='flex flex-col w-full '>
                         <h4 className='text-header dark:text-stone-300 font-header text-xl font-bold'>ارفع صورة لملفك الشخصي !</h4>
                         <div className='flex flex-col items-center justify-center my-2'>
                             <div className='group relative overflow-hidden'>
@@ -47,6 +48,7 @@ function ProfileCompletion({ setIsOpen, setSelectedAddress }: Props) {
                             <p className='text-lighterText font-bold text-sm my-2'>{session?.user.userName}</p>
                         </div>
                     </div>
+                }
                     <div className='w-full flex flex-col justify-start items-start gap-3'>
                       <p className='text-xl font-bold font-header dark:text-stone-300'>اضف عنوان :</p>
                       <AnimatePresence mode='wait'>

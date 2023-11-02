@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
@@ -6,9 +6,10 @@ import axios from '@/lib/api/axios';
 import  emailjs  from 'emailjs-com';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
-import { XOctagon } from 'lucide-react';
+import { Eye, EyeOff, XOctagon } from 'lucide-react';
 import { z } from 'zod';
 import  Link  from 'next/link';
+import ShowHidePassword from '../input/ShowHidePassword';
 
 type Props = {
     setVerCode: (verCode: string)=>void,
@@ -25,6 +26,8 @@ function DataRegisteration({setVerCode, setLoginData, setStep}: Props) {
         password: z.string({required_error:`كلمة المرور مطلوبة`}).regex(/^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*/,{message:'ادخل كلمة مرور تتخطي 8 احرف و تحتوي علي ارقام و حرف كابيتال و رموز'})
     })
     type Register = z.infer<typeof RegisterSchema>
+    const [eyeSign, setEyeSign] = useState<boolean>(false)
+
   return (
     <motion.div key={1} exit={{opacity:0, x:25}} className='w-4/5 px-5 mx-auto overflow-y-scroll'>
                 <h3 className='text-3xl font-bold text-header dark:text-stone-300 font-header'>إنشاء حساب جديد</h3>
@@ -46,7 +49,7 @@ function DataRegisteration({setVerCode, setLoginData, setStep}: Props) {
                     bodyFormData.append('Password', vals.password)
                     await axios.post<AuthResponse&{
                         verificationCode: string
-                    }>('https://localhost:7166/api/Auth/register',bodyFormData,{headers: { "Content-Type": "multipart/form-data" }})
+                    }>('/api/Auth/register',bodyFormData,{headers: { "Content-Type": "multipart/form-data" }})
                     .then(async(res)=>{
                         setVerCode(res.data.verificationCode)
                         await emailjs.send(
@@ -90,7 +93,8 @@ function DataRegisteration({setVerCode, setLoginData, setStep}: Props) {
                             </div>
                             <div className='flex flex-col gap-3 relative'>
                                 <label className='text-header dark:text-stone-300 font-bold' htmlFor='password'>كلمة المرور</label>
-                                <Field className={`border dark:border-stone-600 px-3 py-2 rounded-2xl focus-within:border-dotted focus-within:border-main dark:focus-within:border-main focus-within:outline-none`} type='password' name='password' id='password'/>
+                                <Field className={`border dark:border-stone-600 px-3 py-2 rounded-2xl focus-within:border-dotted focus-within:border-main dark:focus-within:border-main focus-within:outline-none`} type={eyeSign?'text':'password'} name='password' id='password'/>
+                                <ShowHidePassword eyeSign={eyeSign} setEyeSign={setEyeSign} condition={(errors.password && touched.password)!=undefined}/>
                                 {(errors.password && touched.password)&&<span title='خطأ' className='flex items-center gap-1 text-xs text-red-500 font-bold'><XOctagon size={16} className='mt-1'/><ErrorMessage name='password' id='password'/></span>}
                             </div>
                             <button 
