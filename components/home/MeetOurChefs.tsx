@@ -4,22 +4,6 @@ import React from 'react'
 import Chefs from '../menu/Chefs'
 
 type Props = {}
-function Chief({image, name}:{image: string, name: string}){
-    return(
-        <div className='flex flex-col items-center justify-center gap-5'>
-            <div className='h-80 w-52 '>
-                <Image
-                src={image}
-                alt={name}
-                width={600}
-                height={600}
-                className='w-full h-full object-cover rounded-2xl'
-                />
-            </div>
-            <strong className='font-bold text-xl text-header text-center'>{name}</strong>
-        </div>
-    )
-}
 
 function MeetOurChefs({}: Props) {
   return (

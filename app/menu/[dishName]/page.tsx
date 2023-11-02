@@ -87,10 +87,10 @@ function DishViewPage({params:{dishName}}: Props) {
             }
             } className={`group self-start flex px-3 py-2 rounded-2xl gap-1 items-center bg-transparent dark:bg-red-500 dark:text-stone-300 border border-red-500 text-red-500 font-bold font-header`}>
             {
-                data?.isFavourite&&<Heart className={`${data?.isFavourite!='false'?'fill-red-500  dark:fill-stone-300':'text-red-500 dark:text-stone-300 dark:group-hover:fill-stone-300 group-hover:fill-red-500'}  transition duration-150`}/>
+                <Heart className={`${(data?.isFavourite!='false' && data?.isFavourite!=undefined)?'fill-red-500  dark:fill-stone-300':'text-red-500 dark:text-stone-300 dark:group-hover:fill-stone-300 group-hover:fill-red-500'}  transition duration-150`}/>
             }
             {
-                !data?.isFavourite?<Loader2 className='animate-spin'/>:data?.isFavourite!='false'?'إزالة من المفضلة':'اضف الي المفضلة'
+                (data?.isFavourite!='false' && data?.isFavourite!=undefined)?'إزالة من المفضلة':'اضف الي المفضلة'
             }
             </button>
             {data?.name&&<ShareButtons mealName={data?.name}/>}
