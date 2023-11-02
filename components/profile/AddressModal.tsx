@@ -1,6 +1,6 @@
 'use client'
 import { Dialog } from '@headlessui/react'
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { PenBox, PlusCircle, XOctagon } from 'lucide-react'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
@@ -8,7 +8,6 @@ import { z } from 'zod';
 import { axiosAuth } from '@/lib/api/axios';
 import toast from 'react-hot-toast';
 import useAxiosAuth from '@/lib/hooks/useAxiosAuth';
-import { useQueryClient } from 'react-query';
 
 export default function AddressModal({isOpen, setIsOpen, address}:{isOpen: boolean, setIsOpen:(state: boolean)=>void,address?: Partial<Address>}){
     const AddressSchema = z.object({
@@ -19,7 +18,6 @@ export default function AddressModal({isOpen, setIsOpen, address}:{isOpen: boole
       })
       type AddressInput = z.infer<typeof AddressSchema>
       useAxiosAuth()
-      const queryClient = useQueryClient()
     return(
         <Dialog
           open={isOpen}
@@ -42,7 +40,6 @@ export default function AddressModal({isOpen, setIsOpen, address}:{isOpen: boole
                 enableReinitialize
                 validationSchema={toFormikValidationSchema(AddressSchema)}
                 onSubmit={(vals)=>{
-                  console.log(vals)
                   if(address){
                     axiosAuth.put(`/api/address/${address.id}`,vals).then((res)=>toast.success(res.data.message)).catch((err)=>toast.error(err.data.message))
                   }else{

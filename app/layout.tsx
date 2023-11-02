@@ -25,7 +25,7 @@ export default function RootLayout({
             <LayoutChanger>
           {children}
           </LayoutChanger>
-          <Toaster/>
+          <Toaster toastOptions={{className:'dark:bg-stone-800 dark:text-stone-300 dark:border dark:border-stone-600'}}/>
           </Query>
         </NextAuthProvider>
       </body>

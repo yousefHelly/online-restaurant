@@ -6,6 +6,8 @@ declare module "next-auth" {
    */
   interface Session {
     user: {
+      // Cradenials User 
+      provider:'credentials',
       userName: string,
       firstName: string,
       lastName: string,
@@ -13,6 +15,15 @@ declare module "next-auth" {
       userImgUrl: string,
       token: sring,
       roles: string[]
+    } | {
+      // Google User
+      provider:'google',
+      name: string,
+      email: string,
+      picture: string,
+      email_verified: boolean,
+      given_name: string,
+      family_name: string,
     }
   }
 }

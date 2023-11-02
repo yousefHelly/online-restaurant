@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { signIn } from 'next-auth/react';
 import VerificationInput from 'react-verification-input';
 import { XOctagon } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 type Props = {
     loginData: {
@@ -36,7 +37,7 @@ function AccountVerification({loginData, verCode, setStep}: Props) {
                         async()=>  await signIn("credentials",{ email: loginData.email, password: loginData.password, redirect:false })
                         setStep(3)
                     }else{
-                        console.log('wrong verification code');
+                        toast.error('كود تأكيد الحساب خاطئ !');
                     }     
                 }}
                 >{
@@ -48,7 +49,6 @@ function AccountVerification({loginData, verCode, setStep}: Props) {
                                 <VerificationInput
                                 autoFocus
                                 classNames={{
-                                    container: "",
                                     character: "w-full flex items-center justify-center character rounded-2xl border border-main",
                                     characterInactive: "character--inactive",
                                     characterSelected: " outline-main text-main font-bold",

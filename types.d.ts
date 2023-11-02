@@ -100,7 +100,7 @@ type AuthResponse = {
     email: string,
     firstName: string,
     lastName: string,
-    roles: string[],
+    roles: 'User' | 'Admin'[],
     token: string,
     expiresOn: string,
 }

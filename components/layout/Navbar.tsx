@@ -125,8 +125,14 @@ function Navbar({}: Props) {
             {({ open, close }) => (
                 <>
                 <Popover.Button className='focus-within:outline-none flex flex-col justify-center items-center'>
-                    <img src={`https://localhost:7166`+session?.user.userImgUrl||'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover w-12 h-12 border ${open?'border-main':'border-transparent'} `} />
-                    <span className='text-xs font-bold text-lighterText mt-1'>{session?.user.userName}</span>
+                    {
+                        session.user.provider==='credentials'?<img src={session?.user.userImgUrl?`https://localhost:7166`+session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover w-12 h-12 border ${open?'border-main':'border-transparent'} `} />:
+                        <img src={session?.user.picture?session?.user.picture:'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover w-12 h-12 border ${open?'border-main':'border-transparent'} `} />
+                    }
+                    {
+                        session.user.provider==='credentials'?<span className='text-xs font-bold text-lighterText mt-1'>{session?.user.userName}</span>:
+                        <span className='text-xs font-bold text-lighterText mt-1'>{session?.user.name}</span>
+                    }
                 </Popover.Button>
                 <AnimatePresence mode='wait'>
                     {
@@ -195,6 +201,7 @@ function Navbar({}: Props) {
             exit={{scale:0.5, rotate:'-90deg', opacity:0, transition:{damping:200, stiffness:3}}} 
             whileHover={{scale:1.1}} 
             whileTap={{scale:0.9}} 
+            title='scroll to top button'
             className='fixed bottom-5 left-5 w-[50px] h-[50px] -rotate-90 z-30 rounded-full bg-main/25 backdrop-blur-sm'
             >
                 <svg 
