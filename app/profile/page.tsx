@@ -58,25 +58,23 @@ function ProfilePage({}: Props) {
             <h2 className='text-3xl'>صورتي الشخصية</h2>
           </div>
           <div className='flex flex-col items-center justify-center my-2'>
-          {
-            session?.user.provider==='credentials'&&
-              <div className='group relative overflow-hidden'>
-                  <input onChange={(e)=>{e.target.files&&setImage(e.target.files);}} type="file" hidden id='profile' name='profile' accept='image/png, image/jpeg' />
-                    <label htmlFor="profile" className='z-30'>
-                      <img src={session?.user.userImgUrl?`https://localhost:7166`+session?.user.userImgUrl:image&&URL.createObjectURL(image[0]) ||'/static/default-user-icon.jpg'} alt={session?.user.userName} className='rounded-full h-[75px] w-[75px] object-cover'></img>
-                      <span className='absolute h-[75px] w-[75px] rounded-full bg-main/75 backdrop-blur-md flex justify-center items-center -bottom-[100%] group-hover:bottom-0 text-slate-50 font-bold text-xs cursor-pointer'>رفع صورة</span>
-                  </label>
-              </div>
-          }
-          {
-            session?.user.provider==='google'&&
-              <div className='group relative overflow-hidden'>
-                      <img src={session?.user.picture?session?.user.picture:'/static/default-user-icon.jpg'} alt={session?.user.name} className='rounded-full h-[75px] w-[75px] object-cover'></img>
-              </div>
-          }
-              {
-                session?.user.provider==='credentials'?<p className='text-lighterText font-bold text-sm my-2'>{session?.user.userName}</p>:<p className='text-lighterText font-bold text-sm my-2'>{session?.user.name}</p>
-              }
+            {
+              session?.user.provider==='credentials'&&
+                <div className='group relative overflow-hidden'>
+                    <input onChange={(e)=>{e.target.files&&setImage(e.target.files);}} type="file" hidden id='profile' name='profile' accept='image/png, image/jpeg' />
+                      <label htmlFor="profile" className='z-30'>
+                        <img src={session?.user.userImgUrl?`https://localhost:7166`+session?.user.userImgUrl:image&&URL.createObjectURL(image[0]) ||'/static/default-user-icon.jpg'} alt={session?.user.userName} className='rounded-full h-[75px] w-[75px] object-cover'></img>
+                        <span className='absolute h-[75px] w-[75px] rounded-full bg-main/75 backdrop-blur-md flex justify-center items-center -bottom-[100%] group-hover:bottom-0 text-slate-50 font-bold text-xs cursor-pointer'>رفع صورة</span>
+                    </label>
+                </div>
+            }
+            {
+              session?.user.provider==='google'&&
+                <div className='group relative overflow-hidden'>
+                        <img src={session?.user.userImgUrl?session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt={session?.user.userName} className='rounded-full h-[75px] w-[75px] object-cover'></img>
+                </div>
+            }
+                <p className='text-lighterText font-bold text-sm my-2'>{session?.user.userName}</p>
               {session?.user.provider==='credentials'&&session?.user.userImgUrl&&<Trash2Icon onClick={()=>updateImg(null)} className='text-red-500 cursor-pointer hover:bg-red-500 hover:text-slate-50 dark:hover:text-stone-900 transition duration-150 p-2 rounded-full w-10 h-10 flex items-center justify-center'/>}
           </div>
           <div className='flex justify-between items-center'>
@@ -84,9 +82,9 @@ function ProfilePage({}: Props) {
           </div>
           <Formik<User>
                 initialValues={{
-                    firstName:session?.user.provider==='credentials'?session?.user.firstName:session?.user.given_name || '',
-                    lastName:session?.user.provider==='credentials'?session?.user.lastName:session?.user.family_name || '',
-                    userName:session?.user.provider==='credentials'?session?.user.userName:session?.user.name || '',
+                    firstName:session?.user.firstName || '',
+                    lastName:session?.user.lastName || '',
+                    userName:session?.user.userName || '',
                 }}
                 enableReinitialize
                 validationSchema={toFormikValidationSchema(UserDataSchema)}

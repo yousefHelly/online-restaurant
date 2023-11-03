@@ -10,7 +10,7 @@ const useAxiosAuth = () => {
     useEffect(
         ()=>{
             const requestIntercept = axiosAuth.interceptors.request.use((config)=>{
-                if(!config.headers["token"]){
+                if(!config.headers["token"] && session?.user.token!=undefined){
                     config.headers["token"] = `${session?.user.token}`
                 }
                 return config

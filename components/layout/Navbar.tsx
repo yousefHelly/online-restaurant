@@ -2,7 +2,7 @@
 import { Popover, Switch } from '@headlessui/react'
 import { Search, ShoppingBag, UserCircle2, UserCog, Heart, Sun, Moon, ArrowRightCircle, Loader2Icon } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import ItemCart from './ItemCart'
 import {motion, AnimatePresence, useScroll, useMotionValueEvent} from 'framer-motion'
 import { usePathname } from 'next/navigation'
@@ -10,10 +10,12 @@ import {useSession, signIn, signOut} from 'next-auth/react'
 import Logo from './Logo'
 import { links } from '@/Data'
 import {useTheme} from 'next-themes'
+import axios  from '@/lib/api/axios';
+import useUpdateEmailSession from '@/lib/hooks/useUpdateEmailSession'
 type Props = {}
 
 function Navbar({}: Props) {
-    const {data:session, status} = useSession()
+    const {data:session, status, update} = useSession()
     const pathname = usePathname()
     const {scrollYProgress} = useScroll()
     const [topScreen, setTopScreen]= useState<boolean>(true)
@@ -31,7 +33,8 @@ function Navbar({}: Props) {
     const [darkMode, setDarkMode] = useState<boolean>(typeof window !='undefined'&&window.localStorage.getItem('theme')==='dark'?true:false)
     const {setTheme} = useTheme()
     darkMode?setTheme('dark'):setTheme('light')
-    const [searchVal, setSearchVal] = useState<string>('')    
+    const [searchVal, setSearchVal] = useState<string>('')
+    useUpdateEmailSession()
   return (
     <>
     <nav className={`w-full flex items-center justify-between px-12 z-40 sticky top-0 py-4 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
@@ -126,14 +129,8 @@ function Navbar({}: Props) {
             {({ open, close }) => (
                 <>
                 <Popover.Button className='focus-within:outline-none flex flex-col justify-center items-center'>
-                    {
-                        session.user.provider==='credentials'?<img src={session?.user.userImgUrl?`https://localhost:7166`+session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover w-12 h-12 border ${open?'border-main':'border-transparent'} `} />:
-                        <img src={session?.user.picture?session?.user.picture:'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover w-12 h-12 border ${open?'border-main':'border-transparent'} `} />
-                    }
-                    {
-                        session.user.provider==='credentials'?<span className='text-xs font-bold text-lighterText mt-1'>{session?.user.userName}</span>:
-                        <span className='text-xs font-bold text-lighterText mt-1'>{session?.user.name}</span>
-                    }
+                    <img src={session?.user.userImgUrl?`https://localhost:7166`+session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover w-12 h-12 border ${open?'border-main':'border-transparent'} `} />
+                    <span className='text-xs font-bold text-lighterText mt-1'>{session?.user.userName}</span> 
                 </Popover.Button>
                 <AnimatePresence mode='wait'>
                     {
