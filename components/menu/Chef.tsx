@@ -1,10 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 
  
-export function Chef({name, image, mealsCount, category, rating, rateNum}:{name: string, image: string, mealsCount: number, category: string, rating: number, rateNum: number}){
-  console.log(image);
-  
+export function Chef({name, image, mealsCount, category, rating, rateNum}:{name: string, image: string, mealsCount: number, category: string, rating: number, rateNum: number}){  
   return(
     <Link href={`/menu/all-dishes?f=chef&n=${name}`} className='group h-[350px] col-span-full md:col-span-1'>
     <div className='h-full rounded-2xl overflow-hidden relative after:content-[""] after:absolute after:inset-0 after:bg-main/25 after:transition after:duration-150 group-hover:after:backdrop-blur-[2px]'>

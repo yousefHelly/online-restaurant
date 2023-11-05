@@ -1,10 +1,13 @@
 import './globals.css'
+import '@mantine/core/styles.css';
+import '@mantine/spotlight/styles.css';
 import type { Metadata } from 'next'
 import Query from '@/lib/Query'
 import { NextAuthProvider } from '@/lib/NextAuthProvider'
 import { LayoutChanger } from '@/lib/LayoutChanger'
 import { Toaster } from 'react-hot-toast'
 import ThemeChanger from '@/lib/ThemeChanger'
+import MProvider from './../lib/MProvider';
 
 export const metadata: Metadata = {
   title: 'جو فاست فوود | الرئيسية',
@@ -18,6 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir='rtl'>
+      <MProvider>
       <ThemeChanger>
       <body className='dark:bg-stone-900'>
         <NextAuthProvider>
@@ -29,7 +33,8 @@ export default function RootLayout({
           </Query>
         </NextAuthProvider>
       </body>
-      </ThemeChanger>  
+      </ThemeChanger> 
+      </MProvider> 
     </html>
   )
 }

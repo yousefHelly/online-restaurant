@@ -1,15 +1,18 @@
 'use client'
 import { Popover, Switch } from '@headlessui/react'
-import { Search, ShoppingBag, UserCircle2, UserCog, Heart, Sun, Moon, ArrowRightCircle, Loader2Icon } from 'lucide-react'
+import { Search, ShoppingBag, UserCircle2, UserCog, Heart, Sun, Moon, ArrowRightCircle, Loader2Icon, Home, MenuSquare, UtensilsCrossed } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import ItemCart from './ItemCart'
 import {motion, AnimatePresence, useScroll, useMotionValueEvent} from 'framer-motion'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { Spotlight, SpotlightActionData, spotlight } from '@mantine/spotlight';
 import {useSession, signIn, signOut} from 'next-auth/react'
 import Logo from './Logo'
 import { links } from '@/Data'
 import {useTheme} from 'next-themes'
+import useDishes from '@/lib/api/useDishes'
+import NotFound from './NotFound'
 type Props = {}
 
 function Navbar({}: Props) {
@@ -30,7 +33,18 @@ function Navbar({}: Props) {
     const [darkMode, setDarkMode] = useState<boolean>(typeof window !='undefined'&&window.localStorage.getItem('theme')==='dark'?true:false)
     const {setTheme} = useTheme()
     darkMode?setTheme('dark'):setTheme('light')
-    const [searchVal, setSearchVal] = useState<string>('')    
+    const [searchVal, setSearchVal] = useState<string>('')
+    const router = useRouter()
+    const dishes = useDishes(undefined,undefined,undefined,undefined,undefined,undefined,undefined, 'SD')
+    const dishActions: SpotlightActionData[] = []
+    dishes.data?.meals.forEach((dish)=>{
+        dishActions.push({
+            id: `${dish.id}`,
+            label: dish.name,
+            description: `مقدمة من الشيف ${dish.chefName} في تصنيف ${dish.categoryName}`,
+            onClick: () => router.push(`/menu/${dish.name}`),
+            leftSection: <UtensilsCrossed size={23} className='text-main'/>,
+        })})    
   return (
     <>
     <nav className={`w-full flex items-center justify-between px-12 z-40 sticky top-0 py-4 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
@@ -69,28 +83,14 @@ function Navbar({}: Props) {
                     )
                 })
             }
-            <Popover className="relative mt-2 z-30">
-            {({ open, close }) => (
-                <>
-                <Popover.Button className='focus-within:outline-none'>
-                    <Search className={`text-lighterText font-bold transition duration-150 hover:text-main cursor-pointer ${open?'!text-main':''}`}/>
-                </Popover.Button>
-                <AnimatePresence mode='wait'>
-                    {
-                        open && <motion.span initial={{opacity:'0'}} animate={{opacity:1}} exit={{opacity:'0'}}>
-                                        <Popover.Panel className="absolute bg-slate-50 dark:bg-stone-800 rounded-b-2xl left-1/2 -translate-x-1/2 translate-y-4 ">
-                                        <div className="px-2 py-2 flex rounded-2xl">
-                                            <input onChange={(e)=>setSearchVal(e.target.value)} type="text" className='px-3 py-2 rounded-2xl rounded-l-none border border-main bg-slate-50 dark:bg-stone-700 focus-within:outline-none' />
-                                            <Link onClick={()=>close()} href={`/menu/all-dishes?f=search&n=${searchVal}`} className='px-3 py-2 rounded-2xl rounded-r-none border-main border-t border-l border-b  text-slate-50 dark:text-stone-900 bg-main hover:text-main hover:bg-slate-50 dark:hover:bg-stone-800 dark:hover:text-main font-bold text-sm'>بحث</Link>
-                                        </div>
-                                    </Popover.Panel>
-                                    </motion.span>
-                    }
-                </AnimatePresence>
-                </>
-            )
-            }
-            </Popover>                
+            <button className='flex items-center' onClick={()=>spotlight.open()}>
+                    <Search className={`text-lighterText font-bold transition duration-150 hover:text-main cursor-pointer`}/>
+                    <span className='flex flex-row-reverse items-center text-header text-xs  font-bold p-1'>
+                        <span className='border rounded-2xl py-[0.15rem] px-1 bg-slate-100'>Ctrl</span>
+                        <span>+</span>
+                        <span className='border rounded-2xl py-[0.15rem] px-1 bg-slate-100'>J</span>
+                    </span>
+            </button>              
         </div>
         <div className={`flex items-center ${session?.user?'gap-10 ml-10 translate-y-2 ':'gap-3 pt-3'}`}>
             <Popover className="relative mt-2 z-30">
@@ -215,6 +215,51 @@ function Navbar({}: Props) {
             </motion.button>
     }
     </AnimatePresence>
+    <Spotlight
+        classNames={{action:'gap-3', actionSection:'flex justify-center items-center'}}
+        actions={[
+            {
+            group:'صفحات',
+            actions:[  
+            {
+                id: 'الرئيسية',
+                label: 'الرئيسية',
+                description: 'الذهاب الي الصفحة الرئيسية',
+                onClick: () => router.push('/'),
+                leftSection: <Home size={23} className='text-main'/>,
+            },
+            {
+                id: 'قائمة الطعام',
+                label: 'قائمة الطعام',
+                description: 'الذهاب الي قائمة الطعام (المنيو)',
+                onClick: () => router.push('/menu'),
+                leftSection:<MenuSquare size={23} className='text-main'/>,
+            },
+            {
+                id: 'صفحتي الشخصية',
+                label: 'صفحتي الشخصية',
+                description: 'الذهاب الي صفحتي الشخصية',
+                onClick: () => router.push('/profile'),
+                leftSection: <UserCircle2 size={23} className='text-main'/>,
+            },
+            
+            
+            ]   
+            },
+            {
+                group:'أطباق',
+                actions:dishActions
+            }
+    ]}
+        shortcut={'mod + J'}
+        nothingFound={<NotFound name='نتائج مطابقة لكلمة البحث'/>}
+        highlightQuery
+        limit={7}
+        searchProps={{
+          leftSection: <Search />,
+          placeholder: 'إبحث',
+        }}
+      />
     </>
   )
 }

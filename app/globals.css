@@ -30,3 +30,30 @@ svg.star-svg {
 .style-module_emptyIcons__Bg-FZ svg{
   @apply dark:fill-stone-500
 }
+
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+.mantine-Spotlight-action[data-selected='true']{
+  @apply !bg-main !text-slate-50
+}
+.mantine-Spotlight-action[data-selected='true'] svg{
+  @apply text-slate-50
+}

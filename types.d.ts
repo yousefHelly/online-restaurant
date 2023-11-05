@@ -65,6 +65,7 @@ type MealCard =  {
     mealImgUrl: string,
     chefName: string,
     oldPrice?: number,
+    isFavourite: "false" | "true",
     chefId: number,
     categoryid: number,
     categoryName: string,

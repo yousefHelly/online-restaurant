@@ -12,8 +12,11 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
+    "@mantine/core": "^7.1.7",
     "@mantine/hooks": "^7.1.7",
+    "@mantine/spotlight": "^7.1.7",
     "@radix-ui/react-slider": "^1.1.2",
+    "@studio-freight/lenis": "^1.0.27",
     "@types/node": "20.6.0",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
