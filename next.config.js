@@ -29,6 +29,11 @@ module.exports = {
             pathname: '/**',
           },
           {
+            protocol:'https',
+            hostname:'lh3.googleusercontent.com',
+            pathname: '/**',
+          },
+          {
             protocol: 'https',
             hostname: 'localhost:7166',
             port: '7166',

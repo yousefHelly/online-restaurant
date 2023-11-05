@@ -6,6 +6,8 @@ declare module "next-auth" {
    */
   interface Session {
     user: {
+      // Cradenials User 
+      provider:'credentials' | 'google',
       userName: string,
       firstName: string,
       lastName: string,

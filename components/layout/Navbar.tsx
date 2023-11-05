@@ -2,7 +2,7 @@
 import { Popover, Switch } from '@headlessui/react'
 import { Search, ShoppingBag, UserCircle2, UserCog, Heart, Sun, Moon, ArrowRightCircle, Loader2Icon, Home, MenuSquare, UtensilsCrossed } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useEffect } from 'react'
 import ItemCart from './ItemCart'
 import {motion, AnimatePresence, useScroll, useMotionValueEvent} from 'framer-motion'
 import { usePathname, useRouter } from 'next/navigation'
@@ -11,12 +11,14 @@ import {useSession, signIn, signOut} from 'next-auth/react'
 import Logo from './Logo'
 import { links } from '@/Data'
 import {useTheme} from 'next-themes'
+import axios  from '@/lib/api/axios';
+import useUpdateEmailSession from '@/lib/hooks/useUpdateEmailSession'
 import useDishes from '@/lib/api/useDishes'
 import NotFound from './NotFound'
 type Props = {}
 
 function Navbar({}: Props) {
-    const {data:session, status} = useSession()
+    const {data:session, status, update} = useSession()
     const pathname = usePathname()
     const {scrollYProgress} = useScroll()
     const [topScreen, setTopScreen]= useState<boolean>(true)
@@ -25,14 +27,17 @@ function Navbar({}: Props) {
     const circle = useRef<SVGCircleElement>(null)
     const [scrollProgress, setScrollProgress] = useState<string>(`${circfrn}`)
     useMotionValueEvent(scrollYProgress, 'change', (latest)=>{
+        const prev = scrollYProgress.getPrevious()
         latest>0?setTopScreen(false):setTopScreen(true);
-        latest>0.15?setShowBtn(true):setShowBtn(false);
+        (latest<=prev&&latest>0.15)?setShowBtn(true):setShowBtn(false);
         setScrollProgress(`${circfrn - (circfrn*latest)}px`)
     })
     const [hovered, setHovered] = useState(pathname)
     const [darkMode, setDarkMode] = useState<boolean>(typeof window !='undefined'&&window.localStorage.getItem('theme')==='dark'?true:false)
     const {setTheme} = useTheme()
     darkMode?setTheme('dark'):setTheme('light')
+    const [searchVal, setSearchVal] = useState<string>('')
+    useUpdateEmailSession()
     const [searchVal, setSearchVal] = useState<string>('')
     const router = useRouter()
     const dishes = useDishes(undefined,undefined,undefined,undefined,undefined,undefined,undefined, 'SD')
@@ -125,8 +130,8 @@ function Navbar({}: Props) {
             {({ open, close }) => (
                 <>
                 <Popover.Button className='focus-within:outline-none flex flex-col justify-center items-center'>
-                    <img src={`https://localhost:7166`+session?.user.userImgUrl||'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover w-12 h-12 border ${open?'border-main':'border-transparent'} `} />
-                    <span className='text-xs font-bold text-lighterText mt-1'>{session?.user.userName}</span>
+                    <img src={session?.user.userImgUrl?`https://localhost:7166`+session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover w-12 h-12 border ${open?'border-main':'border-transparent'} `} />
+                    <span className='text-xs font-bold text-lighterText mt-1'>{session?.user.userName}</span> 
                 </Popover.Button>
                 <AnimatePresence mode='wait'>
                     {
@@ -195,6 +200,7 @@ function Navbar({}: Props) {
             exit={{scale:0.5, rotate:'-90deg', opacity:0, transition:{damping:200, stiffness:3}}} 
             whileHover={{scale:1.1}} 
             whileTap={{scale:0.9}} 
+            title='scroll to top button'
             className='fixed bottom-5 left-5 w-[50px] h-[50px] -rotate-90 z-30 rounded-full bg-main/25 backdrop-blur-sm'
             >
                 <svg 

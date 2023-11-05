@@ -26,10 +26,10 @@ export default function RootLayout({
       <body className='dark:bg-stone-900'>
         <NextAuthProvider>
           <Query>
-            <LayoutChanger>
-          {children}
+          <LayoutChanger>
+            {children}
           </LayoutChanger>
-          <Toaster/>
+          <Toaster toastOptions={{className:'dark:bg-stone-800 dark:text-stone-300 dark:border dark:border-stone-600'}}/>
           </Query>
         </NextAuthProvider>
       </body>
