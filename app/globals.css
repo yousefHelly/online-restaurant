@@ -50,10 +50,27 @@ html.lenis {
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
 }
-
+.m-fd1ab0aa{
+  @apply dark:shadow-none dark:bg-stone-800
+}
+.mantine-Mark-root{
+  @apply text-stone-300
+}
+.m-6c018570.mantine-Input-wrapper{
+  @apply border-b dark:border-b-stone-600
+}
+.m-6e463822.mantine-Spotlight-actionsList{
+  @apply dark:border-none
+}
 .mantine-Spotlight-action[data-selected='true']{
   @apply !bg-main !text-slate-50
 }
+.mantine-Spotlight-action:hover{
+  @apply dark:!bg-stone-700  dark:text-stone-300
+}
+.mantine-Spotlight-action:hover svg{
+  @apply  dark:text-stone-300
+}
 .mantine-Spotlight-action[data-selected='true'] svg{
-  @apply text-slate-50
+  @apply text-slate-50 dark:text-stone-900
 }

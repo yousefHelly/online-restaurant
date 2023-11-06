@@ -11,9 +11,9 @@ import NotFound from '@/components/layout/NotFound'
 import useAxiosAuth from '@/lib/hooks/useAxiosAuth'
 import { axiosAuth } from '@/lib/api/axios'
 import toast from 'react-hot-toast'
-import AddressModal from '@/components/profile/AddressModal'
+import AddressModal from '@/components/(User)/profile/AddressModal'
 import { useQueryClient } from 'react-query';
-import AddressItem from '@/components/profile/AddressItem'
+import AddressItem from '@/components/(User)/profile/AddressItem'
 
 type Props = {}
 
@@ -52,10 +52,10 @@ function ProfilePage({}: Props) {
     <main className="flex min-h-screen flex-col items-start pb-20 px-24 overflow-x-hidden">
         <div className='flex flex-col gap-5 w-full my-5'>
           <div className='flex justify-between items-center mb-4'>
-            <h2 className='text-4xl'>صفحتي الشخصية</h2>
+            <h2 className='text-4xl dark:text-stone-300'>صفحتي الشخصية</h2>
           </div>
           <div className='flex justify-between items-center'>
-            <h2 className='text-3xl'>صورتي الشخصية</h2>
+            <h2 className='text-3xl dark:text-stone-300'>صورتي الشخصية</h2>
           </div>
           <div className='flex flex-col items-center justify-center my-2'>
             {
@@ -78,7 +78,7 @@ function ProfilePage({}: Props) {
               {session?.user.provider==='credentials'&&session?.user.userImgUrl&&<Trash2Icon onClick={()=>updateImg(null)} className='text-red-500 cursor-pointer hover:bg-red-500 hover:text-slate-50 dark:hover:text-stone-900 transition duration-150 p-2 rounded-full w-10 h-10 flex items-center justify-center'/>}
           </div>
           <div className='flex justify-between items-center'>
-            <h2 className='text-3xl'>معلومات حسابي</h2>
+            <h2 className='text-3xl dark:text-stone-300'>معلومات حسابي</h2>
           </div>
           <Formik<User>
                 initialValues={{
@@ -125,7 +125,7 @@ function ProfilePage({}: Props) {
                 }
           </Formik>
           <div className='flex justify-between items-center'>
-            <h2 className='text-3xl'>تغيير كلمة المرور</h2>
+            <h2 className='text-3xl dark:text-stone-300'>تغيير كلمة المرور</h2>
           </div>
           <Formik<PasswordUpdate>
                 initialValues={{
@@ -163,7 +163,7 @@ function ProfilePage({}: Props) {
                 }
           </Formik>
           <div className='flex justify-between items-center'>
-            <h2 className='text-3xl'>عناويني</h2>
+            <h2 className='text-3xl dark:text-stone-300'>عناويني</h2>
           </div>
           <div className='w-full flex flex-col justify-start items-start gap-3 px-8'>
             <AnimatePresence mode='wait'>

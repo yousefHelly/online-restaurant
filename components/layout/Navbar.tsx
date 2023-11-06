@@ -2,7 +2,7 @@
 import { Popover, Switch } from '@headlessui/react'
 import { Search, ShoppingBag, UserCircle2, UserCog, Heart, Sun, Moon, ArrowRightCircle, Loader2Icon, Home, MenuSquare, UtensilsCrossed } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState, useRef, useEffect, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import ItemCart from './ItemCart'
 import {motion, AnimatePresence, useScroll, useMotionValueEvent} from 'framer-motion'
 import { usePathname, useRouter } from 'next/navigation'
@@ -11,7 +11,6 @@ import {useSession, signIn, signOut} from 'next-auth/react'
 import Logo from './Logo'
 import { links } from '@/Data'
 import {useTheme} from 'next-themes'
-import axios  from '@/lib/api/axios';
 import useUpdateEmailSession from '@/lib/hooks/useUpdateEmailSession'
 import useDishes from '@/lib/api/useDishes'
 import NotFound from './NotFound'
@@ -36,9 +35,7 @@ function Navbar({}: Props) {
     const [darkMode, setDarkMode] = useState<boolean>(typeof window !='undefined'&&window.localStorage.getItem('theme')==='dark'?true:false)
     const {setTheme} = useTheme()
     darkMode?setTheme('dark'):setTheme('light')
-    const [searchVal, setSearchVal] = useState<string>('')
     useUpdateEmailSession()
-    const [searchVal, setSearchVal] = useState<string>('')
     const router = useRouter()
     const dishes = useDishes(undefined,undefined,undefined,undefined,undefined,undefined,undefined, 'SD')
     const dishActions: SpotlightActionData[] = []
@@ -88,12 +85,12 @@ function Navbar({}: Props) {
                     )
                 })
             }
-            <button className='flex items-center' onClick={()=>spotlight.open()}>
+            <button className='flex items-center focus-within:outline-none' onClick={()=>spotlight.open()}>
                     <Search className={`text-lighterText font-bold transition duration-150 hover:text-main cursor-pointer`}/>
-                    <span className='flex flex-row-reverse items-center text-header text-xs  font-bold p-1'>
-                        <span className='border rounded-2xl py-[0.15rem] px-1 bg-slate-100'>Ctrl</span>
+                    <span className='flex flex-row-reverse items-center text-header dark:text-stone-300 text-xs  font-bold p-1'>
+                        <span className='border dark:border-stone-600 rounded-2xl py-[0.15rem] px-1 bg-slate-100 dark:bg-stone-800 '>Ctrl</span>
                         <span>+</span>
-                        <span className='border rounded-2xl py-[0.15rem] px-1 bg-slate-100'>J</span>
+                        <span className='border dark:border-stone-600 rounded-2xl py-[0.15rem] px-1 bg-slate-100 dark:bg-stone-800'>J</span>
                     </span>
             </button>              
         </div>
@@ -130,7 +127,7 @@ function Navbar({}: Props) {
             {({ open, close }) => (
                 <>
                 <Popover.Button className='focus-within:outline-none flex flex-col justify-center items-center'>
-                    <img src={session?.user.userImgUrl?`https://localhost:7166`+session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover w-12 h-12 border ${open?'border-main':'border-transparent'} `} />
+                    <img src={session.user.provider==='google'?session.user.userImgUrl:session?.user.userImgUrl?`https://localhost:7166`+session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover w-12 h-12 border ${open?'border-main':'border-transparent'} `} />
                     <span className='text-xs font-bold text-lighterText mt-1'>{session?.user.userName}</span> 
                 </Popover.Button>
                 <AnimatePresence mode='wait'>
@@ -222,7 +219,7 @@ function Navbar({}: Props) {
     }
     </AnimatePresence>
     <Spotlight
-        classNames={{action:'gap-3', actionSection:'flex justify-center items-center'}}
+        classNames={{root:'dark:bg-stone-800', search:'dark:text-stone-300 dark:bg-stone-800', body:'dark:bg-stone-800 ',action:'gap-3', actionSection:'flex justify-center items-center', actionLabel:'dark:text-stone-300'}}
         actions={[
             {
             group:'صفحات',

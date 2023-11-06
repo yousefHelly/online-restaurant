@@ -35,7 +35,7 @@ function Review({userName, userImg, rate, text, date, id, setUpdateReview, name}
     <div className='flex justify-between items-center'>
         <div className='flex gap-3'>
             <div className='w-[50px] h-[50px]'>
-                <img src={userImg?`${`https://localhost:7166`}${userImg}`:'/static/default-user-icon.jpg'} alt={userName} className='object-cover rounded-full w-full h-full'/>
+                <img src={userImg?!userImg.match(/\\Images/)?userImg:userImg.match(/\\Images/)?`${`https://localhost:7166`}${userImg}`:'/static/default-user-icon.jpg':'/static/default-user-icon.jpg'} alt={userName} className='object-cover rounded-full w-full h-full'/>
             </div>
             <div className='flex flex-col'>
                 <p className='text-header dark:text-stone-300 font-bold font-header'>{userName}</p>

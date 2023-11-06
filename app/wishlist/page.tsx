@@ -1,4 +1,4 @@
-import TopDishes from '@/components/menu/TopDishes'
+import FavouriteDishes from '@/components/(User)/wishlist/FavouriteDishes'
 import React from 'react'
 
 type Props = {}
@@ -10,7 +10,7 @@ function WishlistPage({}: Props) {
           <div className='flex justify-between items-center'>
             <h2 className='text-3xl'>المفضلة</h2>
           </div>
-          <TopDishes filter='SD' cardView='row' dataFrom='wishlist'/>
+          <FavouriteDishes/>
         </div>
     </main>
   )

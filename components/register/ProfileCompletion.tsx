@@ -9,7 +9,7 @@ import { axiosAuth } from '@/lib/api/axios';
 import { useSession } from 'next-auth/react';
 import useAddress from '@/lib/api/UseAddress';
 import toast from 'react-hot-toast';
-import AddressItem from '../profile/AddressItem';
+import AddressItem from '../(User)/profile/AddressItem';
 
 type Props = {
     setIsOpen: (val:boolean)=>void,

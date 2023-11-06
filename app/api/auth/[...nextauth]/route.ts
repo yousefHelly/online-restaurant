@@ -38,6 +38,7 @@ const handler = NextAuth({
             formData.append('FirstName', user.name!.split(' ')[0])
             formData.append('LastName', user.name!.split(' ')[1] || '')
             formData.append('UserName', user.name!)
+            formData.append('Value', 'google')
             formData.append('UserImg', (profile as any).picture||user.image!)
             axios.post(`https://localhost:7166/api/auth/gmail`,
             formData

@@ -3,7 +3,7 @@ import React,{useState} from 'react'
 import DataRegisteration from '@/components/register/DataRegisteration'
 import AccountVerification from '@/components/register/AccountVerification'
 import ProfileCompletion from '@/components/register/ProfileCompletion'
-import AddressModal from '@/components/profile/AddressModal'
+import AddressModal from '@/components/(User)/profile/AddressModal'
 import StepIndicator from '@/components/register/StepIndicator'
 import { AnimatePresence } from 'framer-motion'
 
