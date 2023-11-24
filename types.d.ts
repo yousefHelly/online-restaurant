@@ -31,7 +31,7 @@ type MealAddition = {
     choices: {
         id: number, 
         name: string, 
-        price?: string
+        price?: number
     }[]
 }
 
@@ -49,13 +49,13 @@ type Dish = {
     image: string,
     description: string,
     chefName: string,
-    oldPrice: number,
-    isFavourite?: string,
+    oldPrice?: number,
+    isFavourite: boolean,
     categoryName: string,
     rate: number,
     numOfRates: number,
     reviews: Review[],
-    mealAdditions: MealAddition[],
+    mealAdditions?: MealAddition[],
     staticMealAdditions: StaticMealAddition[]
 }
 type MealCard =  {
@@ -65,7 +65,7 @@ type MealCard =  {
     mealImgUrl: string,
     chefName: string,
     oldPrice?: number,
-    isFavourite: "false" | "true",
+    isFavourite: boolean,
     chefId: number,
     categoryid: number,
     categoryName: string,
@@ -120,3 +120,13 @@ type UpdateAuth = {
     },
     message: string
 }
+type Cart = {
+    name: string,
+    price: number,
+    amount: number,
+    totalPrice: number
+    mealImgUrl: string,
+    chefName: number,
+    categoryName: number,
+    additions: string[]  
+}[]

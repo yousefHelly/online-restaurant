@@ -1,3 +1,4 @@
+'use client'
 import DishCard from '@/components/layout/DishCard'
 import LoadingErrorFetching from '@/components/layout/LoadingErrorFetching'
 import NotFound from '@/components/layout/NotFound'

@@ -1,3 +1,4 @@
+'use client'
 import FavouriteDishes from '@/components/(User)/wishlist/FavouriteDishes'
 import React from 'react'
 

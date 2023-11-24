@@ -1,8 +1,9 @@
 'use client'
 import ViewActionTable from '@/components/cart/ViewActionTable'
 import { Disclosure, RadioGroup } from '@headlessui/react'
+import { Table, Timeline, TimelineItem } from '@mantine/core'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Plus } from 'lucide-react'
+import { CalendarCheck2, CarFront, Microwave, Plus } from 'lucide-react'
 import Link from 'next/link'
 import React, {useState} from 'react'
 
@@ -62,7 +63,7 @@ function CheckoutPage({}: Props) {
   const [payment, setpayment] = useState<{name: string}>({name:''});
   (true  && currentStep.step!=steps[1].step && !AddressStep) && setCurrentStep(steps[1])
   return (
-    <main className="grid grid-cols-4 pb-20 px-24 overflow-x-hidden gap-5">
+    <main className="w-full grid grid-cols-4 pb-10 px-24 overflow-x-hidden gap-5">
       {!DonePayment&&<> <div className='mt-12 col-span-3 flex flex-col w-full bg-slate-100 dark:bg-stone-800 shadow-md border dark:border-stone-600'>
        <Disclosure  defaultOpen={(!true)}>
         {
@@ -203,6 +204,70 @@ function CheckoutPage({}: Props) {
       </Disclosure>
       </div>
       <ViewActionTable action={setDonePayment} actionName='تأكيد الطلب' disable={currentStep.step}/> </>}
+      {
+        DonePayment && 
+        <div className='w-full p-5 pb-0 col-span-full grid grid-cols-3 gap-5 justify-center items-center'>
+          <div className='col-span-2 flex flex-col'>
+            <div className='header mx-auto flex flex-col items-center gap-1'>
+              <h3 className='text-header dark:text-stone-300 font-bold text-3xl'>تم تأكيد طلبك بنجاح !🎉</h3>
+              <span className='text-sm mt-2 text-lighterText dark:text-stone-400'>شكرا لثقتك في جو فاست فوود ! نتمني ان تتحصل علي تجربة مرضية.</span>
+              <span className='text-sm text-lighterText dark:text-stone-400'>كود طلبك هو <Link className='underline hover:text-main transition duration-150' href={`/my-orders/track?o=${'FEG3G56S3eG5gH63Er5'}`}>FEG3G56S3eG5gH63Er5</Link> يمكنك من خلاله متابعة حالة طلبك.</span>
+            </div>
+            <div className="order-summary py-5">
+              <h4 className='text-header dark:text-stone-300 font-bold text-2xl'>ملخص طلبك</h4>
+              <div className='py-4'>
+              <Table>
+              <Table.Thead>
+                <Table.Tr className='dark:border-stone-600'>
+                  <Table.Th className='dark:text-stone-300'>الطبق</Table.Th>
+                  <Table.Th className='dark:text-stone-300'>الكمية</Table.Th>
+                  <Table.Th className='dark:text-stone-300'>السعر</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+              <Table.Tr className='dark:border-stone-600 transition duration-150'>
+                <Table.Td className='dark:text-stone-300 flex gap-3 items-center '>
+                  <div className='w-24 h-24'><img className='w-full h-full object-cover' src="./static/not-found.png" /></div>
+                  <p>فول</p>
+                </Table.Td>
+                <Table.Td className='dark:text-stone-300'>1</Table.Td>
+                <Table.Td className='dark:text-stone-300'>50 ج</Table.Td>
+              </Table.Tr>
+              <Table.Tr className='dark:border-stone-600 transition duration-150'>
+                <Table.Td className='dark:text-stone-300 flex gap-3 items-center '>
+                  <div className='w-24 h-24'><img className='w-full h-full object-cover' src="./static/not-found.png" /></div>
+                  <p>فول</p>
+                </Table.Td>
+                <Table.Td className='dark:text-stone-300'>1</Table.Td>
+                <Table.Td className='dark:text-stone-300'>50 ج</Table.Td>
+              </Table.Tr>
+              </Table.Tbody>
+              <Table.Caption>إجمالي تكلفة الطلب 100 ج</Table.Caption>
+            </Table>
+              </div>
+            </div>
+          </div>
+          <div className="col-span-1">
+          <Timeline active={1} lineWidth={3} bulletSize={34} color='#ffa006' >      
+      <Timeline.Item className='dark:text-stone-300' bullet={<CalendarCheck2 size={24} className='dark:text-header'/>} title="تم إستلام طبلك">
+        <p className='text-sm'>لقد إستلم الشيفات طلبك و سيتم تجهيزه في القريب العاجل !</p>
+        <span className='text-xs mt-2 text-lighterText dark:text-stone-400'>منذ 3 دقائق</span>
+      </Timeline.Item>
+
+      <Timeline.Item className='dark:text-stone-300' title="يتم تجهيز طلبك"  lineVariant="dashed" bullet={<Microwave size={24} className='dark:text-header'/>} >
+      <p className='text-sm'>لقد انتهي الشيفات للتو من تجهيز طلبك و نحن في انتظار سائق الدليفري ليقوم بتوصيله لك.
+        استعد لمكالمة منه قريب.</p>
+      <span className='text-xs mt-2 text-lighterText dark:text-stone-400'>الأن</span>
+      </Timeline.Item>
+
+      <Timeline.Item className='dark:text-stone-300' title="في انتظار توصيل طلبك" bullet={<CarFront size={24} className='dark:text-header'/>}>
+      <p className='text-sm '>طلبك ساخن في طريقه اليك ، فقط استعد للاستمتاع بوجبتك و تقييم طبقك بعدها.</p>
+      {/* <span className='text-xs mt-2 text-lighterText dark:text-stone-400'>منذ 3 دقائق</span> */}
+      </Timeline.Item>
+          </Timeline>
+          </div>
+        </div>
+      }
     </main>
   )
 }
