@@ -74,3 +74,15 @@ html.lenis {
 .mantine-Spotlight-action[data-selected='true'] svg{
   @apply text-slate-50 dark:text-stone-900
 }
+.admin-aside{
+  transition: width 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.m-f0824112{
+  @apply text-right transition duration-150 rounded-md
+}
+.m-f07af9d2{
+  @apply text-right
+}
+.m-f0824112:hover{
+  @apply bg-main text-slate-50
+}

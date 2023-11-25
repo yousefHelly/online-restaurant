@@ -1,3 +1,4 @@
+'use client'
 import RatingStars from '@/lib/RatingStars'
 import { ChefHat, Heart, LucidePizza } from 'lucide-react'
 import React from 'react'
