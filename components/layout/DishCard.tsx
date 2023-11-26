@@ -31,12 +31,20 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
     const updateCartItemAmount = UpdateAmountCart()
     const dish = useDish(name, false)
     const clientQuery = useQueryClient()
-    const selectedAdditions: string[] = []
+    useEffect(()=>{
+        setTimeout(()=>{
+            clientQuery.invalidateQueries(['dish', name])
+        },500)
+    },[])
+    const selectedAdditions: { id: number, val:string }[] = []
     const [priceFromAdd, setPriceFromAdd] = useState<number>(cart.quriedItem?.price || dish.data?.price!)
 
     dish.data?.mealAdditions&&dish.data?.mealAdditions.map((add)=>{
         const additionPattern = `${add.name}:${add.choices[0].name}${add.choices[0].price?'+'+add.choices[0].price+'ج':''}`.trim()
-        selectedAdditions.push(additionPattern)
+        selectedAdditions.push({
+            id:add.id,
+            val:additionPattern
+        })
     })
     useEffect(()=>{
         dish.data?.mealAdditions&&dish.data?.mealAdditions.map((add)=>{
@@ -67,8 +75,8 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
         className='w-full h-full object-cover transition duration-300 group-hover:scale-105'
         />
         </Link>
-        <span onClick={()=>toggleWishlist.mutate({id:id, isFavourite:favourate})} className='absolute -left-20 transition duration-300 group-hover:left-5 top-5 '>
-            <Heart className={`${favourate?'fill-red-500 dark:text-stone-900':'text-red-500 hover:fill-red-500'}  transition duration-150`}/>
+        <span onClick={()=>toggleWishlist.mutate({id:(dish.data?.id || id), isFavourite:(dish.data?.isFavourite||favourate)})} className='absolute -left-20 transition duration-300 group-hover:left-5 top-5 cursor-pointer '>
+            <Heart className={`${(dish.data?.isFavourite||favourate)?'fill-red-500 dark:text-stone-900':'text-red-500 hover:fill-red-500'}  transition duration-150`}/>
         </span>
     </figure>
     <div className='flex-1 flex flex-col gap-2 justify-center'>
@@ -102,6 +110,7 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
                     onClick={
                         ()=>{
                             addCartItem.mutate({
+                                id:dish.data?.id || id,
                                 name:name,
                                 image:image,
                                 price:priceFromAdd || price,

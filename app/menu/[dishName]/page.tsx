@@ -41,11 +41,13 @@ function DishViewPage({params:{dishName}}: Props) {
         const updateAddition = AddCartItem()
         const deleteItem = DeleteCartItem()
         const [quantityChange, setQuantityChange] = useState<number>(cart.quriedItem?.amount || 1)
-        const [selectedAdditions, setSelectedAdditions] = useState<string[]>([])
+        const [selectedAdditions, setSelectedAdditions] = useState<{ id: number, val:string }[]>([])
         const [price, setPrice] = useState<number>(data?.price!)
         const [updateReview, setUpdateReview] = useState<{update: true, rating: number, reviewText: string, id: number} | {update:false}>({update:false})
         const {data:session} = useSession();
-        useAxiosAuth()
+        useEffect(()=>{
+            setPrice(data?.price!)
+        },[data?.price])
         useEffect(()=>{
             cart.quriedItem?.amount&&setQuantityChange(cart.quriedItem?.amount)
         },[cart.quriedItem])
@@ -54,13 +56,12 @@ function DishViewPage({params:{dishName}}: Props) {
         },[quantityChange])
         useEffect(()=>{
             selectedAdditions.map((add)=>{
-                if(add.includes('ج')){
-                    const addCost = add.slice(add.indexOf('+')+1, add.lastIndexOf('ج'))
+                if(add.val.includes('ج')){
+                    const addCost = add.val.slice(add.val.indexOf('+')+1, add.val.lastIndexOf('ج'))
                     setPrice(+addCost)
                 }
             })
         })
-        
         const ReviewSchema = z.object({
             rating:z.number({required_error:'إختار تقييم الطبق من بين 1 الي 5'}).min(0.5,'يجب ان يكون التقييم اكبر من او يساوي 0.5').max(5),
             review:z.string({required_error:'اضف مراجعتك للطبق'})
@@ -103,7 +104,9 @@ function DishViewPage({params:{dishName}}: Props) {
                 <Heart className={`${data?.isFavourite?'fill-red-500  dark:fill-stone-300':'text-red-500 dark:text-stone-300 dark:group-hover:fill-stone-300 group-hover:fill-red-500'}  transition duration-150`}/>
             }
             {
+                !isLoading?
                 data?.isFavourite?'إزالة من المفضلة':'اضف الي المفضلة'
+                :<Loader2 className='animate-spin'/>
             }
             </button>
             {data?.name&&<ShareButtons mealName={data?.name}/>}
@@ -134,6 +137,7 @@ function DishViewPage({params:{dishName}}: Props) {
                         }
                         else{
                             updateAddition.mutate({
+                                id:data?.id!,
                                 name:data?.name || arabicName,
                                 price: price,
                                 image:data?.image!,

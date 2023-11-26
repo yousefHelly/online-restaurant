@@ -9,9 +9,9 @@ type Props = {
     choices: {id: number, name: string, price?: number}[],
     name: string,
     setPrice: (q: number)=>void,
-    selectedAdditions: string[],
+    selectedAdditions: { id: number, val:string }[],
     dishName: string,
-    setSelectedAdditions: (val: string[])=>void
+    setSelectedAdditions: (val: { id: number, val:string }[])=>void
 }
 
 function Addition({choices, name, dishName, setPrice, selectedAdditions, setSelectedAdditions}: Props) {
@@ -24,16 +24,16 @@ function Addition({choices, name, dishName, setPrice, selectedAdditions, setSele
         cartSavedAddition.additionVal&&setSelectedVal(options.filter((op)=>`${op.name}${op.price?`+${op.price}ج`:''}`===cartSavedAddition.additionVal)[0] || options[0])
     },[])
     useEffect(()=>{
-                (cartSavedAddition.additionVal && cartSavedAddition.additionVal != (`${selectedVal.name}${selectedVal.price?`+${selectedVal.price}ج`:''}`))&&updateAddition.mutate({itemname:dishName, additionName:name, additionChoice: selectedVal.name, additionPrice: selectedVal.price})
+                (cartSavedAddition.additionVal && cartSavedAddition.additionVal != (`${selectedVal.name}${selectedVal.price?`+${selectedVal.price}ج`:''}`))&&updateAddition.mutate({itemname:dishName, additionName:name,additionId: selectedVal.id, additionChoice: selectedVal.name, additionPrice: selectedVal.price})
     },[selectedVal])
     
     useEffect(()=>{
-        if(selectedAdditions.filter((add)=>add.includes(additionPattern)).length===0){            
-            if(selectedAdditions.filter((add)=>add.includes(name)).length>0){
-                const addsWithoutthisAdd = selectedAdditions.filter((add)=>!add.includes(name))
-                setSelectedAdditions([...addsWithoutthisAdd, additionPattern])
+        if(selectedAdditions.filter((add)=>add.val.includes(additionPattern)).length===0){            
+            if(selectedAdditions.filter((add)=>add.val.includes(name)).length>0){
+                const addsWithoutthisAdd = selectedAdditions.filter((add)=>!add.val.includes(name))
+                setSelectedAdditions([...addsWithoutthisAdd,{id:selectedVal.id, val:additionPattern}])
             }else{
-                setSelectedAdditions([...selectedAdditions, additionPattern])
+                setSelectedAdditions([...selectedAdditions, {id:selectedVal.id, val:additionPattern}])
             }
         }
     },[selectedVal])

@@ -26,6 +26,8 @@ function FixedAddition({id, name, image, price}: Props) {
     useEffect(()=>{
         added?
         addCartItem.mutate({
+            id: id,
+            type:'side dish',
             name:name,
             price:price,
             image:image,

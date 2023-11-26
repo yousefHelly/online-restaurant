@@ -80,7 +80,7 @@ type Dishes  = {
 
 type Wishlist = {
     wishListId: number,
-    meals: MealCard[]
+    meals?: MealCard[]
 }[]
 
 type Sort = 'PD' | 'PA' | 'SD' | 'RD'
@@ -121,6 +121,8 @@ type UpdateAuth = {
     message: string
 }
 type Cart = {
+    id: string,
+    type:'dish' | 'side dish',
     name: string,
     price: number,
     amount: number,
@@ -128,5 +130,5 @@ type Cart = {
     mealImgUrl: string,
     chefName: number,
     categoryName: number,
-    additions: string[]  
+    additions: { id: number, val:string }[]  
 }[]

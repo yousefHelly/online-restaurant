@@ -9,7 +9,7 @@ import useCart, { DeleteCartItem, UpdateAmountCart } from '@/lib/api/useCart'
 type Props = {
     image: string,
     name: string,
-    status: string[] | undefined,
+    status: { id: number, val:string }[] | undefined,
     quantity: number,
     totalPrice: number,
     page?:'cart'|'nav',
@@ -43,7 +43,7 @@ function ItemCart({image, name, status, quantity, totalPrice, page='nav', close 
         {status&&<div className={`text-lighterText flex flex-col dark:text-stone-400 ${page==='cart'?'text-md py-1 my-2':'text-xs my-1'} font-bold`}>
             {status.map((st)=>{
                 return(
-                    <span key={st}>{st.slice(0,st.indexOf('+')!=-1?st.indexOf('+'):undefined)}</span>
+                    <span key={st.id}>{st.val.slice(0,st.val.indexOf('+')!=-1?st.val.indexOf('+'):undefined)}</span>
                 )
             })}
         </div>
