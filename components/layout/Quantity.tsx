@@ -16,13 +16,13 @@ function Quantity({quantityChange, price, setQuantityChange, page, action, enabl
     <div className='flex items-center justify-between'>
             {price&&
                 <div className={`text-main font-bold ${page==='cart'?'text-lg py-1':''}`}>
-                    {price * quantityChange} ج
+                    {price} ج
                 </div>
             }
-            <div className='flex items-center gap-2 text-xs'>
-                <PlusCircle className={`cursor-pointer`} onClick={()=>{setQuantityChange(quantityChange+1);action}}/>
+            <div className='flex items-center gap-2 text-xs dark:text-stone-300'>
+                <PlusCircle className={`cursor-pointer dark:text-stone-300`} onClick={()=>{setQuantityChange(quantityChange+1);action}}/>
                 {quantityChange}
-                <MinusCircle className={((!enableZero && quantityChange-1!=0)||(enableZero))?'cursor-pointer':'cursor-not-allowed text-lighterText'} onClick={()=>{((!enableZero && quantityChange-1!=0)||(enableZero))&&setQuantityChange(quantityChange-1); action;}}/>
+                <MinusCircle className={((!enableZero && quantityChange-1!=0)||(enableZero))?'cursor-pointer dark:text-stone-300':'cursor-not-allowed text-lighterText dark:text-stone-400'} onClick={()=>{((!enableZero && quantityChange-1!=0)||(enableZero))&&setQuantityChange(quantityChange-1); action;}}/>
             </div>
         </div>
   )

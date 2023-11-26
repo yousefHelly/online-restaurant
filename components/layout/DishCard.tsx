@@ -1,8 +1,14 @@
+'use client'
 import RatingStars from '@/lib/RatingStars'
 import { ChefHat, Heart, LucidePizza } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import  Link from 'next/link';
 import { motion } from 'framer-motion';
+import { AddCartItem, DeleteCartItem, UpdateAmountCart, useCartItem } from '@/lib/api/useCart';
+import { useQueryClient } from 'react-query';
+import useDish from '@/lib/api/useDish';
+import Quantity from './Quantity';
+import { ToggleWishlist } from '@/lib/api/useWishlist';
 
 type Props = {
     name: string,
@@ -15,10 +21,48 @@ type Props = {
     oldPrice?: number,
     cardView: 'grid' | 'row',
     favourate?: boolean,
-    i: number
+    id: number
 }
 
-function DishCard({name, image, chef, category, rating, ratingCount, price, oldPrice, cardView, favourate=false, i}: Props) {
+function DishCard({name, image, chef, category, rating, ratingCount, price, oldPrice, cardView, favourate=false, id}: Props) {
+    const cart = useCartItem(name)
+    const addCartItem = AddCartItem()
+    const deleteCartItem = DeleteCartItem()
+    const updateCartItemAmount = UpdateAmountCart()
+    const dish = useDish(name, false)
+    const clientQuery = useQueryClient()
+    useEffect(()=>{
+        setTimeout(()=>{
+            clientQuery.invalidateQueries(['dish', name])
+        },500)
+    },[])
+    const selectedAdditions: { id: number, val:string }[] = []
+    const [priceFromAdd, setPriceFromAdd] = useState<number>(cart.quriedItem?.price || dish.data?.price!)
+
+    dish.data?.mealAdditions&&dish.data?.mealAdditions.map((add)=>{
+        const additionPattern = `${add.name}:${add.choices[0].name}${add.choices[0].price?'+'+add.choices[0].price+'ج':''}`.trim()
+        selectedAdditions.push({
+            id:add.id,
+            val:additionPattern
+        })
+    })
+    useEffect(()=>{
+        dish.data?.mealAdditions&&dish.data?.mealAdditions.map((add)=>{
+            if(add.choices[0].price){
+                setPriceFromAdd(add.choices[0].price)
+            }
+        })
+    },[selectedAdditions])
+    const [quantityChange, setQuantityChange] = useState<number>(cart.quriedItem?.amount||1)
+    useEffect(()=>{
+        if(quantityChange>0){
+            updateCartItemAmount.mutate({name:name, amount:quantityChange})
+        }else{
+            deleteCartItem.mutate({name})
+            setQuantityChange(1)
+        }
+    },[quantityChange])
+    const toggleWishlist = ToggleWishlist()
   return (
     <motion.div initial={{opacity:0, y:15}} whileInView={{opacity:1, y:0, transition:{duration:0.15}}} viewport={{amount:0.4, once:true}} className={`group border dark:border-stone-600 bg-slate-50/40 dark:bg-stone-600/40 dark:hover:bg-main/20 transition duration-300 hover:bg-main/20 relative flex ${cardView==='grid'?'flex-col':''} gap-2 shadow-md max-h-[400px] overflow-x-hidden`}>
     <figure className={`${cardView==='grid'?'w-full h-[175px]':' w-[200px] h-full'} overflow-hidden relative`}>
@@ -31,8 +75,8 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
         className='w-full h-full object-cover transition duration-300 group-hover:scale-105'
         />
         </Link>
-        <span className='absolute -left-20 transition duration-300 group-hover:left-5 top-5 '>
-            <Heart className={`${favourate?'fill-red-500 dark:text-stone-900':'text-red-500 hover:fill-red-500'}  transition duration-150`}/>
+        <span onClick={()=>toggleWishlist.mutate({id:(dish.data?.id || id), isFavourite:(dish.data?.isFavourite||favourate)})} className='absolute -left-20 transition duration-300 group-hover:left-5 top-5 cursor-pointer '>
+            <Heart className={`${(dish.data?.isFavourite||favourate)?'fill-red-500 dark:text-stone-900':'text-red-500 hover:fill-red-500'}  transition duration-150`}/>
         </span>
     </figure>
     <div className='flex-1 flex flex-col gap-2 justify-center'>
@@ -59,9 +103,33 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
                 {
                     oldPrice&& <p className='absolute -top-7 font-header font-bold text-md text-red-500 line-through w-24'>{oldPrice}{' '}ج</p>
                 }
-                <p className='font-header font-bold text-xl text-main'>{price}{' '}ج</p>
+                <p className='font-header font-bold text-xl text-main'>{cart.quriedItem?cart.quriedItem.totalPrice: price}{' '}ج</p>
             </div>
-            <button className='bg-main hover:bg-main/80 text-slate-50 dark:text-stone-200 dark:bg-stone-700 dark:hover:border-main dark:border dark:border-transparent dark:hover:bg-stone-800 dark:hover:text-main px-3 py-2 rounded-2xl'>اضف إلي السلة</button>
+                {
+                    !cart.quriedItem&&<button 
+                    onClick={
+                        ()=>{
+                            addCartItem.mutate({
+                                id:dish.data?.id || id,
+                                name:name,
+                                image:image,
+                                price:priceFromAdd || price,
+                                selectedAdditions:selectedAdditions
+                            })
+                        }
+                    } 
+                    className={`flex items-center border border-transparent gap-3 bg-main text-slate-50 hover:text-main dark:hover:text-main px-3 py-2 rounded-2xl hover:bg-slate-50 dark:hover:bg-stone-950  transition duration-150 font-bold`}
+                    >
+                        اضف الي السلة
+                    </button>
+                }
+
+                {
+                    cart.quriedItem&&<button className={`flex items-center border border-transparent transition duration-150 gap-3 border-main bg-slate-100 dark:bg-stone-800 text-main px-3 py-2 rounded-2xl hover:bg-slate-50 dark:hover:bg-stone-950  font-bold`}>
+                    <Quantity quantityChange={quantityChange} setQuantityChange={setQuantityChange} enableZero={true}/>
+                    </button>
+                }
+
         </div>
     </div>
 </motion.div>

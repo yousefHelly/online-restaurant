@@ -55,7 +55,7 @@ function ProfileCompletion({ setIsOpen, setSelectedAddress }: Props) {
                         {
                             addresses&&addresses.length>0?addresses.map((address, i)=>{
                                 return (
-                                <AddressItem address={address} i={i} setIsOpen={setIsOpen} setSelectedAddress={setSelectedAddress}/>
+                                <AddressItem key={address.id} address={address} i={i} setIsOpen={setIsOpen} setSelectedAddress={setSelectedAddress}/>
                                 )
                             }):isLoading?<span className='w-full flex flex-col items-center justify-center gap-3 dark:text-stone-400 text-lighterText'>جاري التحميل ...<Loader2 className='text-main animate-spin'/></span>:!isLoading&&!isError&&<NotFound name='عناوين'/>
                         }

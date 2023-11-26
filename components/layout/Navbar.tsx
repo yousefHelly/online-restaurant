@@ -14,6 +14,7 @@ import {useTheme} from 'next-themes'
 import useUpdateEmailSession from '@/lib/hooks/useUpdateEmailSession'
 import useDishes from '@/lib/api/useDishes'
 import NotFound from './NotFound'
+import useCart from '@/lib/api/useCart'
 type Props = {}
 
 function Navbar({}: Props) {
@@ -47,6 +48,7 @@ function Navbar({}: Props) {
             onClick: () => router.push(`/menu/${dish.name}`),
             leftSection: <UtensilsCrossed size={23} className='text-main'/>,
         })})    
+    const cart = useCart()
   return (
     <>
     <nav className={`w-full flex items-center justify-between px-12 z-40 sticky top-0 py-4 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
@@ -98,8 +100,9 @@ function Navbar({}: Props) {
             <Popover className="relative mt-2 z-30">
             {({ open, close }) => (
                 <>
-                <Popover.Button className='focus-within:outline-none'>
+                <Popover.Button className='focus-within:outline-none relative'>
                     <ShoppingBag className={`font-bold transition duration-150 cursor-pointer ${open?'text-main ':'text-lighterText hover:text-main '} `}/>
+                    {cart.data&&cart.data.length>0&&<span className={`absolute top-0 right-0 w-3 h-3 rounded-full bg-main text-[0.5rem] pr-[0.08rem] pt-[0.1rem] text-header flex items-center justify-center`}>{cart.data.length}</span>}
                 </Popover.Button>
                 <AnimatePresence mode='wait'>
                     {
@@ -107,10 +110,13 @@ function Navbar({}: Props) {
                                         <Popover.Panel className="absolute bg-slate-50 dark:bg-stone-800 rounded-b-2xl left-1/2 -translate-x-1/2 translate-y-4">
                                         <div className="px-2 py-2 flex flex-col w-[275px] h-[250px] overflow-y-scroll overscroll-none mb-6 relative after:content-[''] after:fixed after:-translate-y-8 after:bottom-0 after:left-0 after:w-full after:h-[20%] after:bg-gradient-to-b after:from-transparent after:via-slate-50/50 dark:after:via-stone-800/50 dark:after:to-stone-800 after:to-slate-50">
                                             <p className='text-center mx-auto font-header font-bold text-xl text-header dark:text-stone-300 pb-2'>سلة التسوق</p>
-                                            <ItemCart close={close}  image='https://images.unsplash.com/photo-1560684352-8497838a2229?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1428&q=80' name='شوربة سي فود' price={300} status='زيادة جمبري' quantity={1}/>
-                                            <ItemCart close={close} image='https://images.unsplash.com/photo-1560684352-8497838a2229?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1428&q=80' name='شوربة سي فود' price={300} status='زيادة جمبري' quantity={1}/>
-                                            <ItemCart close={close} image='https://images.unsplash.com/photo-1560684352-8497838a2229?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1428&q=80' name='شوربة سي فود' price={300} status='زيادة جمبري' quantity={1}/>
-                                            <ItemCart close={close} image='https://images.unsplash.com/photo-1560684352-8497838a2229?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1428&q=80' name='شوربة سي فود' price={300} status='زيادة جمبري' quantity={1}/>
+                                            {
+                                                cart.data&&cart.data?.length>0?cart?.data.map((cartItem)=>{
+                                                    return(
+                                                        <ItemCart key={cartItem.name} close={close}  image={'https://localhost:7166'+cartItem.mealImgUrl} name={cartItem.name} totalPrice={cartItem.totalPrice} status={cartItem.additions} quantity={cartItem.amount}/>
+                                                    )
+                                                }):<NotFound name='أطباق'/>
+                                            }
                                         </div>
                                         <Link href={'/cart'} onClick={()=>close()}  className='absolute z-[100] bottom-0 w-[275px] bg-main text-slate-50 dark:text-stone-900 font-bold text-center rounded-b-2xl py-2 font-header'>عرض السلة</Link>
                                     </Popover.Panel>

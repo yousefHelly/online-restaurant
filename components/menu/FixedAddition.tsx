@@ -1,6 +1,7 @@
 'use client'
 import React,{useState, useEffect} from 'react'
 import Quantity from './../layout/Quantity';
+import { AddCartItem, DeleteCartItem, UpdateAmountCart, useCartItem } from '@/lib/api/useCart';
 
 type Props = {
     id: number,
@@ -10,14 +11,49 @@ type Props = {
 }
 
 function FixedAddition({id, name, image, price}: Props) {
-    const [added, setAdded] = useState<boolean>(false)
-    const [quantity, setQuantity]= useState<number>(1)
+    const cartItem  = useCartItem(name)
+    const [added, setAdded] = useState<boolean>(cartItem.quriedItem?true:false)
+    const [quantity, setQuantity]= useState<number>(cartItem.quriedItem?.amount || 1)
+    const [updatedHere, setUpdatedHere] = useState<boolean>(false)
+    const addCartItem = AddCartItem()
+    const updateAmount = UpdateAmountCart()
+    const deleteCartItem = DeleteCartItem()
     useEffect(()=>{
-        if(quantity===0){
+        if(cartItem.quriedItem && !updatedHere){            
+            (cartItem.quriedItem?.amount!=quantity)&&setQuantity(cartItem.quriedItem?.amount)
+        }
+    },[cartItem.quriedItem?.amount])
+    useEffect(()=>{
+        added?
+        addCartItem.mutate({
+            id: id,
+            type:'side dish',
+            name:name,
+            price:price,
+            image:image,
+            selectedAdditions:[],
+            amount:quantity
+        }):
+        deleteCartItem.mutate({name:name})
+    },[added])
+    useEffect(()=>{
+        if(cartItem.quriedItem){
+            if(quantity===0){
+                setAdded(false)
+                setQuantity(1)
+            }else{
+                setUpdatedHere(true)
+                updateAmount.mutate({
+                    name:name,
+                    amount:quantity
+                })
+                setUpdatedHere(false)
+            }
+        } else{
             setAdded(false)
             setQuantity(1)
         }
-    },[quantity])
+    },[quantity, cartItem.quriedItem])
   return (
     <div className='bg-slate-200 dark:bg-stone-900 dark:border-stone-600 rounded-2xl shadow-md border flex flex-col items-center p-2'>
     <div className='w-[100px] h-[100px] rounded-full top-0 -translate-y-1/2'>
