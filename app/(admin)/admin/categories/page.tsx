@@ -1,10 +1,18 @@
+import PageHeaderWithoutLink from '@/components/layout/PageHeaderWithoutLink'
+import Categories from '@/components/menu/Categories'
+import { Metadata } from 'next'
 import React from 'react'
 
-type Props = {}
 
-function AdminCategories({}: Props) {
+export const metadata: Metadata = {
+  title: 'جو فاست فوود | كل التصنيفات',
+}
+
+function AdminCategories() {
   return (
-    <div>AdminCategories</div>
+    <PageHeaderWithoutLink header='كل التصنيفات'>
+      <Categories admin={true}/>
+    </PageHeaderWithoutLink>
   )
 }
 

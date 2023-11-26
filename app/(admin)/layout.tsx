@@ -2,6 +2,7 @@
 import AdminNavBar from '@/components/(Admin)/AdminNavBar'
 import DashboardAside from '@/components/layout/DashboardAside'
 import type { Metadata } from 'next'
+import { Toaster } from 'react-hot-toast'
 
 export const metadata: Metadata = {
   title: 'جو فاست فوود | لوحة التحكم',
@@ -25,6 +26,7 @@ export default function DashboardLayout({
             </div>
         </section>
         </div>
+        <Toaster  toastOptions={{className:'dark:bg-stone-800 dark:text-stone-300 dark:border dark:border-stone-600'}}/>
     </main>
   )
 }

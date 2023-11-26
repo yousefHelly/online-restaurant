@@ -1,10 +1,17 @@
+import CategoryForm from '@/components/(Admin)/categories/CategoryForm'
+import PageHeaderWithoutLink from '@/components/layout/PageHeaderWithoutLink'
+import { Metadata } from 'next'
 import React from 'react'
 
-type Props = {}
+export const metadata: Metadata = {
+  title: 'جو فاست فوود | تصنيف جديد',
+}
 
-function NewCategoryPage({}: Props) {
+function NewCategoryPage() {
   return (
-    <div>NewCategoryPage</div>
+    <PageHeaderWithoutLink header='تصنيف جديد'>
+      <CategoryForm/>
+    </PageHeaderWithoutLink>
   )
 }
 
