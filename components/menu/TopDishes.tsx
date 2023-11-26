@@ -20,7 +20,7 @@ function TopDishes({filter, cardView='grid'}:{filter: Sort, cardView?:'grid' | '
     {
       data?.meals&&data.meals.length>0?data.meals.map((dish, i)=>{
         return(
-          <DishCard i={i} key={dish.name} name={dish.name} category={dish.categoryName} chef={dish.chefName} price={dish.price} rating={dish.rate} ratingCount={dish.numOfRate} image={dish.mealImgUrl} oldPrice={dish.oldPrice} cardView={cardView} favourate={dish.isFavourite==='true'}/>
+          <DishCard id={dish.id} key={dish.name} name={dish.name} category={dish.categoryName} chef={dish.chefName} price={dish.price} rating={dish.rate} ratingCount={dish.numOfRate} image={dish.mealImgUrl} oldPrice={dish.oldPrice} cardView={cardView} favourate={dish.isFavourite}/>
         )
       }):(!isLoading&&!isError)&&<NotFound name='أطباق'/>
     }

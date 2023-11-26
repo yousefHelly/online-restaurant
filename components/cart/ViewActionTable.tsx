@@ -48,7 +48,7 @@ function ViewActionTable({link, action, actionName, disable=4}: {link?: string, 
       {
       cart.data&&cart.data.map((cartItem)=>{
         return(
-          <OrderItem name={cartItem.name} quantity={cartItem.amount} price={cartItem.price * cartItem.amount}/>
+          <OrderItem key={cartItem.id} name={cartItem.name} quantity={cartItem.amount} price={cartItem.price * cartItem.amount}/>
         )
       })
       }
