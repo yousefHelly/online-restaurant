@@ -8,20 +8,22 @@ import Dropzone, {useDropzone} from 'react-dropzone'
 import toast from 'react-hot-toast'
 import { z } from 'zod'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
+import DropZoneUpload from '../DropZoneUpload'
 
 type Props = {
   id?: string
 }
 
-
-
 function CategoryForm({id}: Props) {
     const ACCEPTED_IMAGE_TYPES = ['image/jpg', 'image/jpeg', 'image/png', 'image/ico']
+    const categoryData = useCategory(id)
+    const [preview, setPreview] = useState<{url: null | string}>({url:categoryData?.queriedCategory?.categoryImg||null})
+
     const CategorySchema = z.object({
         name: z.string({ required_error:'ادخل اسم التصنيف'}),
         image: z.any().refine(
           (file: File | string)=>{
-            if(typeof file != 'string'&& file.size<=1000000 || typeof file === 'string' && file)
+            if(typeof file != 'string'&& file.size<=1000000 || preview.url ===  categoryData?.queriedCategory?.categoryImg)
             return true
             else{
               toast.error('حجم الصورة يتخطي 1 mb', {id:'errorImageSize'})
@@ -30,7 +32,7 @@ function CategoryForm({id}: Props) {
           }, {message:'حجم الصورة يتخطي 1 mb'})
           .refine(
             (file: File | string)=>{
-              if (typeof file != 'string'&& ACCEPTED_IMAGE_TYPES.includes(file.type) || typeof file === 'string' && file)
+              if (typeof file != 'string'&& ACCEPTED_IMAGE_TYPES.includes(file.type) || categoryData?.queriedCategory?.categoryImg)
                return true
               else {
                 toast.error('يجب ان تكون الصورة بصيغة jpg او jpeg او png او ico', {id:'errorImageSize'})
@@ -38,53 +40,14 @@ function CategoryForm({id}: Props) {
               }
             }, {message:'يجب ان تكون الصورة بصيغة jpg او jpeg او png او ico'})
         })
-    const categoryData = id?useCategory(id) : undefined
     type CategoryForm = z.infer<typeof CategorySchema>
-    const [preview, setPreview] = useState<{url: null | string}>({url:categoryData?.queriedCategory?.categoryImg||null})
     const postCategory = PostCategory()
     const updateCategory = UpdateCategory()
-
-    if(id && categoryData?.isLoading){
-      return <Loading/>
-    }
-    useEffect(()=>{
-      (!preview.url && categoryData?.queriedCategory?.categoryImg)&&setPreview({url:categoryData?.queriedCategory?.categoryImg})  
-    },[categoryData?.queriedCategory?.categoryImg])
-    
-    console.log(preview);
-    const MyDropzone: React.FC = () => {
-      const { setFieldValue } = useFormikContext<CategoryForm>();
-
-      const onDrop = (acceptedFiles: File[]) => {
-        setFieldValue('image', acceptedFiles[0]);
-        try{
-          setPreview({url:URL.createObjectURL(acceptedFiles[0])})
-
-        } catch{
-          toast.error('فشل تحميل الصورة تأكد من نوع الملف ثم اعد المحاولة')
-          setFieldValue('image', null)
-        }
-      };
-    
-      const { getRootProps, getInputProps } = useDropzone({
-        maxFiles:1,
-        onDrop,
-        multiple:false,
-        accept:{'image/png': ['.png'],'image/jpg': ['.jpg'],'image/jpeg': ['.jpeg'],'image/ico': ['.ico']}
-      });
-    
-      return (
-        <section>
-          <div {...getRootProps({ className: 'bg-slate-100 border border-dotted border-main flex flex-col gap-3 items-center justify-center p-5 cursor-pointer hover:bg-slate-200 transition duration-150'})}>
-            <input {...getInputProps()} />
-            <Upload className='text-lighterText'/>
-            <p className='text-sm font-bold text-lighterText dark:text-stone-400'>ضع صورة هنا ، او اضغط لاختيار صورة</p>
-          </div>
-        </section>
-      );
-    };
-    
     return (
+      <>
+      {
+        categoryData?.isLoading&&<Loading/>
+      }
         <Formik<CategoryForm>
                 initialValues={{
                 name:categoryData?.queriedCategory?.name || '',
@@ -93,7 +56,6 @@ function CategoryForm({id}: Props) {
                 enableReinitialize
                 validationSchema={toFormikValidationSchema(CategorySchema)}
                 onSubmit={(vals)=>{
-                  console.log(vals);
                   if(!id){
                     postCategory.mutate({
                       Name:vals.name,
@@ -143,7 +105,7 @@ function CategoryForm({id}: Props) {
                       <button onClick={()=>{setFieldValue('image', null); setPreview({url:null})}} className='w-10 h-10 rounded-full flex justify-center items-center p-2 text-slate-50 bg-red-400 hover:bg-red-500 transition duration-150'>
                         <Trash2/>
                       </button>
-                      </div>: <MyDropzone />
+                      </div>: <DropZoneUpload<CategoryForm> setPreview={setPreview}/>
                       }
                       {(errors.image && touched.image) && (
                         <span className='flex items-center gap-1 text-xs text-red-500 font-bold'>
@@ -158,6 +120,7 @@ function CategoryForm({id}: Props) {
                   }
                 }
               </Formik>
+      </>
   )
 }
 

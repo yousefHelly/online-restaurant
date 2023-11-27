@@ -19,7 +19,7 @@ export default function DashboardLayout({
         <div className='flex-1 flex flex-col min-h-full py-3 px-2'>
           <AdminNavBar/>
         <section className='bg-stone-800 flex h-[92%]'>
-            <div className='container w-full h-full rounded-xl bg-stone-100 m-1 p-5 overscroll-y-auto'>
+            <div className='container w-full h-full rounded-xl bg-stone-100 m-1 p-5 overscroll-y-auto overflow-y-auto'>
             {
             children
             }

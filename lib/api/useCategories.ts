@@ -13,13 +13,18 @@ export default function useCategories() {
       return {data, isLoading, isError}
 }
 
-export function useCategory(catId: string) {
-  const {data, isLoading, isError} = useQuery<Category[]>({
+export function useCategory(catId?: string) {
+  if(catId){
+    const {data, isLoading, isError} = useQuery<Category[]>({
       queryKey:'categories',
       queryFn:()=>axios.get(`/api/Category`).then((res)=>res.data)
     })
     const queriedCategory = data?.find((cat)=>`${cat.id}`===catId)
     return {queriedCategory, isLoading, isError}
+  }else{
+    return undefined
+  }
+
 }
 
 

@@ -120,3 +120,10 @@ type UpdateAuth = {
     },
     message: string
 }
+
+type FixedAddition = {
+    id: number,
+    name: string,
+    price: number,
+    additionUrl: string
+}
