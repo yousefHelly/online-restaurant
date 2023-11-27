@@ -1,23 +1,27 @@
 'use client'
+import Loading from '@/app/loading'
+import { PostCategory, UpdateCategory, useCategory } from '@/lib/api/useCategories'
 import { ErrorMessage, Field, Form, Formik, useFormikContext } from 'formik'
 import { Trash2, Upload, XOctagon } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Dropzone, {useDropzone} from 'react-dropzone'
 import toast from 'react-hot-toast'
 import { z } from 'zod'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 
-type Props = {}
+type Props = {
+  id?: string
+}
 
 
 
-function CategoryForm({}: Props) {
+function CategoryForm({id}: Props) {
     const ACCEPTED_IMAGE_TYPES = ['image/jpg', 'image/jpeg', 'image/png', 'image/ico']
     const CategorySchema = z.object({
         name: z.string({ required_error:'ادخل اسم التصنيف'}),
         image: z.any().refine(
-          (file: File)=>{
-            if(file.size<=1000000)
+          (file: File | string)=>{
+            if(typeof file != 'string'&& file.size<=1000000 || typeof file === 'string' && file)
             return true
             else{
               toast.error('حجم الصورة يتخطي 1 mb', {id:'errorImageSize'})
@@ -25,22 +29,32 @@ function CategoryForm({}: Props) {
             }
           }, {message:'حجم الصورة يتخطي 1 mb'})
           .refine(
-            (file: File)=>{
-              if (ACCEPTED_IMAGE_TYPES.includes(file.type))
+            (file: File | string)=>{
+              if (typeof file != 'string'&& ACCEPTED_IMAGE_TYPES.includes(file.type) || typeof file === 'string' && file)
                return true
               else {
-
                 toast.error('يجب ان تكون الصورة بصيغة jpg او jpeg او png او ico', {id:'errorImageSize'})
                 return false
               }
             }, {message:'يجب ان تكون الصورة بصيغة jpg او jpeg او png او ico'})
         })
+    const categoryData = id?useCategory(id) : undefined
     type CategoryForm = z.infer<typeof CategorySchema>
-    const [preview, setPreview] = useState<{url: null | string}>({url:null})
+    const [preview, setPreview] = useState<{url: null | string}>({url:categoryData?.queriedCategory?.categoryImg||null})
+    const postCategory = PostCategory()
+    const updateCategory = UpdateCategory()
 
+    if(id && categoryData?.isLoading){
+      return <Loading/>
+    }
+    useEffect(()=>{
+      (!preview.url && categoryData?.queriedCategory?.categoryImg)&&setPreview({url:categoryData?.queriedCategory?.categoryImg})  
+    },[categoryData?.queriedCategory?.categoryImg])
+    
+    console.log(preview);
     const MyDropzone: React.FC = () => {
       const { setFieldValue } = useFormikContext<CategoryForm>();
-    
+
       const onDrop = (acceptedFiles: File[]) => {
         setFieldValue('image', acceptedFiles[0]);
         try{
@@ -50,8 +64,6 @@ function CategoryForm({}: Props) {
           toast.error('فشل تحميل الصورة تأكد من نوع الملف ثم اعد المحاولة')
           setFieldValue('image', null)
         }
-        console.log(acceptedFiles[0]);
-
       };
     
       const { getRootProps, getInputProps } = useDropzone({
@@ -75,21 +87,35 @@ function CategoryForm({}: Props) {
     return (
         <Formik<CategoryForm>
                 initialValues={{
-                name:'',
-                image:null,
+                name:categoryData?.queriedCategory?.name || '',
+                image:categoryData?.queriedCategory?.categoryImg || null,
                 }}
                 enableReinitialize
                 validationSchema={toFormikValidationSchema(CategorySchema)}
                 onSubmit={(vals)=>{
-                 console.log(vals);
-                 
+                  console.log(vals);
+                  if(!id){
+                    postCategory.mutate({
+                      Name:vals.name,
+                      CategoryImg:vals.image
+                    }) 
+                  }else{
+                    updateCategory.mutate({
+                      id:id,
+                      Name:vals.name,
+                      CategoryImg:vals.image!=categoryData?.queriedCategory?.categoryImg?vals.image:undefined
+                    }) 
+                  }
                 }}
                 onReset={()=>{
-                  setPreview({url:null})
+                  if(!id)
+                    setPreview({url:null})
+                  else
+                    setPreview({url:categoryData?.queriedCategory?.categoryImg!})
                 }}
               >
                 {
-                  ({errors, touched, values, initialValues, setFieldValue})=>{
+                  ({errors, touched, values, initialValues, setFieldValue, isSubmitting})=>{
                     return <Form className='grid grid-cols-2 gap-4 mt-6'>
                     <div className='flex flex-col gap-3'>
                       <label className='text-header dark:text-stone-300 font-bold' htmlFor='name'>
@@ -127,7 +153,7 @@ function CategoryForm({}: Props) {
                       )}
                     </div>
                     <button className='col-span-1 w-40 mr-auto px-8 py-2 text-slate-50 dark:text-stone-900 dark:hover:text-main bg-main hover:text-main hover:bg-transparent transition duration-150 rounded-2xl dark:disabled:bg-stone-800 dark:disabled:text-main disabled:bg-lighterText disabled:text-slate-50' type='reset'>إعادة البيانات</button>
-                    <button disabled={values.name === initialValues.name || values.image === initialValues.image || errors.name!=undefined || errors.image!=undefined} className='col-span-1 w-40 px-8 py-2 text-slate-50 dark:text-stone-900 dark:hover:text-main bg-main hover:text-main hover:bg-transparent transition duration-150 rounded-2xl dark:disabled:bg-stone-800 dark:disabled:text-main disabled:bg-lighterText disabled:text-slate-50' type='submit'>حفظ</button>
+                    <button disabled={(!id?(values.name === initialValues.name || values.image === initialValues.image):(values.name === initialValues.name && values.image === initialValues.image)) || errors.name!=undefined || errors.image!=undefined || isSubmitting || !values.image} className='col-span-1 w-40 px-8 py-2 text-slate-50 dark:text-stone-900 dark:hover:text-main bg-main hover:text-main hover:bg-transparent transition duration-150 rounded-2xl dark:disabled:bg-stone-800 dark:disabled:text-main disabled:bg-lighterText disabled:text-slate-50' type='submit'>حفظ</button>
                   </Form>
                   }
                 }
