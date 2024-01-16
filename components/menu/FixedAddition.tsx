@@ -1,6 +1,7 @@
 'use client'
 import React,{useState, useEffect} from 'react'
 import Quantity from './../layout/Quantity';
+import Image from 'next/image';
 
 type Props = {
     id: number,
@@ -21,9 +22,11 @@ function FixedAddition({id, name, image, price}: Props) {
   return (
     <div className='bg-slate-200 dark:bg-stone-900 dark:border-stone-600 rounded-2xl shadow-md border flex flex-col items-center p-2'>
     <div className='w-[100px] h-[100px] rounded-full top-0 -translate-y-1/2'>
-        <img
-        src={`${`https://localhost:7166`}${image}`}
+        <Image
+        src={image}
         alt={name}
+        width={100}
+        height={100}
         className='rounded-full object-cover w-full h-full'
         />
     </div>

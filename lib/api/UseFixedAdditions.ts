@@ -18,18 +18,12 @@ export default useFixedAdditions
 
 
 export function useFixedAddition(id?: string) {
-
-  if(id)
-  {
-      const {data, isLoading, isError} = useQuery<FixedAddition>({
+  const router = useRouter()
+      const {data, isLoading, isError, isLoadingError} = useQuery<FixedAddition>({
           queryKey:['dishes','fixed additions', id],
-          queryFn:()=>axiosAuth.get(`/api/StaticAddition/${id}`).then((res)=>res.data),
+          queryFn:()=> id? axiosAuth.get(`/api/StaticAddition/${id}`).then((res)=>res.data).catch((err)=>{toast.error(err.response.data); router.replace("/admin/side-dishes")}) : undefined as any
         })
-      return {data, isLoading, isError}
-  }else{
-    return undefined
-  }
-
+      return {data, isLoading, isError, isLoadingError}
 }
 
 export function PostFixedAddition() {

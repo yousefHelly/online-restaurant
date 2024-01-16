@@ -14,17 +14,12 @@ export default function useCategories() {
 }
 
 export function useCategory(catId?: string) {
-  if(catId){
-    const {data, isLoading, isError} = useQuery<Category[]>({
+  const router = useRouter()
+    const {data, isLoading, isError, isLoadingError} = useQuery<CategoryById>({
       queryKey:'categories',
-      queryFn:()=>axios.get(`/api/Category`).then((res)=>res.data)
+      queryFn:()=>catId?axios.get(`/api/Category/${catId}`).then((res)=>res.data).catch((err)=>{toast.error(err.response.data); router.replace("/admin/categories")}):undefined as any
     })
-    const queriedCategory = data?.find((cat)=>`${cat.id}`===catId)
-    return {queriedCategory, isLoading, isError}
-  }else{
-    return undefined
-  }
-
+    return {data, isLoading, isError, isLoadingError}
 }
 
 
@@ -61,7 +56,7 @@ export function DeleteCategory() {
   useAxiosAuth()
   return useMutation({
     mutationFn: ({ id }: { id: number }): any=>{
-      axiosAuth.delete(`/api/category/${id}`).then((res)=>{clientQuery.invalidateQueries(['categories']);toast.success((res as any).data.message)}).catch((err)=> toast.error((err as any).response.data as string))
+      axiosAuth.delete(`/api/category/${id}`).then((res)=>{clientQuery.invalidateQueries(['categories']);clientQuery.invalidateQueries(['chefs']);clientQuery.invalidateQueries(['dishes']);toast.success((res as any).data.message)}).catch((err)=> toast.error((err as any).response.data as string))
     },
   })
 }

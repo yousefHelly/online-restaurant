@@ -7,10 +7,13 @@ import { NextAuthProvider } from '@/lib/NextAuthProvider'
 import { LayoutChanger } from '@/lib/LayoutChanger'
 import { Toaster } from 'react-hot-toast'
 import ThemeChanger from '@/lib/ThemeChanger'
-import MProvider from './../lib/MProvider';
+import { ColorSchemeScript ,MantineProvider } from '@mantine/core';
 
 export const metadata: Metadata = {
-  title: 'جو فاست فوود | الرئيسية',
+  title: {
+    template:'جو فاست فوود | %s',
+    default:'جو فاست فوود'
+  },
   description: 'مرحبًا بك في مطعمنا الإلكتروني ، حيث نقدم لك أشهى الأطباق من جميع أنحاء العالم.  سواء كنت تبحث عن وجبة سريعة أو عشاء رومانسي أو احتفال خاص ، لدينا ما تحتاجه.  يمكنك تصفح قائمتنا المتنوعة والمتجددة ، والتي تشمل المأكولات العربية والإيطالية والهندية والصينية وغيرها الكثير.  يمكنك أيضًا الاستمتاع بخدمة التوصيل المجانية والدفع الآمن عبر الإنترنت .',
 }
 
@@ -21,7 +24,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir='rtl'>
-      <MProvider>
+      <head>
+        <ColorSchemeScript/>
+      </head>
+      <MantineProvider>
       <ThemeChanger>
       <body className='dark:bg-stone-900'>
         <NextAuthProvider>
@@ -34,7 +40,7 @@ export default function RootLayout({
         </NextAuthProvider>
       </body>
       </ThemeChanger> 
-      </MProvider> 
+      </MantineProvider> 
     </html>
   )
 }

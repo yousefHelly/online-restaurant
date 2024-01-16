@@ -20,6 +20,13 @@ const hashOnlyIdent = (context, _, exportName) =>
  * @type {import('next').NextConfig}
  */
 module.exports = {
+    experimental: {
+      serverActions:true,
+      optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
+    },
+    swcMinify: true,
+    productionBrowserSourceMaps: false, // Disable source maps in development
+    optimizeFonts: false, // Disable font optimization
     images: {
         remotePatterns: [
           {
@@ -31,6 +38,11 @@ module.exports = {
           {
             protocol:'https',
             hostname:'lh3.googleusercontent.com',
+            pathname: '/**',
+          },
+          {
+            protocol:'https',
+            hostname:'randomuser.me',
             pathname: '/**',
           },
           {

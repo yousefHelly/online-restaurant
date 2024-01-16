@@ -6,6 +6,7 @@ import LoadingErrorFetching from '../layout/LoadingErrorFetching'
 import NotFound from '../layout/NotFound'
 import { PlusSquare } from 'lucide-react'
 import Link from 'next/link';
+import AdminChef from '../(Admin)/chefs/AdminChef'
 
 type Props = {
   count?: 'all' | number,
@@ -17,18 +18,18 @@ function Chefs({count = 'all', admin}: Props) {
   
   return (
     <>
-    <LoadingErrorFetching data={data} isLoading={isLoading} isError={isError} name='شيفات'/>
+    <LoadingErrorFetching data={data} isLoading={isLoading} isAdmin={admin} isError={isError} name='شيفات'/>
     <div className={`grid grid-cols-${count==='all'?4:count} gap-5 w-full`}>
       {
         !admin&&
           count!='all'?data&&data.length>0?data.map((chef, i)=>{
             return i+1<=count&&<Chef key={chef.name} name={chef.name} category={chef.categoryName} mealsCount={chef.numOfMeals} rating={chef.rate} image={chef.chefImgUrl} rateNum={chef.numOfRate}/>
-          }):(!isLoading && !isError)&&<NotFound name='شيفات'/>:!admin&&data&&data.length>0?data.map((chef)=>{
+          }):(!isLoading && !isError && !admin)&&<NotFound name='شيفات'/>:!admin&&data&&data.length>0?data.map((chef)=>{
             return <Chef key={chef.name} name={chef.name} category={chef.categoryName} mealsCount={chef.numOfMeals} rating={chef.rate} image={chef.chefImgUrl} rateNum={chef.numOfRate}/>
           }):(!isLoading&& !isError && !admin)&&<NotFound name='شيفات'/>
       }
       {
-        (admin && !isLoading)&&<Link href={`/admin/chefs/new`} className='group h-[350px] bg-main/25 rounded-md transition duration-150 hover:bg-transparent col-span-full md:col-span-1'>
+        (admin && !isLoading)&&<Link href={`/admin/chefs/new`} className='group h-[350px] bg-main/25 rounded-2xl transition duration-150 dark:text-stone-300 dark:hover:text-main hover:bg-transparent col-span-full md:col-span-1'>
         <div className='h-full rounded-md overflow-hidden relative flex flex-col gap-3 items-center justify-center'>
             <PlusSquare size={28}/>
             <p className='text-xl font-bold font-header'>شيف جديد</p>
@@ -37,7 +38,7 @@ function Chefs({count = 'all', admin}: Props) {
       }
       {
         admin&&data&&data.length>0&&data.map((chef)=>{
-          return <Chef key={chef.name} name={chef.name} category={chef.categoryName} mealsCount={chef.numOfMeals} rating={chef.rate} image={chef.chefImgUrl} rateNum={chef.numOfRate}/>
+          return <AdminChef key={chef.name} id={chef.id} name={chef.name} category={chef.categoryName} mealsCount={chef.numOfMeals} rating={chef.rate} image={chef.chefImgUrl} rateNum={chef.numOfRate}/>
         })
       }
     </div>

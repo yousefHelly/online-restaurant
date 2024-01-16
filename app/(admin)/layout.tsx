@@ -5,7 +5,10 @@ import type { Metadata } from 'next'
 import { Toaster } from 'react-hot-toast'
 
 export const metadata: Metadata = {
-  title: 'جو فاست فوود | لوحة التحكم',
+  title: {
+    template:'جو فاست فوود | %s',
+    default:'جو فاست فوود'
+  },
 }
 
 export default function DashboardLayout({
@@ -14,12 +17,12 @@ export default function DashboardLayout({
   children: React.ReactNode,
 }) {
   return (
-    <main className='bg-stone-800 flex h-screen overflow-hidden'>
+    <main className='bg-stone-800 dark:bg-stone-900 flex h-screen overflow-hidden'>
        <DashboardAside/>
         <div className='flex-1 flex flex-col min-h-full py-3 px-2'>
           <AdminNavBar/>
-        <section className='bg-stone-800 flex h-[92%]'>
-            <div className='container w-full h-full rounded-xl bg-stone-100 m-1 p-5 overscroll-y-auto overflow-y-auto'>
+        <section className='bg-stone-800 dark:bg-stone-900 flex h-[92%]'>
+            <div className='container w-full h-full rounded-t-xl bg-stone-100 dark:bg-stone-800 m-1 p-5 overscroll-y-auto overflow-y-auto'>
             {
             children
             }

@@ -10,6 +10,7 @@ import { useSession } from 'next-auth/react';
 import useAddress from '@/lib/api/UseAddress';
 import toast from 'react-hot-toast';
 import AddressItem from '../(User)/profile/AddressItem';
+import Image from 'next/image';
 
 type Props = {
     setIsOpen: (val:boolean)=>void,
@@ -41,7 +42,7 @@ function ProfileCompletion({ setIsOpen, setSelectedAddress }: Props) {
                             <div className='group relative overflow-hidden'>
                                 <input onChange={(e)=>{e.target.files&&setImage(e.target.files);}} type="file" hidden id='profile' name='profile' accept='image/png, image/jpeg' />
                                 <label htmlFor="profile" className='z-30'>
-                                    <img src={image&&URL.createObjectURL(image[0]) ||'/static/default-user-icon.jpg'} alt={session?.user.userName} className='rounded-full h-[75px] w-[75px] object-cover'></img>
+                                    <Image src={image&&URL.createObjectURL(image[0]) ||'/static/default-user-icon.jpg'} alt={session?.user.userName} height={75} width={75} className='rounded-full h-[75px] w-[75px] object-cover'></Image>
                                     <span className='absolute h-[75px] w-[75px] rounded-full bg-main/75 backdrop-blur-md flex justify-center items-center -bottom-[100%] group-hover:bottom-0 text-slate-50 font-bold text-xs cursor-pointer'>رفع صورة</span>
                                 </label>
                             </div>
@@ -55,7 +56,7 @@ function ProfileCompletion({ setIsOpen, setSelectedAddress }: Props) {
                         {
                             addresses&&addresses.length>0?addresses.map((address, i)=>{
                                 return (
-                                <AddressItem address={address} i={i} setIsOpen={setIsOpen} setSelectedAddress={setSelectedAddress}/>
+                                <AddressItem key={i} address={address} i={i} setIsOpen={setIsOpen} setSelectedAddress={setSelectedAddress}/>
                                 )
                             }):isLoading?<span className='w-full flex flex-col items-center justify-center gap-3 dark:text-stone-400 text-lighterText'>جاري التحميل ...<Loader2 className='text-main animate-spin'/></span>:!isLoading&&!isError&&<NotFound name='عناوين'/>
                         }

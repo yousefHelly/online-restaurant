@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 import React from 'react'
 
 export const metadata: Metadata = {
-  title: 'جو فاست فوود | طبق جانبي جديد',
+  title: 'طبق جانبي جديد',
 }
 function NewSideDishPage() {
   return (

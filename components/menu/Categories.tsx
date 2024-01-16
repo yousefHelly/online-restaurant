@@ -34,17 +34,17 @@ function Categories({count = 'all', admin}: Props) {
       }
       {
         admin&&!isLoading &&
-        <Link href={`/admin/categories/new`} className='flex flex-col gap-3 justify-center items-center bg-main/20 p-5 rounded-2xl transition duration-150 hover:bg-transparent dark:text-stone-300 dark:hover:text-main hover:text-main cursor-pointer overflow-hidden shadow-md hover:shadow-none'>
+        <Link href={`/admin/categories/new`} className='flex flex-col gap-3 justify-center items-center bg-main/20 p-5 rounded-2xl transition duration-150 hover:bg-transparent dark:text-stone-300 dark:hover:text-main hover:text-main cursor-pointer overflow-hidden shadow-md hover:shadow-none min-h-[191px] min-w-[75px]'>
             <PlusSquare size={28}/>
             <p className='text-xl font-bold font-header'>تصنيف جديد</p>
         </Link>
       }
       {
-        (admin && count==='all')&&data&&data.length>0?data.map((category, i)=>{
+        (admin && count==='all')&&data&&data.length>0&&data.map((category, i)=>{
           return(
             <AdminCategory key={i} id={category.id} name={category.name}  image={category.categoryImg} amount={category.numOfMeals} chefs={category.numOfChefs}/>
           )
-        }):(!isLoading&& !isError)&&<NotFound name='تصنيفات'/>
+        })
       }
     </div>
     </>

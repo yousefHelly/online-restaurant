@@ -15,7 +15,7 @@ function AllSideDishes() {
 
     <div className='grid grid-cols-4 gap-12 py-10'>
     {
-         !isLoading&& <Link href={'/admin/side-dishes/new'} className='bg-slate-200 dark:bg-stone-900 dark:border-stone-600 rounded-md shadow-md border flex gap-3 flex-col justify-center items-center pt-2 min-h-[150px] hover:bg-main/25 transition duration-150'>
+         !isLoading&& <Link href={'/admin/side-dishes/new'} className='bg-slate-200 dark:text-stone-300 dark:hover:text-main dark:bg-main/20 dark:hover:bg-transparent rounded-2xl shadow-md border dark:border-none flex gap-3 flex-col justify-center items-center pt-2 min-h-[150px] hover:bg-main/25 transition duration-150'>
             <PlusSquare size={28}/>
             <p className='text-xl font-bold font-header'>طبق جانبي جديد</p>
           </Link>

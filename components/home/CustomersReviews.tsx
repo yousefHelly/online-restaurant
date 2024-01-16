@@ -4,13 +4,14 @@ import { useScroll, useTransform, motion, MotionValue, MotionStyle } from 'frame
 import React, { useEffect, useRef } from 'react'
 import Lenis from '@studio-freight/lenis'
 import { useViewportSize } from '@mantine/hooks';
+import Image from 'next/image'
 
 type Props = {}
 
 function Review({img, name, rateNum, rateText}:{img: string, name:string, rateNum: number, rateText: string}){
 return (
     <div className='col-span-1 flex flex-col items-center justify-center gap-3 p-2 rounded-2xl bg-slate-50/75 dark:bg-stone-900/75 backdrop-blur-2xl'>
-        <img src={img} className='w-16 h-16 object-cover rounded-full'/>
+        <Image src={img} alt={name} width={64} height={64} className='w-16 h-16 object-cover rounded-full'/>
         <strong className='text-header dark:text-stone-300 font-bold text-sm text-center'>{name}</strong>
         <RatingStars rating={rateNum}/>
         <p className='text-header dark:text-stone-300 font-bold text-sm text-center pb-2'>{rateText}</p>

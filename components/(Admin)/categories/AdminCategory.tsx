@@ -60,7 +60,7 @@ function AdminCategory({id,image, name, amount, chefs}:{id: number, image: strin
     </span>
     <AnimatePresence mode='wait'>
         {
-            isOpen&& <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} title={`هل انت متأكد من حذف تصنيف ${name}؟`} description={`لن يمكنك إعادة أي أطباق أو شيفات بداخل القسم في حالة الحذف`} action={()=>deleteCategory.mutate({id:id})}/>
+            isOpen&& <ActionModal isOpen={isOpen} setIsOpen={setIsOpen} title={`هل انت متأكد من حذف تصنيف ${name}؟`} description={`لن يمكنك إعادة أي أطباق أو شيفات ضمن التصنيف في حالة الحذف`} action={()=>deleteCategory.mutate({id:id})}/>
         }
     </AnimatePresence>
     </>

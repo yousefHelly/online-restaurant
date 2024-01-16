@@ -1,10 +1,14 @@
+import Dashboard from '@/components/(Admin)/dashboard/Dashboard'
+import PageHeaderWithoutLink from '@/components/layout/PageHeaderWithoutLink'
+import { Metadata } from 'next'
 import React from 'react'
 
-type Props = {}
-
-function DashboardPage({}: Props) {
+export const metadata: Metadata = {
+  title: 'لوحة التحكم',
+}
+function DashboardPage() {
   return (
-    <div>DashboardPage</div>
+      <Dashboard/>
   )
 }
 

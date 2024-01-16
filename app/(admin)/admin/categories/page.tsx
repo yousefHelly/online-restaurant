@@ -5,7 +5,7 @@ import React from 'react'
 
 
 export const metadata: Metadata = {
-  title: 'جو فاست فوود | كل التصنيفات',
+  title: 'كل التصنيفات',
 }
 
 function AdminCategories() {

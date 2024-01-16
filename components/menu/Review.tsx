@@ -7,6 +7,7 @@ import { PenBox, XCircleIcon } from 'lucide-react';
 import { axiosAuth } from '@/lib/api/axios';
 import useAxiosAuth from '@/lib/hooks/useAxiosAuth';
 import { useQueryClient } from 'react-query';
+import Image from 'next/image';
 type Props = {
     userName: string,
     userImg: string | null,
@@ -35,7 +36,7 @@ function Review({userName, userImg, rate, text, date, id, setUpdateReview, name}
     <div className='flex justify-between items-center'>
         <div className='flex gap-3'>
             <div className='w-[50px] h-[50px]'>
-                <img src={userImg?!userImg.match(/\\Images/)?userImg:userImg.match(/\\Images/)?`${`https://localhost:7166`}${userImg}`:'/static/default-user-icon.jpg':'/static/default-user-icon.jpg'} alt={userName} className='object-cover rounded-full w-full h-full'/>
+                <Image src={userImg?!userImg.match(/\\Images/)?userImg:userImg.match(/\\Images/)?userImg:'/static/default-user-icon.jpg':'/static/default-user-icon.jpg'} width={50} height={50} alt={userName} className='object-cover rounded-full w-full h-full'/>
             </div>
             <div className='flex flex-col'>
                 <p className='text-header dark:text-stone-300 font-bold font-header'>{userName}</p>

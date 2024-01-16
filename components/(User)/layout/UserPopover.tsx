@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Heart, Moon, Sun, UserCircle2, UserCog } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import { useTheme } from 'next-themes'
+import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
@@ -21,7 +22,7 @@ function UserPopover({text}: Props) {
     {({ open, close }) => (
         <>
         <Popover.Button className={`focus-within:outline-none flex ${text==='left'?' items-center gap-3':'flex-col justify-center items-center'}`}>
-            <img src={session?.user.provider==='google'?session.user.userImgUrl:session?.user.userImgUrl?`https://localhost:7166`+session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover ${text==='left'?'w-10 h-10 mt-1':'w-12 h-12'} border ${open?'border-main':'border-transparent'} `} />
+            <Image src={session?.user.provider==='google'?session.user.userImgUrl:session?.user.userImgUrl?session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt="الصورة الشخصية" width={400} height={400} className={`rounded-full object-cover ${text==='left'?'w-10 h-10 mt-1':'w-12 h-12'} border ${open?'border-main':'border-transparent'} `} />
             <span className='text-xs font-bold text-lighterText mt-1'>{session?.user.userName}</span> 
         </Popover.Button>
         <AnimatePresence mode='wait'>

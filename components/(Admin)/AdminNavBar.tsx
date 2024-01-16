@@ -23,12 +23,12 @@ const SearchComponent = React.memo(({ onClick }: SearchComponentProps) => (
     <span className='text-lighterText text-sm'>إبحث هنا...</span>
   </div>
 ));
-
+SearchComponent.displayName = 'SearchComponent';
 function AdminNavBar({}: Props) {
   const memoizedSearch = useMemo(() => <SearchComponent onClick={() => spotlight.open()} />, []);
 
   return (
-    <nav className=' bg-stone-800 h-[8%] flex justify-between items-center mb-2 pr-1'>
+    <nav className=' bg-stone-800 dark:bg-stone-900 h-[8%] flex justify-between items-center mb-2 pr-1'>
       {memoizedSearch}
     <div className='ml-10 mb-2'>
         <UserPopover text={'left'}/>

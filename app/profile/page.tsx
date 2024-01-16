@@ -14,6 +14,7 @@ import toast from 'react-hot-toast'
 import AddressModal from '@/components/(User)/profile/AddressModal'
 import { useQueryClient } from 'react-query';
 import AddressItem from '@/components/(User)/profile/AddressItem'
+import Image from 'next/image'
 
 type Props = {}
 
@@ -39,7 +40,7 @@ function ProfilePage({}: Props) {
   useAxiosAuth()
   const {data, isLoading, isError} = useAddress()
   async function updateImg(img:FileList | null) {
-    session?.user.provider==='credentials'&&axiosAuth.put<UpdateAuth>('https://localhost:7166/api/Auth/updateAccount',{UserImg:img?img.item(0):session?.user.userImgUrl},{headers: { "Content-Type": "multipart/form-data" }}).then(async(res)=>{await update({...session,user:res.data.user});toast.success(res.data.message)}).catch((err)=>toast.error(err.data.message))
+    !session?.user.provider&&axiosAuth.put<UpdateAuth>('https://localhost:7166/api/Auth/updateAccount',{UserImg:img?img.item(0):session?.user.userImgUrl},{headers: { "Content-Type": "multipart/form-data" }}).then(async(res)=>{await update({...session,user:res.data.user});toast.success(res.data.message)}).catch((err)=>toast.error(err.data.message))
   }
   const queryClient = useQueryClient()
   useEffect(()=>{
@@ -59,11 +60,11 @@ function ProfilePage({}: Props) {
           </div>
           <div className='flex flex-col items-center justify-center my-2'>
             {
-              session?.user.provider==='credentials'&&
+              !session?.user.provider&&
                 <div className='group relative overflow-hidden'>
                     <input onChange={(e)=>{e.target.files&&setImage(e.target.files);}} type="file" hidden id='profile' name='profile' accept='image/png, image/jpeg' />
                       <label htmlFor="profile" className='z-30'>
-                        <img src={session?.user.userImgUrl?`https://localhost:7166`+session?.user.userImgUrl:image&&URL.createObjectURL(image[0]) ||'/static/default-user-icon.jpg'} alt={session?.user.userName} className='rounded-full h-[75px] w-[75px] object-cover'></img>
+                        <Image src={session?.user.userImgUrl?session?.user.userImgUrl:image&&URL.createObjectURL(image[0]) ||'/static/default-user-icon.jpg'} alt={session?.user.userName!} width={400} height={400} className='rounded-full h-[75px] w-[75px] object-cover'></Image>
                         <span className='absolute h-[75px] w-[75px] rounded-full bg-main/75 backdrop-blur-md flex justify-center items-center -bottom-[100%] group-hover:bottom-0 text-slate-50 font-bold text-xs cursor-pointer'>رفع صورة</span>
                     </label>
                 </div>
@@ -71,7 +72,7 @@ function ProfilePage({}: Props) {
             {
               session?.user.provider==='google'&&
                 <div className='group relative overflow-hidden'>
-                        <img src={session?.user.userImgUrl?session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt={session?.user.userName} className='rounded-full h-[75px] w-[75px] object-cover'></img>
+                        <Image src={session?.user.userImgUrl?session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt={session?.user.userName} width={400} height={400} className='rounded-full h-[75px] w-[75px] object-cover'></Image>
                 </div>
             }
                 <p className='text-lighterText font-bold text-sm my-2'>{session?.user.userName}</p>
@@ -170,7 +171,7 @@ function ProfilePage({}: Props) {
             {
               data&&data.length>0?data.map((address, i)=>{
                 return (
-                  <AddressItem address={address} i={i} setIsOpen={setIsOpen} setSelectedAddress={setSelectedAddress}/>
+                  <AddressItem key={i} address={address} i={i} setIsOpen={setIsOpen} setSelectedAddress={setSelectedAddress}/>
                 )
               }):isLoading?<span className='w-full flex flex-col items-center justify-center gap-3 dark:text-stone-400 text-lighterText'>جاري التحميل ...<Loader2 className='text-main animate-spin'/></span>:!isLoading&&!isError&&<NotFound name='عناوين'/>
             }
