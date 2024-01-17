@@ -22,10 +22,9 @@ function BreadCrumb({}: Props) {
             return convert(el)
         }
     })
-    console.log(arArray);
     
   return (
-    <span key={'breadCrumb'} className='px-24 py-3 flex justify-start items-center'>
+    <span key={'breadCrumb'} className='px-12 xl:px-24 py-3 flex justify-start items-center'>
         <Link href={'/'} className='flex gap-3 items-center px-2'>
             <Home size={23} className='text-main'/>
         </Link>

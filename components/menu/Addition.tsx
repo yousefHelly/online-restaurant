@@ -1,18 +1,42 @@
 'use client'
+import { UpdateItemAddition, useCartAddition } from '@/lib/api/useCart'
 import { Listbox } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle, ChevronDown } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 type Props = {
-    choices: {id: number, name: string, price?: string}[],
+    choices: {id: number, name: string, price?: number}[],
     name: string,
-    setPrice: (q: number)=>void
+    setPrice: (q: number)=>void,
+    selectedAdditions: { id: number, val:string }[],
+    dishName: string,
+    setSelectedAdditions: (val: { id: number, val:string }[])=>void
 }
 
-function Addition({choices, name, setPrice}: Props) {
+function Addition({choices, name, dishName, setPrice, selectedAdditions, setSelectedAdditions}: Props) {
     const options = choices
     const [selectedVal, setSelectedVal] = useState(options[0])
+    const updateAddition = UpdateItemAddition()
+    const cartSavedAddition = useCartAddition(dishName, name)
+    const additionPattern = `${name}:${selectedVal.name}${selectedVal.price?'+'+selectedVal.price+'ج':''}`.trim()
+    useEffect(()=>{
+        cartSavedAddition.additionVal&&setSelectedVal(options.filter((op)=>`${op.name}${op.price?`+${op.price}ج`:''}`===cartSavedAddition.additionVal)[0] || options[0])
+    },[])
+    useEffect(()=>{
+                (cartSavedAddition.additionVal && cartSavedAddition.additionVal != (`${selectedVal.name}${selectedVal.price?`+${selectedVal.price}ج`:''}`))&&updateAddition.mutate({itemname:dishName, additionName:name,additionId: selectedVal.id, additionChoice: selectedVal.name, additionPrice: selectedVal.price})
+    },[selectedVal])
+    
+    useEffect(()=>{
+        if(selectedAdditions.filter((add)=>add.val.includes(additionPattern)).length===0){            
+            if(selectedAdditions.filter((add)=>add.val.includes(name)).length>0){
+                const addsWithoutthisAdd = selectedAdditions.filter((add)=>!add.val.includes(name))
+                setSelectedAdditions([...addsWithoutthisAdd,{id:selectedVal.id, val:additionPattern}])
+            }else{
+                setSelectedAdditions([...selectedAdditions, {id:selectedVal.id, val:additionPattern}])
+            }
+        }
+    },[selectedVal])
     return(
         <div className='flex flex-col gap-3 mx-5 my-2'>
         <h4 className='font-bold font-header'>{name}</h4>

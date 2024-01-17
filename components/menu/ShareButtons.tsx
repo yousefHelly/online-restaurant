@@ -4,7 +4,7 @@ import React from 'react'
 
 function ShareButtons({mealName}: {mealName: string}) {
   return (
-    <div className='self-start flex py-2 gap-3 items-center dark:text-stone-400'>
+    <div className='self-start flex py-2 gap-1 lg:gap-3 items-center dark:text-stone-400'>
     شارك الطبق عبر :
     <EmailShareButton
     url={`https://localhost:3000/menu/${mealName}`}

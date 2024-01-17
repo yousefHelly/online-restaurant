@@ -43,7 +43,7 @@ type MealAddition = {
     choices: {
         id: number, 
         name: string, 
-        price?: string
+        price?: number
     }[]
 }
 
@@ -63,13 +63,13 @@ type Dish = {
     chefName: string,
     categoryId: number,
     chefId: number,
-    oldPrice: number,
     isFavourite?: string,
+    oldPrice?: number,
     categoryName: string,
     rate: number,
     numOfRates: number,
     reviews: Review[],
-    mealAdditions: MealAddition[],
+    mealAdditions?: MealAddition[],
     staticMealAdditions: StaticMealAddition[]
 }
 type MealCard =  {
@@ -79,7 +79,7 @@ type MealCard =  {
     mealImgUrl: string,
     chefName: string,
     oldPrice?: number,
-    isFavourite: "false" | "true",
+    isFavourite: boolean,
     chefId: number,
     categoryid: number,
     categoryName: string,
@@ -94,7 +94,7 @@ type Dishes  = {
 
 type Wishlist = {
     wishListId: number,
-    meals: MealCard[]
+    meals?: MealCard[]
 }[]
 
 type Sort = 'PD' | 'PA' | 'SD' | 'RD'
@@ -141,3 +141,15 @@ type FixedAddition = {
     price: number,
     additionUrl: string
 }
+type Cart = {
+    id: string,
+    type:'dish' | 'side dish',
+    name: string,
+    price: number,
+    amount: number,
+    totalPrice: number
+    mealImgUrl: string,
+    chefName: number,
+    categoryName: number,
+    additions: { id: number, val:string }[]  
+}[]

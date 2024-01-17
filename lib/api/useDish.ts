@@ -1,5 +1,5 @@
 'use client'
-import { useMutation, useQuery, useQueryClient } from 'react-query'
+import { Query, QueryKey, useQuery, useQueryClient, useMutation } from 'react-query'
 import { axiosAuth } from './axios';
 import useAxiosAuth from '../hooks/useAxiosAuth';
 import toast from 'react-hot-toast';
