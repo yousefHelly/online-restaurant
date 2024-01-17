@@ -1,12 +1,15 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function Category({image, name, amount, chefs}:{image: string, name: string, amount: number, chefs: number}) {
 
     return(
         <Link href={`/menu/all-dishes?f=category&n=`+name} className='group relative flex flex-col gap-3 justify-center items-center bg-main/20 p-5 rounded-2xl transition duration-150 hover:bg-transparent dark:text-stone-300 dark:hover:text-main hover:text-main cursor-pointer overflow-hidden shadow-md hover:shadow-none'>
-            <img
-            src={`${`https://localhost:7166`}${image}`}
+            <Image
+            src={image}
             alt={name}
+            width={75}
+            height={75}
             className="w-[75px] h-[75px]"
             />
             <p className='text-xl font-bold font-header'>{name}</p>

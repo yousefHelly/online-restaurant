@@ -4,6 +4,7 @@ import { ChefHat, Heart, LucidePizza } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import  Link from 'next/link';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { AddCartItem, DeleteCartItem, UpdateAmountCart, useCartItem } from '@/lib/api/useCart';
 import { useQueryClient } from 'react-query';
 import useDish from '@/lib/api/useDish';
@@ -67,8 +68,8 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
     <motion.div initial={{opacity:0, y:15}} whileInView={{opacity:1, y:0, transition:{duration:0.15}}} viewport={{amount:0.4, once:true}} className={`group border dark:border-stone-600 bg-slate-50/40 dark:bg-stone-600/40 dark:hover:bg-main/20 transition duration-300 hover:bg-main/20 relative flex ${cardView==='grid'?'flex-col':''} gap-2 shadow-md max-h-[400px] overflow-x-hidden`}>
     <figure className={`${cardView==='grid'?'w-full h-[175px]':' w-[200px] h-full'} overflow-hidden relative`}>
         <Link href={`/menu/${name}`} >
-        <img 
-        src={`${`https://localhost:7166`}${image}`}
+        <Image 
+        src={image}
         alt={name}
         width={400}
         height={400}
@@ -101,7 +102,7 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
         <div className='flex items-center justify-between px-4 py-4'>
             <div className='relative'>
                 {
-                    oldPrice&& <p className='absolute -top-7 font-header font-bold text-md text-red-500 line-through w-24'>{oldPrice}{' '}ج</p>
+                    oldPrice!>0&&<p className='absolute -top-7 font-header font-bold text-md text-red-500 line-through w-24'>{oldPrice}{' '}ج</p>
                 }
                 <p className='font-header font-bold text-xl text-main'>{cart.quriedItem?cart.quriedItem.totalPrice: price}{' '}ج</p>
             </div>

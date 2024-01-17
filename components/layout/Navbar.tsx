@@ -1,17 +1,19 @@
 'use client'
-import { Popover, Switch } from '@headlessui/react'
-import { Search, ShoppingBag, UserCircle2, UserCog, Heart, Sun, Moon, ArrowRightCircle, Loader2Icon, Home, MenuSquare, UtensilsCrossed } from 'lucide-react'
+import { Popover } from '@headlessui/react'
+import { Search, ShoppingBag, ArrowRightCircle, Loader2Icon } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState, useRef } from 'react'
 import ItemCart from './ItemCart'
 import {motion, AnimatePresence, useScroll, useMotionValueEvent} from 'framer-motion'
-import { usePathname, useRouter } from 'next/navigation'
-import { Spotlight, SpotlightActionData, spotlight } from '@mantine/spotlight';
-import {useSession, signIn, signOut} from 'next-auth/react'
+import { usePathname } from 'next/navigation'
+import { spotlight } from '@mantine/spotlight';
+import {useSession, signIn} from 'next-auth/react'
 import Logo from './Logo'
 import { links } from '@/Data'
 import {useTheme} from 'next-themes'
 import useUpdateEmailSession from '@/lib/hooks/useUpdateEmailSession'
+import UserPopover from '../(User)/layout/UserPopover'
+import SearchDialog from './SearchDialog'
 import useDishes from '@/lib/api/useDishes'
 import NotFound from './NotFound'
 import useCart from '@/lib/api/useCart'
@@ -37,18 +39,6 @@ function Navbar({}: Props) {
     const {setTheme} = useTheme()
     darkMode?setTheme('dark'):setTheme('light')
     useUpdateEmailSession()
-    const router = useRouter()
-    const dishes = useDishes(undefined,undefined,undefined,undefined,undefined,undefined,undefined, 'SD')
-    const dishActions: SpotlightActionData[] = []
-    dishes.data?.meals.forEach((dish)=>{
-        dishActions.push({
-            id: `${dish.id}`,
-            label: dish.name,
-            description: `مقدمة من الشيف ${dish.chefName} في تصنيف ${dish.categoryName}`,
-            onClick: () => router.push(`/menu/${dish.name}`),
-            leftSection: <UtensilsCrossed size={23} className='text-main'/>,
-        })})    
-    const cart = useCart()
   return (
     <>
     <nav className={`w-full flex items-center justify-between px-12 z-40 sticky top-0 py-4 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
@@ -129,58 +119,7 @@ function Navbar({}: Props) {
             </Popover>
             {status==='authenticated'?
             <>
-                <Popover className="relative mt-2">
-            {({ open, close }) => (
-                <>
-                <Popover.Button className='focus-within:outline-none flex flex-col justify-center items-center'>
-                    <img src={session.user.provider==='google'?session.user.userImgUrl:session?.user.userImgUrl?`https://localhost:7166`+session?.user.userImgUrl:'/static/default-user-icon.jpg'} alt="الصورة الشخصية" className={`rounded-full object-cover w-12 h-12 border ${open?'border-main':'border-transparent'} `} />
-                    <span className='text-xs font-bold text-lighterText mt-1'>{session?.user.userName}</span> 
-                </Popover.Button>
-                <AnimatePresence mode='wait'>
-                    {
-                    open && <motion.div initial={{opacity:'0'}} animate={{opacity:1}} exit={{opacity:'0'}} onMouseLeave={()=>close()}>
-                                    <Popover.Panel className="absolute bg-slate-50 dark:bg-stone-800 rounded-2xl rounded-b-2xl left-1/2 -translate-x-1/2 translate-y-2">
-                                    <div className="rounded-2xl flex flex-col w-48">
-                                        <Link onClick={()=>close()} className='rounded-t-2xl px-3 py-2 border-b dark:border-stone-600 flex items-center gap-3 font-bold text-sm dark:text-stone-400 dark:hover:text-slate-50 hover:bg-main hover:text-slate-50 transition duration-150' href={'/profile'}>
-                                            <UserCircle2/>
-                                            صفحتي الشخصية
-                                            </Link>
-                                        <Link onClick={()=>close()} className='px-3 py-2 border-b dark:border-stone-600  flex items-center gap-3 font-bold text-sm dark:text-stone-400 dark:hover:text-slate-50 hover:bg-main hover:text-slate-50 transition duration-150' href={'/wishlist'}>
-                                            <Heart/>
-                                            المفضلة
-                                        </Link>
-                                        <Link onClick={()=>close()} className='px-3 py-2 border-b dark:border-stone-600  flex items-center gap-3 font-bold text-sm dark:text-stone-400 dark:hover:text-slate-50 hover:bg-main hover:text-slate-50 transition duration-150' href={'/settings'}>
-                                            <UserCog/>
-                                            الإعدادات
-                                        </Link>
-                                        <div className='flex items-center justify-center p-2 gap-2 border-b dark:border-stone-600 '>
-                                            <Moon className='text-main'/>
-                                            <Switch
-                                            checked={darkMode}
-                                            onChange={setDarkMode}
-                                            className={`${
-                                                darkMode ? 'bg-main' : 'bg-gray-200'
-                                            } relative inline-flex h-6 w-11 items-center rounded-full`}
-                                            >
-                                                <span className="sr-only">تفعيل الوضع الليلي</span>
-                                                <span
-                                                    className={`${
-                                                        darkMode ? 'translate-x-[-0.2rem]' : '-translate-x-6'
-                                                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                                                />
-                                            </Switch>
-                                            <Sun className='text-main'/>
-                                        </div>
-                                        <button onClick={()=>signOut()} className='text-main font-bold px-3 py-2 rounded-b-2xl transition duration-150 hover:bg-main hover:text-slate-50'>تسجيل الخروج</button>
-                                    </div>
-                                </Popover.Panel>
-                            </motion.div>
-                    }
-                </AnimatePresence>
-                </>
-            )
-            }
-                </Popover>
+                <UserPopover/>
                 </>
                 :status==='unauthenticated'?
                 <>
@@ -224,51 +163,7 @@ function Navbar({}: Props) {
             </motion.button>
     }
     </AnimatePresence>
-    <Spotlight
-        classNames={{root:'dark:bg-stone-800', search:'dark:text-stone-300 dark:bg-stone-800', body:'dark:bg-stone-800 ',action:'gap-3', actionSection:'flex justify-center items-center', actionLabel:'dark:text-stone-300'}}
-        actions={[
-            {
-            group:'صفحات',
-            actions:[  
-            {
-                id: 'الرئيسية',
-                label: 'الرئيسية',
-                description: 'الذهاب الي الصفحة الرئيسية',
-                onClick: () => router.push('/'),
-                leftSection: <Home size={23} className='text-main'/>,
-            },
-            {
-                id: 'قائمة الطعام',
-                label: 'قائمة الطعام',
-                description: 'الذهاب الي قائمة الطعام (المنيو)',
-                onClick: () => router.push('/menu'),
-                leftSection:<MenuSquare size={23} className='text-main'/>,
-            },
-            {
-                id: 'صفحتي الشخصية',
-                label: 'صفحتي الشخصية',
-                description: 'الذهاب الي صفحتي الشخصية',
-                onClick: () => router.push('/profile'),
-                leftSection: <UserCircle2 size={23} className='text-main'/>,
-            },
-            
-            
-            ]   
-            },
-            {
-                group:'أطباق',
-                actions:dishActions
-            }
-    ]}
-        shortcut={'mod + J'}
-        nothingFound={<NotFound name='نتائج مطابقة لكلمة البحث'/>}
-        highlightQuery
-        limit={7}
-        searchProps={{
-          leftSection: <Search />,
-          placeholder: 'إبحث',
-        }}
-      />
+    <SearchDialog/>
     </>
   )
 }

@@ -1,13 +1,12 @@
 import axios from "axios";
 
-const baseUrl = 'https://localhost:7166'
 
 export default axios.create({
-    baseURL:baseUrl,
+    baseURL:process.env.BACK_END_URL || "https://localhost:7166",
     headers:{'Content-Type':'application/json'}
 });
 
 export const axiosAuth = axios.create({
-    baseURL:baseUrl,
+    baseURL:process.env.BACK_END_URL || "https://localhost:7166",
     headers:{'Content-Type':'application/json'}
 });

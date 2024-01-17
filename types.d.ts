@@ -5,7 +5,13 @@ type Category = {
     numOfChefs: number,
     numOfMeals: number
 }
-
+type CategoryById = {
+    id: number,
+    name: string,
+    categoryUrl: string,
+    numOfChefs: number,
+    numOfMeals: number
+}
 type Chef = {
     id: number,
     name: string,
@@ -15,6 +21,12 @@ type Chef = {
     numOfRate: number,    
     categoryName: string,
     numOfMeals: number
+}
+type ChefById = {
+    id: number,
+    name: string,
+    chefImgUrl: string,
+    categoryId: number
 }
 
 type Review = {
@@ -49,8 +61,10 @@ type Dish = {
     image: string,
     description: string,
     chefName: string,
+    categoryId: number,
+    chefId: number,
+    isFavourite?: string,
     oldPrice?: number,
-    isFavourite: boolean,
     categoryName: string,
     rate: number,
     numOfRates: number,
@@ -119,6 +133,13 @@ type UpdateAuth = {
         userImgUrl: string | null
     },
     message: string
+}
+
+type FixedAddition = {
+    id: number,
+    name: string,
+    price: number,
+    additionUrl: string
 }
 type Cart = {
     id: string,

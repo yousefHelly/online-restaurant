@@ -8,17 +8,18 @@ type Props = {
     data: any,
     isLoading: boolean,
     isError: boolean,
-    name: string
+    name: string,
+    isAdmin?: boolean
 }
 
-function LoadingErrorFetching({data, isLoading, isError, name}: Props) {
+function LoadingErrorFetching({data, isLoading, isError, name, isAdmin}: Props) {
     if(!data && isLoading){
         return <div className='flex flex-col items-center w-full justify-center dark:text-stone-300 gap-3 '>جاري التحميل ...<Loader2 className='text-main animate-spin'/></div>
       }if(!data && isError){
         toast.error(`فشل تحميل البيانات ، تأكد من الاتصال بالانترنت`,{
           id:'fetchError'
         })
-        return <NotFound name={name}/>
+        return !isAdmin&&<NotFound name={name}/>
     }
 }
 

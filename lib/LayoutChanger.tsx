@@ -11,9 +11,9 @@ type Props = {
 
 export function LayoutChanger ({ children }: Props) {
     const pathname = usePathname()
-    const page = pathname.slice(pathname.lastIndexOf('/')+1)
-    const UniqueDesignPages = ['register', 'login']
-    if(UniqueDesignPages.includes(page)){
+    const page = pathname
+    const UniqueDesignPages = ['/register', '/login', '/admin/']
+    if(UniqueDesignPages.find((page)=>pathname.startsWith(page))){
         return <>
         {children}
         </>
