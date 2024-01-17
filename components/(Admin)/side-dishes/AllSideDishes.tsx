@@ -7,8 +7,8 @@ import { PlusSquare } from 'lucide-react'
 import AdminSideDish from './AdminSideDish'
 import Link from 'next/link'
 
-function AllSideDishes() {
-  const { data, isLoading, isError } = useFixedAdditions()
+function AllSideDishes({initialData}:{initialData?: FixedAddition[]}) {
+  const { data, isLoading, isError } = useFixedAdditions(initialData)
   return (
     <>
     <LoadingErrorFetching data={data} isLoading={isLoading} isError={isError} name='أطباق جانبية'/>

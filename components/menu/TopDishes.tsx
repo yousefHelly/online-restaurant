@@ -42,7 +42,7 @@ function TopDishes({filter, cardView='grid', admin=false}:{filter: Sort, cardVie
         return(
           <AdminDishCard id={dish.id} key={dish.name} name={dish.name} category={dish.categoryName} chef={dish.chefName} price={dish.price} rating={dish.rate} ratingCount={dish.numOfRate} image={dish.mealImgUrl} oldPrice={dish.oldPrice}/>
         )
-      }):(!admin&&!isLoading&&!isError)&&<NotFound name='أطباق'/>
+      }):(admin&&!isLoading&&!isError)&&<NotFound name='أطباق'/>
     }
   </div>
   </>

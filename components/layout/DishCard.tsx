@@ -30,7 +30,7 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
     const addCartItem = AddCartItem()
     const deleteCartItem = DeleteCartItem()
     const updateCartItemAmount = UpdateAmountCart()
-    const dish = useDish(name, false)
+    const dish = useDish(name)
     const clientQuery = useQueryClient()
     useEffect(()=>{
         setTimeout(()=>{
@@ -127,7 +127,7 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
 
                 {
                     cart.quriedItem&&<button className={`flex items-center border border-transparent transition duration-150 gap-3 border-main bg-slate-100 dark:bg-stone-800 text-main px-3 py-2 rounded-2xl hover:bg-slate-50 dark:hover:bg-stone-950  font-bold`}>
-                    <Quantity quantityChange={quantityChange} setQuantityChange={setQuantityChange} enableZero={true}/>
+                    <Quantity quantityChange={cart.quriedItem.amount || quantityChange} setQuantityChange={setQuantityChange} enableZero={true}/>
                     </button>
                 }
 

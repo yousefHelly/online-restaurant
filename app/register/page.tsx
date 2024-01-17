@@ -4,7 +4,7 @@ import InputSteps from '@/components/register/InputSteps'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'جو فاست فوود | إنشاء حساب جديد ',
+  title: 'إنشاء حساب جديد',
   description: 'سجل الان في جو فاست فوود لتتمتع بكل خدماتنا من طلب و توصيل و تقييم اطباقنا المميزة',
 }
 

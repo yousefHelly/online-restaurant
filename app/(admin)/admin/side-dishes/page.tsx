@@ -2,15 +2,17 @@ import React from 'react'
 import PageHeaderWithoutLink  from '@/components/layout/PageHeaderWithoutLink';
 import { Metadata } from 'next';
 import AllSideDishes from '@/components/(Admin)/side-dishes/AllSideDishes';
+import { getFixedAdditions } from '@/lib/api/server api calls/getFixedAdditions';
 
 export const metadata: Metadata = {
   title: 'كل الأطباق الجانبية',
 }
 
-function AllSideDishesPage() {
+async function AllSideDishesPage() {
+  const sideDishesData = await getFixedAdditions()
   return (
     <PageHeaderWithoutLink header='كل الأطباق الجانبية'>
-      <AllSideDishes/>
+      <AllSideDishes initialData={sideDishesData}/>
     </PageHeaderWithoutLink>
   )
 }

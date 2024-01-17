@@ -63,7 +63,7 @@ type Dish = {
     chefName: string,
     categoryId: number,
     chefId: number,
-    isFavourite?: string,
+    isFavourite?: boolean,
     oldPrice?: number,
     categoryName: string,
     rate: number,

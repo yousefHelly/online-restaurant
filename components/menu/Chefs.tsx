@@ -9,12 +9,13 @@ import Link from 'next/link';
 import AdminChef from '../(Admin)/chefs/AdminChef'
 
 type Props = {
+  initialData?:Chef[],
   count?: 'all' | number,
   admin?: boolean
 }
 
-function Chefs({count = 'all', admin}: Props) {
-  const {data, isLoading, isError} = useChefs()
+function Chefs({initialData, count = 'all', admin}: Props) {
+  const {data, isLoading, isError} = useChefs(initialData)
   
   return (
     <>

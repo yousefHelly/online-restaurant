@@ -1,13 +1,15 @@
 import React from 'react'
 import ViewActionTable from '@/components/cart/ViewActionTable'
 import CartDishes from '@/components/cart/CartDishes'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'سلة التسوق',
+}
 
 function CartPage() {
   return (
     <main className="flex flex-col items-start pb-20 px-24 overflow-x-hidden">
-      <head>
-        <title>جو فاست فوود | سلة التسوق</title>
-      </head>
       <div className='w-full grid grid-cols-4 gap-5 items-start'>
         <CartDishes/>
         <ViewActionTable link='/checkout' actionName='إتمام الطلب'/>

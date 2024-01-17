@@ -5,9 +5,10 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import useAxiosAuth from '../hooks/useAxiosAuth';
 
-export default function useCategories() {
+export default function useCategories(initialData?: Category[]) {
     const {data, isLoading, isError} = useQuery<Category[]>({
         queryKey:'categories',
+        initialData:initialData,
         queryFn:()=>axios.get(`/api/Category`).then((res)=>res.data)
       })
       return {data, isLoading, isError}

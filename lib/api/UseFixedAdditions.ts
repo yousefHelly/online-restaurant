@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import useAxiosAuth from '../hooks/useAxiosAuth';
 import toast from 'react-hot-toast';
 
-function useFixedAdditions() {
+function useFixedAdditions(initialData?: FixedAddition[]) {
 
   const {data, isLoading, isError} = useQuery<FixedAddition[]>({
         queryKey:['dishes','fixed additions'],
+        initialData:initialData,
         queryFn:()=>axiosAuth.get(`/api/StaticAddition`).then((res)=>res.data),
       })
   return {data, isLoading, isError}

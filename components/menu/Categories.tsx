@@ -9,14 +9,15 @@ import Link from 'next/link'
 import { PlusSquare } from 'lucide-react'
 
 type Props = {
+  initialData?: Category[],
   count?: 'all' | number,
   admin?: boolean
 }
 
 
 
-function Categories({count = 'all', admin}: Props) {
-  const {data, isLoading, isError} = useCategories()
+function Categories({initialData, count = 'all', admin}: Props) {
+  const {data, isLoading, isError} = useCategories(initialData)
   return (
     <>
     <LoadingErrorFetching data={data} isLoading={isLoading} isError={isError} name='تصنيفات'/>

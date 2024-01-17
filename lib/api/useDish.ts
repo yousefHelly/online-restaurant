@@ -7,13 +7,14 @@ import { DishFormType } from '@/model/Dish';
 import { useRouter } from 'next/navigation';
 import { convert } from '../ConvertArabicURL';
 
-function useDish(mealName: (string|undefined)) {
+function useDish(mealName: (string|undefined), initialData?: Dish) {
     const {data: returnData, isLoading, isError, isLoadingError} = useQuery<Dish>({
       queryKey:['dish', mealName],
+      initialData:initialData,
       queryFn:async ()=>(await axiosAuth.get(`/api/meal?name=${mealName}`)).data,
       refetchInterval:1500
     })
-const newAdditions = returnData?.mealAdditions.map((add)=>{
+const newAdditions = returnData?.mealAdditions?.map((add)=>{
   return {
     id: add.id,
     name: add.name,
@@ -51,7 +52,7 @@ export function useAdminDish(mealName: (string|undefined), initialData: Dish) {
     },
     retry:false,
   })
-  const newAdditions = returnData?.mealAdditions.map((add)=>{
+  const newAdditions = returnData?.mealAdditions?.map((add)=>{
   return {
     id: add.id,
     name: add.name,

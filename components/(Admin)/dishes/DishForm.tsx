@@ -486,7 +486,7 @@ function DishForm({name, initialData:DishData}: Props) {
                             checked={addAdditions}
                             onChange={(e)=>{
                               if(!e.target.checked){
-                                DishData?.mealAdditions.map((add)=>{
+                                DishData?.mealAdditions?.map((add)=>{
                                   if(add.id){
                                     setAddsToBeDeleted((prevAdd)=>[...prevAdd, add.id])
                                   }
