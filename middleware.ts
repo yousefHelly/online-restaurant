@@ -15,7 +15,7 @@ export default withAuth(
             //check if the user requested admin pages
             if(req.url.includes('admin')){
                 //check the role of the user
-                return /*(token as Session['user']).roles.includes('Admin')*/ true
+                return (token as Session['user']).roles.includes('Admin')
             }
             //normal signed in user requested other pages
             else{

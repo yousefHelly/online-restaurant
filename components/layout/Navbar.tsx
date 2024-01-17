@@ -22,6 +22,7 @@ type Props = {}
 function Navbar({}: Props) {
     const {data:session, status, update} = useSession()
     const pathname = usePathname()
+    const cart = useCart()
     const {scrollYProgress} = useScroll()
     const [topScreen, setTopScreen]= useState<boolean>(true)
     const [showBtn, setShowBtn]= useState<boolean>(false)
@@ -92,7 +93,7 @@ function Navbar({}: Props) {
                 <>
                 <Popover.Button className='focus-within:outline-none relative'>
                     <ShoppingBag className={`font-bold transition duration-150 cursor-pointer ${open?'text-main ':'text-lighterText hover:text-main '} `}/>
-                    {cart.data&&cart.data.length>0&&<span className={`absolute top-0 right-0 w-3 h-3 rounded-full bg-main text-[0.5rem] pr-[0.08rem] pt-[0.1rem] text-header flex items-center justify-center`}>{cart.data.length}</span>}
+                    {cart.data&&cart.data.length>0&&<span className={`absolute top-0 right-0 w-3 h-3 rounded-full bg-main text-[0.5rem] pr-[0.07rem] pt-[0.1rem] text-header flex items-center justify-center`}>{cart.data.length}</span>}
                 </Popover.Button>
                 <AnimatePresence mode='wait'>
                     {
@@ -103,7 +104,7 @@ function Navbar({}: Props) {
                                             {
                                                 cart.data&&cart.data?.length>0?cart?.data.map((cartItem)=>{
                                                     return(
-                                                        <ItemCart key={cartItem.name} close={close}  image={'https://localhost:7166'+cartItem.mealImgUrl} name={cartItem.name} totalPrice={cartItem.totalPrice} status={cartItem.additions} quantity={cartItem.amount}/>
+                                                        <ItemCart key={cartItem.name} close={close}  image={cartItem.mealImgUrl} name={cartItem.name} totalPrice={cartItem.totalPrice} status={cartItem.additions} quantity={cartItem.amount}/>
                                                     )
                                                 }):<NotFound name='أطباق'/>
                                             }

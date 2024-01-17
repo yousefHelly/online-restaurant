@@ -16,7 +16,7 @@ function CartDishes({}: Props) {
     {
       cart.data&&cart.data.length>0?cart.data.map((cartItem)=>{
         return(
-            <ItemCart key={cartItem.name} page='cart' image={'https://localhost:7166'+cartItem.mealImgUrl} name={cartItem.name} totalPrice={cartItem.totalPrice} status={cartItem.additions} quantity={cartItem.amount}/>
+            <ItemCart key={cartItem.name} page='cart' image={cartItem.mealImgUrl} name={cartItem.name} totalPrice={cartItem.totalPrice} status={cartItem.additions} quantity={cartItem.amount}/>
         )
       }):!cart.isLoading&&<NotFound name='أطباق ، أضف بعضاً منها'/>
     }

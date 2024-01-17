@@ -1,7 +1,7 @@
 'use client'
 import { Popover, Switch } from '@headlessui/react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Heart, Moon, Sun, UserCircle2, UserCog } from 'lucide-react'
+import { Heart, Moon, Sun, UserCircle2, LayoutDashboard, UserCog } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
@@ -38,6 +38,13 @@ function UserPopover({text}: Props) {
                                     <Heart/>
                                     المفضلة
                                 </Link>
+                                {
+                                    session?.user.roles.includes('Admin')&&<Link onClick={()=>close()} className='px-3 py-2 border-b dark:border-stone-600  flex items-center gap-3 font-bold text-sm dark:text-stone-400 dark:hover:text-slate-50 hover:bg-main hover:text-slate-50 transition duration-150' href={'/admin/dashboard'}>
+                                    <LayoutDashboard/>
+                                    لوحة التحكم
+                                </Link>
+                                }
+
                                 <Link onClick={()=>close()} className='px-3 py-2 border-b dark:border-stone-600  flex items-center gap-3 font-bold text-sm dark:text-stone-400 dark:hover:text-slate-50 hover:bg-main hover:text-slate-50 transition duration-150' href={'/settings'}>
                                     <UserCog/>
                                     الإعدادات

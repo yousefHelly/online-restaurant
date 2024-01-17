@@ -6,6 +6,7 @@ import { CheckCircle, ChevronDown } from 'lucide-react'
 import React, { useState, useEffect, useRef } from 'react'
 
 type Props = {
+    cart?: Cart[0],
     choices: {id: number, name: string, price?: number}[],
     name: string,
     setPrice: (q: number)=>void,
@@ -14,9 +15,11 @@ type Props = {
     setSelectedAdditions: (val: { id: number, val:string }[])=>void
 }
 
-function Addition({choices, name, dishName, setPrice, selectedAdditions, setSelectedAdditions}: Props) {
+function Addition({cart, choices, name, dishName, setPrice, selectedAdditions, setSelectedAdditions}: Props) {
     const options = choices
-    const [selectedVal, setSelectedVal] = useState(options[0])
+    const potentialCartOptionWithPrice = choices.find((ch)=>ch.price===cart?.price)
+    const potentialCartOptionWithName = choices.find((ch)=>cart?.additions.find((add)=>add.val===`${name}:${ch.name}`))
+    const [selectedVal, setSelectedVal] = useState(potentialCartOptionWithPrice || potentialCartOptionWithName || options[0])
     const updateAddition = UpdateItemAddition()
     const cartSavedAddition = useCartAddition(dishName, name)
     const additionPattern = `${name}:${selectedVal.name}${selectedVal.price?'+'+selectedVal.price+'ج':''}`.trim()

@@ -6,9 +6,10 @@ import useAxiosAuth from '../hooks/useAxiosAuth';
 import toast from 'react-hot-toast';
 import { useCategory } from './useCategories';
 
-function useChefs() {
+function useChefs(initialData?: Chef[]) {
     const {data, isLoading, isError} = useQuery<Chef[]>({
         queryKey:'chefs',
+        initialData:initialData,
         queryFn:()=>axios.get(`/api/Chef/GetAllChefs`).then((res)=>res.data)
       })
       return {data, isLoading, isError}

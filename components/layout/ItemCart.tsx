@@ -27,10 +27,12 @@ function ItemCart({image, name, status, quantity, totalPrice, page='nav', close 
   return (
     <div ref={item} className='flex items-start rounded-2xl border dark:border-stone-600 shadow-md my-2 transition duration-150 hover:bg-main/5'>
     <Link onClick={()=>close!()} href={`/menu/${name}`} className='self-stretch'>
-    <img
+    <Image
     src={image}
     alt={name}
-    className={`object-cover rounded-r-2xl h-full ${page==='cart'?'w-[150px]':'w-[75px]'} `}
+    width={150}
+    height={150}
+    className={`object-cover rounded-r-2xl h-full ${page==='cart'?'w-[150px]  h-[150px]':'w-[75px]'}`}
     />
     </Link>
     <div className='flex flex-col justify-center flex-1 m-1 p-1 '>

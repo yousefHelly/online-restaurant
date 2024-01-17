@@ -3,7 +3,7 @@ export async function getDish(name?: string): Promise<Dish|undefined> {
        try{
         const text = await (await fetch(`${process.env.BACK_END_URL}/api/meal?name=${name}`, {next:{revalidate:0}})).text()
         const data: Dish = JSON.parse(text)
-        const newAdditions = data?.mealAdditions.map((add)=>{
+        const newAdditions = data?.mealAdditions?.map((add)=>{
             return {
               id: add.id,
               name: add.name,

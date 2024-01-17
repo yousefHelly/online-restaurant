@@ -21,7 +21,7 @@ import React from 'react'
       return {
         title: `تعديل طبق ${DishData.name}`,
         description:DishData.description || `طبق ${DishData.name} المميز المقدم من الشيف ${DishData.chefName} تحت تصنيف ${DishData.categoryName}`,
-        keywords:` go fast food ، جو فاست فوود ، ${DishData.name} ، ${DishData.chefName} ، ${DishData.categoryName}`,
+        keywords:['go fast food', 'جو فاست فوود', DishData.name,  DishData.chefName, DishData.categoryName],
         authors:{name:"جو فاست فوود", url:process.env.URL},
       }
     }
