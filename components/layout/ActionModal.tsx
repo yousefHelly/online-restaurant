@@ -9,10 +9,11 @@ type Props = {
     setIsOpen: (val: boolean)=>void,
     title: string, 
     description: string,
-    action: ()=>void
+    action: ()=>void,
+    deleteAction?: boolean
 }
 
-function ActionModal({isOpen, setIsOpen, title, description, action}: Props) {
+function ActionModal({isOpen, setIsOpen, title, description, action, deleteAction = true}: Props) {
   return (
     <Dialog
     open={isOpen}
@@ -37,9 +38,11 @@ function ActionModal({isOpen, setIsOpen, title, description, action}: Props) {
         </Dialog.Description>
         <div className='flex justify-end w-full items-center gap-3 mt-4'>
             <button onClick={()=>setIsOpen(false)}  className='flex gap-1 items-center px-4 py-2 bg-zinc-500 text-slate-50 font-bold text-sm rounded-2xl transition duration-150 hover:bg-zinc-600'>الغاء</button>
-            <button onClick={()=>{action();setIsOpen(false)}} className='flex gap-1 items-center px-3 py-2 bg-red-500 text-slate-50 font-bold text-sm rounded-2xl transition duration-150 hover:bg-red-600'>
+            <button onClick={()=>{action();setIsOpen(false)}} className={`flex gap-1 items-center px-3 py-2 text-slate-50 font-bold text-sm rounded-2xl transition duration-150${deleteAction?' bg-red-500 hover:bg-red-600 ':' bg-main/90 hover:bg-main '}`}>
+                {deleteAction?<>
                 حذف
                 <XCircleIcon size={18}/>
+                </>:'تأكيد'}
             </button>
         </div>
       </Dialog.Panel>

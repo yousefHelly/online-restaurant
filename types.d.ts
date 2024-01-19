@@ -153,3 +153,25 @@ type Cart = {
     categoryName: number,
     additions: { id: number, val:string }[]  
 }[]
+type PostOrder = {
+    totalPrice: number,
+    paymentMethod: string,
+    addressId: number,
+    staticAdditionOrders: {id: number, amount: number}[],
+    mealOrders: {id: number, addition: string, amount: number}[]
+}
+type PostOrderResponse = {
+    id: string,
+    date: Date,
+    statusDate: Date,
+    status: string,
+    totalCost: number,
+    isPaid: boolean,
+    paymentMethod: string,
+    street: string,
+    city: string,
+    departmentNum: number,
+    phoneNumber: string,
+    meals: {id: number, mealName: string, addition: string, amount: number, mealImgUrl: string}[],
+    staticAdditions: {id: number, staticAdditionName: string, amount: number, staticAdditionImgUrl: string}[]
+}

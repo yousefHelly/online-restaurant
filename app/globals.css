@@ -86,3 +86,6 @@ html.lenis {
 .m-f0824112:hover{
   @apply bg-main text-slate-50
 }
+.m-4ba585b8:disabled, .m-4ba585b8[data-disabled]{
+  --_control-opacity: 0.8 !important;
+}

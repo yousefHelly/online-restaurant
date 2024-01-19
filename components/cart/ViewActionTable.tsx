@@ -15,7 +15,7 @@ function OrderItem({name, quantity, price}:{name: string, quantity: number, pric
     )
   }
 
-function ViewActionTable({link, action, actionName, disable=4}: {link?: string, actionName: string, action?: (x: boolean)=>void, disable?: number}) {
+function ViewActionTable({link, action, actionName, disable=4, order, setOrder}: {link?: string, actionName: string, order?: PostOrder, setOrder?: (order: PostOrder)=>void, action?: (x: boolean)=>void, disable?: number}) {
   const cart = useCart()
   const [subTotal, setSubTotal] = useState<number>(0)
   const [deliveryTax, setDeliveryTax] = useState<number>(25)
@@ -73,7 +73,14 @@ function ViewActionTable({link, action, actionName, disable=4}: {link?: string, 
       </div>
     </div>
     {link&&<Link href={link} className='self-center px-8 py-2 text-slate-50 dark:text-stone-900 dark:hover:text-main bg-main hover:text-main hover:bg-transparent transition duration-150 rounded-2xl'>{actionName}</Link>}
-    {action&&<button disabled={disable != 4} onClick={()=>action(true)} className='self-center px-8 py-2 text-slate-50 dark:text-stone-900 dark:hover:text-main bg-main hover:text-main hover:bg-transparent transition duration-150 rounded-2xl dark:disabled:bg-stone-800 dark:disabled:text-main disabled:bg-lighterText disabled:text-slate-50'>{actionName}</button>}
+    {action&&<button disabled={disable != 4} onClick={()=>{
+      setOrder&&setOrder({
+        ...order!,
+        totalPrice:total!
+      })
+      console.log(order)
+      action(true)
+      }} className='self-center px-8 py-2 text-slate-50 dark:text-stone-900 dark:hover:text-main bg-main hover:text-main hover:bg-transparent transition duration-150 rounded-2xl dark:disabled:bg-stone-800 dark:disabled:text-main disabled:bg-lighterText disabled:text-slate-50'>{actionName}</button>}
   </div>
   )
 }

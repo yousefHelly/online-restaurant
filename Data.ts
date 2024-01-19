@@ -57,3 +57,15 @@ export const sorting = [
     "#f1d045",
     "#f1d045"
   ];
+
+  export const paymentMethods =[
+    {
+        name:'paypal',
+    },
+    {
+        name:'credit card',
+    },
+    {
+        name:'دفع عند الإستلام'
+    }
+]
