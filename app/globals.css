@@ -86,3 +86,6 @@ html.lenis {
 .m-f0824112:hover{
   @apply bg-main text-slate-50
 }
+[data-mantine-color-scheme] .m-4e7aa4fd:hover[data-hover]{
+  @apply !bg-main/20 dark:!bg-main/20
+}

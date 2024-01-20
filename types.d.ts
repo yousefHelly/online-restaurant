@@ -99,6 +99,8 @@ type Wishlist = {
 
 type Sort = 'PD' | 'PA' | 'SD' | 'RD'
 
+type Role = 'Admin' | 'User'
+
 type Address = {
     id: number,
     street: string,
@@ -115,7 +117,7 @@ type AuthResponse = {
     email: string,
     firstName: string,
     lastName: string,
-    roles: 'User' | 'Admin'[],
+    roles: Role[],
     token: string,
     expiresOn: string,
 }
@@ -127,7 +129,7 @@ type UpdateAuth = {
         email: string,
         firstName: string,
         lastName: string,
-        roles: 'User' | 'Admin'[],
+        roles: Role[],
         token: string,
         expiresOn: string,
         userImgUrl: string | null
@@ -153,3 +155,11 @@ type Cart = {
     categoryName: number,
     additions: { id: number, val:string }[]  
 }[]
+
+
+type User = {
+    userId: string,
+    userName: string,
+    userImgUrl: string | null,
+    role: Role
+}
