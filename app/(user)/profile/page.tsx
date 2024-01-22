@@ -50,15 +50,15 @@ function ProfilePage({}: Props) {
   const [selectedAddress, setSelectedAddress] = useState<Address>()
   return (
     <>
-    <main className="flex min-h-screen flex-col items-start pb-20 px-24 overflow-x-hidden">
+      <>
         <div className='flex flex-col gap-5 w-full my-5'>
           <div className='flex justify-between items-center mb-4'>
             <h2 className='text-4xl dark:text-stone-300'>صفحتي الشخصية</h2>
-          </div>
-          <div className='flex justify-between items-center'>
+        </div>
+        <div className='flex justify-between items-center'>
             <h2 className='text-3xl dark:text-stone-300'>صورتي الشخصية</h2>
-          </div>
-          <div className='flex flex-col items-center justify-center my-2'>
+        </div>
+        <div className='flex flex-col items-center justify-center my-2'>
             {
               !session?.user.provider&&
                 <div className='group relative overflow-hidden'>
@@ -182,7 +182,7 @@ function ProfilePage({}: Props) {
             </button>
           </div>
         </div>
-    </main>
+    </>
     <AnimatePresence mode='wait'>
         {isOpen&&<AddressModal isOpen={isOpen} setIsOpen={setIsOpen} address={selectedAddress}/>
         }

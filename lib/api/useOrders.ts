@@ -5,16 +5,16 @@ import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import useAxiosAuth from '../hooks/useAxiosAuth';
 
-function useOrder() {
+function useOrders() {
     useAxiosAuth()
-    const {data, isLoading, isError} = useQuery<Wishlist>({
-          queryKey:['order', 'wishlist'],
-          queryFn:()=>axiosAuth.get(`/api/wishlist`).then((res)=>res.data)
+    const {data, isLoading, isError} = useQuery<UserOrder[]>({
+          queryKey:['orders'],
+          queryFn:()=>axiosAuth.get(`/api/Order/GetAllUserOrders`).then((res)=>res.data)
         })
     return {data, isLoading, isError}
   }
   
-  export default useOrder
+  export default useOrders
 
 
   export function PostOrder() {

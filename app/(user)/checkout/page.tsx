@@ -1,4 +1,5 @@
 import CheckoutSteps from "@/components/(User)/checkout/CheckoutSteps"
+import PageHeaderWithoutLink from "@/components/layout/PageHeaderWithoutLink"
 import { Metadata } from "next"
 
 
@@ -11,7 +12,11 @@ type Props = {}
 function CheckoutPage({}: Props) {
 
   return (
-    <CheckoutSteps/>
+    <PageHeaderWithoutLink header='تأكيد الطلبية'>
+      <div className='w-full grid grid-cols-4 gap-5 items-start'>
+        <CheckoutSteps/>
+      </div>
+    </PageHeaderWithoutLink>
   )
 }
 

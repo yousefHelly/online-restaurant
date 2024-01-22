@@ -1,11 +1,18 @@
+import PageHeaderWithoutLink from '@/components/layout/PageHeaderWithoutLink'
+import { Metadata } from 'next'
 import React from 'react'
+
+export const metadata: Metadata = {
+  title: 'الإعدادات',
+}
 
 type Props = {}
 
 function SettingsPage({}: Props) {
   return (
-    <main className="flex min-h-screen flex-col items-start pb-20 px-24 overflow-x-hidden">
-    </main>
+    <PageHeaderWithoutLink header='الإعدادات'>
+      الاعدادات
+    </PageHeaderWithoutLink>
   )
 }
 

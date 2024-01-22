@@ -34,7 +34,7 @@ function CheckoutSummaryTable({orderDetails}: Props) {
             <p>{meal.mealName}</p>
           </Table.Td>
           <Table.Td className='dark:text-stone-300'>{meal.amount}</Table.Td>
-          <Table.Td className='dark:text-stone-300'>50 ج</Table.Td>
+          <Table.Td className='dark:text-stone-300'>{meal.amount * meal.mealPrice} ج </Table.Td>
         </Table.Tr>
         })
       }
@@ -54,7 +54,7 @@ function CheckoutSummaryTable({orderDetails}: Props) {
             <p>{st.staticAdditionName}</p>
           </Table.Td>
           <Table.Td className='dark:text-stone-300'>{st.amount}</Table.Td>
-          <Table.Td className='dark:text-stone-300'>50 ج</Table.Td>
+          <Table.Td className='dark:text-stone-300'>{st.amount * st.staticAdditionPrice} ج</Table.Td>
         </Table.Tr>
         })
       }

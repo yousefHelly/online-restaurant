@@ -12,9 +12,10 @@ import AddressItem from '../profile/AddressItem'
 import AddressModal from '../profile/AddressModal'
 import NotFound from '@/components/layout/NotFound'
 import ActionModal from '@/components/layout/ActionModal'
-import useCart from '@/lib/api/useCart'
-import { PostOrder } from '@/lib/api/useOrder'
+import useCart, { DeleteCartAllItems } from '@/lib/api/useCart'
+import { PostOrder } from '@/lib/api/useOrders'
 import { paymentMethods } from '@/Data'
+import ShowAddress from '../layout/ShowAddress'
 type Props = {}  
 
 function CheckoutSteps({}: Props) {
@@ -24,6 +25,7 @@ function CheckoutSteps({}: Props) {
     let meals: PostOrder['mealOrders'] = []
     const [order, setOrder] = useState<PostOrder>({addressId:address?.id || 0 , paymentMethod:payment?.name || '', mealOrders:meals, staticAdditionOrders:staticAddition, totalPrice:0})
     const {data:cart, isLoading} = useCart()
+    const emptyCart = DeleteCartAllItems()
     const [orderResponse, setOrderResponse] = useState<PostOrderResponse>()
     useEffect(()=>{
         setOrder({
@@ -71,8 +73,7 @@ function CheckoutSteps({}: Props) {
     const {data:addresses} = useAddress()
     const postOrder = PostOrder()
   return (
-    <main className="w-full grid grid-cols-4 pb-10 px-24 overflow-x-hidden gap-5">
-
+    <>
     {!DonePayment&&<> <div className='mt-12 col-span-3 flex flex-col w-full bg-slate-100 dark:bg-stone-800 dark:border-stone-600'>
         <Accordion value={!session?.user?'loginToAccount':!address?'addressSelection':!payment?'paymentSelection':'done'} variant="contained">
             <CheckoutAccordionItem name='loginToAccount'>
@@ -113,7 +114,7 @@ function CheckoutSteps({}: Props) {
                         </CheckoutAccordionItem.HeaderBeforeSelection>
                         }  
                         {address&&<CheckoutAccordionItem.CurrentState>
-                            شقة رقم : {address?.departmentNum}، شارع : {address?.street}، مدينة :{address?.city} ، ت : {address?.phoneNumber}
+                            <ShowAddress city={address?.city} departmentNum={address?.departmentNum} phoneNumber={address?.phoneNumber} street={address?.street}/>
                         </CheckoutAccordionItem.CurrentState>}
                     </CheckoutAccordionItem.Header>
                 </Accordion.Control>
@@ -197,6 +198,7 @@ function CheckoutSteps({}: Props) {
                     onSuccess(data, variables, context) {
                         setOrderResponse((data))
                         setDonePayment(true)
+                        emptyCart.mutate()
                     }
                 ,})                
             }
@@ -205,7 +207,7 @@ function CheckoutSteps({}: Props) {
     description='لا يمكنك التعديل في الطلب بعد تأكيده لذلك تأكد من جميع التفاصيل مسبقاً، سنرسل لك رسالة تفيد بتأكيد و حالة الطلبية بمجرد التأكيد' 
     deleteAction={false}
     />
-  </main>
+  </>
   )
 }
 
