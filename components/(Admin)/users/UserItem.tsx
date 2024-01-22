@@ -80,8 +80,17 @@ function UserItem({userData:u}: Props) {
                     <X/>
                     </ActionIcon>            
                 <ActionIcon variant='subtle' color='green' className='mr-2' onClick={()=>{
-                    updateRole.mutate({userId:u.userId, role:role.value})
-                    setEditable(false);
+                    updateRole.mutate({userId:u.userId, role:role.value},{ onSuccess(data, variables, context) {
+                        if(data){
+                            setEditable(false);
+                            toast.success("تم تغيير الدور بنجاح")
+                        }else{
+                            setRole(roleOptions.find((r)=>r.value===u.role) || roleOptions[0])
+                            setEditable(false)
+                            toast.error("فشل تغيير الدور")
+
+                        }
+                    }})
                 }}>
                 <Save/>
             </ActionIcon>
