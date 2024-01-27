@@ -1,4 +1,10 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GO Fast Food
+ ## Overview
+  GO Fast Food is a culmination of my expertise in Next.js, contributing to a sleek and responsive front-end, and my collaborative efforts with a fresh back-end developer who powered the application with .NET. Together, we've created a feature-rich, user-friendly platform that revolutionizes the online dining experience.
+
+## Why?
+  Frustrated with challenging phone orders and tracking, I took matters into my own hands. Meet GO Fast Food – not just a solution for users, but a game-changer for restaurants too. By avoiding pricey third-party apps, it ensures seamless ordering and saves restaurants money!
+
 
 ## Getting Started
 
