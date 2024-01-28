@@ -60,9 +60,6 @@ export const sorting = [
 
   export const paymentMethods =[
     {
-        name:'paypal',
-    },
-    {
         name:'credit card',
     },
     {

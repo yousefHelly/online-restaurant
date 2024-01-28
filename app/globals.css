@@ -89,3 +89,9 @@ html.lenis {
 .m-4ba585b8:disabled, .m-4ba585b8[data-disabled]{
   --_control-opacity: 0.8 !important;
 }
+.m-1f921b3b[data-active]{
+  @apply dark:bg-stone-600
+}
+[data-mantine-color-scheme=light] .m-4271d21b:not(:disabled,[data-disabled]):hover, [data-mantine-color-scheme=light] .m-6939a5e9:not(:disabled,[data-disabled]):hover {
+  --_control-background-color: rgb(255 160 6 / 50%) !important;
+}

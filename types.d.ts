@@ -158,7 +158,7 @@ type PostOrder = {
     paymentMethod: string,
     addressId: number,
     staticAdditionOrders: {id: number, amount: number}[],
-    mealOrders: {id: number, addition: string, amount: number}[]
+    mealOrders: {id: number, addition: string, amount: number, name?: string}[]
 }
 type Status = "Processing" | "Ready For Shipping" | "Shipping"
 type PostOrderResponse = {

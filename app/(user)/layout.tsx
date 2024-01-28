@@ -14,7 +14,7 @@ function UserPagesLayout({
     children: React.ReactNode,
   }) {
   return (
-    <main className="flex min-h-screen flex-col items-start px-24 overflow-x-hidden">
+    <main className="flex flex-col items-start px-24 overflow-x-hidden">
         <div className='flex flex-col gap-5 w-full'>
             {
                 children

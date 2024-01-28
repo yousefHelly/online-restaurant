@@ -3,7 +3,6 @@ import ViewActionTable from '@/components/cart/ViewActionTable'
 import { RadioGroup } from '@headlessui/react'
 import { Plus, X } from 'lucide-react'
 import React, {useEffect, useState} from 'react'
-import OrderSummary from './OrderSummary'
 import {Accordion, ActionIcon, Center} from '@mantine/core'
 import CheckoutAccordionItem from './CheckoutAccordionItem'
 import { signIn, useSession } from 'next-auth/react'
@@ -16,17 +15,20 @@ import useCart, { DeleteCartAllItems } from '@/lib/api/useCart'
 import { PostOrder } from '@/lib/api/useOrders'
 import { paymentMethods } from '@/Data'
 import ShowAddress from '../layout/ShowAddress'
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
 type Props = {}  
 
 function CheckoutSteps({}: Props) {
     const [payment, setPayment] = useState<{name: string} | undefined>(undefined);
     const [address, setAddress] = useState<Address>();
-    let staticAddition: PostOrder['staticAdditionOrders'] = []
-    let meals: PostOrder['mealOrders'] = []
+    const [staticAddition, setStaticAddition] = useState<PostOrder['staticAdditionOrders']>([])
+    const [meals, setMeals] = useState<PostOrder['mealOrders']>([])
     const [order, setOrder] = useState<PostOrder>({addressId:address?.id || 0 , paymentMethod:payment?.name || '', mealOrders:meals, staticAdditionOrders:staticAddition, totalPrice:0})
     const {data:cart, isLoading} = useCart()
     const emptyCart = DeleteCartAllItems()
     const [orderResponse, setOrderResponse] = useState<PostOrderResponse>()
+    console.log('rendered!')
     useEffect(()=>{
         setOrder({
             ...order,
@@ -39,21 +41,29 @@ function CheckoutSteps({}: Props) {
             addressId:address?.id!
         })
     },[address])
-    cart?.map((cartItem)=>{
-        if(cartItem.type == 'side dish'){
-            staticAddition.push({
-                id:+cartItem.id,
-                amount:cartItem.amount}
-            )
+    useEffect(()=>{
+        let staticAddition:PostOrder['staticAdditionOrders']  = []
+        let meals: PostOrder['mealOrders'] = []
+        cart?.map((cartItem)=>{
+            if(cartItem.type == 'side dish'){
+                staticAddition.push({
+                    id:+cartItem.id,
+                    amount:cartItem.amount}
+                )
+    
+            } else if (cartItem.type == 'dish'){
+                meals.push({
+                    id:+cartItem.id,
+                    addition:cartItem.additions.map((add)=>add.val).join('\n'),
+                    amount:cartItem.amount,
+                    name:cartItem.name
+                })
+            }
+        })
+        setStaticAddition(staticAddition)
+        setMeals(meals)
+    },[cart])
 
-        } else if (cartItem.type == 'dish'){
-            meals.push({
-                id:+cartItem.id,
-                addition:cartItem.additions.map((add)=>add.val).join('\n'),
-                amount:cartItem.amount
-            })
-        }
-    })
     useEffect(()=>{
         setOrder({
             ...order,
@@ -72,10 +82,11 @@ function CheckoutSteps({}: Props) {
     const {data:session} = useSession()
     const {data:addresses} = useAddress()
     const postOrder = PostOrder()
+    const router = useRouter()
   return (
     <>
-    {!DonePayment&&<> <div className='mt-12 col-span-3 flex flex-col w-full bg-slate-100 dark:bg-stone-800 dark:border-stone-600'>
-        <Accordion value={!session?.user?'loginToAccount':!address?'addressSelection':!payment?'paymentSelection':'done'} variant="contained">
+    <div className='mt-12 col-span-3 flex flex-col w-full bg-slate-100 dark:bg-stone-800 dark:border-stone-600'>
+        <Accordion classNames={{item:'dark:border-stone-600', chevron:'dark:text-stone-400'}} value={!session?.user?'loginToAccount':!address?'addressSelection':!payment?'paymentSelection':'done'} variant="contained">
             <CheckoutAccordionItem name='loginToAccount'>
                 <Accordion.Control disabled={!!session?.user}>
                     <CheckoutAccordionItem.Header stepIsDone={!!session?.user}>
@@ -183,24 +194,25 @@ function CheckoutSteps({}: Props) {
             </CheckoutAccordionItem>
         </Accordion>
     </div>
-    <ViewActionTable action={setConfirmOrder} order={order} setOrder={setOrder} actionName='تأكيد الطلب' /> </>}
-    {
-      DonePayment && <OrderSummary orderDetails={orderResponse!} />
-    }
+    <ViewActionTable action={setConfirmOrder} order={order} setOrder={setOrder} actionName='تأكيد الطلب' />
     <AddressModal isOpen={isOpen} setIsOpen={setIsOpen}/>
     <ActionModal 
     isOpen={confirmOrder} 
     setIsOpen={setConfirmOrder} 
     action={
         async ()=>
-            {   
+            {   if(order.paymentMethod==='دفع عند الإستلام'){
                 await postOrder.mutateAsync({order:order}, {
                     onSuccess(data, variables, context) {
                         setOrderResponse((data))
                         setDonePayment(true)
                         emptyCart.mutate()
+                        router.replace(`/checkout/payment-confirmation?s=success&id=${data.id}`)
                     }
-                ,})                
+                ,})}
+                else {
+                    axios.post('/api/checkout', order).then((res)=>router.push(res.data))
+                }        
             }
     }
     title={'هل انت متأكد من تفاصيل طلبك ؟'} 
