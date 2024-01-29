@@ -138,3 +138,14 @@ export function DeleteCartItem() {
     onSuccess:()=>clientQuery.invalidateQueries(['cart'])
   })
 }
+
+export function DeleteCartAllItems() {
+  const clientQuery = useQueryClient()
+  return useMutation({
+    mutationFn: (): any=>{
+      const cart:Cart = JSON.parse(localStorage.getItem('cart')||'[]')
+      localStorage.setItem('cart', JSON.stringify([]))
+    },
+    onSuccess:()=>clientQuery.invalidateQueries(['cart'])
+  })
+}

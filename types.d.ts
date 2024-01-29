@@ -121,6 +121,7 @@ type AuthResponse = {
     token: string,
     expiresOn: string,
 }
+
 type UpdateAuth = {
     user: {
         message: string,
@@ -143,6 +144,7 @@ type FixedAddition = {
     price: number,
     additionUrl: string
 }
+
 type Cart = {
     id: string,
     type:'dish' | 'side dish',
@@ -156,6 +158,56 @@ type Cart = {
     additions: { id: number, val:string }[]  
 }[]
 
+type PostOrder = {
+    totalPrice: number,
+    paymentMethod: string,
+    addressId: number,
+    staticAdditionOrders: {id: number, amount: number}[],
+    mealOrders: {id: number, addition: string, amount: number, name?: string}[]
+}
+
+enum Status {
+    Processing = 'Processing',
+    Cooking = 'Cooking',
+    Delivering = 'Delivering',
+    Delivered = 'Delivered'
+}
+
+type PostOrderResponse = {
+    id: string,
+    date: string,
+    statusDate: string,
+    status: Status,
+    totalCost: number,
+    isPaid: boolean,
+    paymentMethod: string,
+    street: string,
+    city: string,
+    departmentNum: number,
+    phoneNumber: string,
+    meals: {id: number, mealName: string, addition: string, amount: number, mealImgUrl: string, mealPrice: number}[],
+    staticAdditions: {id: number, staticAdditionName: string, amount: number, staticAdditionImgUrl: string, staticAdditionPrice: number}[]
+}
+
+type UserOrder = {
+    id: string,
+    date: string,
+    status: Status,
+    totalCost: number,
+    isPaid: boolean,
+    paymentMethod: string,
+    street: string,
+    city: string,
+    departmentNum: number,
+    phoneNumber: string,
+    numOfMeals: number,
+    numOfStaticMealAdditions: number
+}
+
+type AllUsersOrders = UserOrder & {
+    userImg: string | null,
+    userName: string
+}
 
 type User = {
     userId: string,

@@ -37,7 +37,6 @@ function ChefForm({id, ChefData}: Props) {
       register,
       handleSubmit,
       setValue,
-      getValues,
       watch,
       reset,
       control,

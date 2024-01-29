@@ -86,6 +86,15 @@ html.lenis {
 .m-f0824112:hover{
   @apply bg-main text-slate-50
 }
+.m-4ba585b8:disabled, .m-4ba585b8[data-disabled]{
+  --_control-opacity: 0.8 !important;
+}
+.m-1f921b3b[data-active]{
+  @apply dark:bg-stone-600
+}
+[data-mantine-color-scheme=light] .m-4271d21b:not(:disabled,[data-disabled]):hover, [data-mantine-color-scheme=light] .m-6939a5e9:not(:disabled,[data-disabled]):hover {
+  --_control-background-color: rgb(255 160 6 / 50%) !important;
+}
 [data-mantine-color-scheme] .m-4e7aa4fd:hover[data-hover]{
   @apply !bg-main/20 dark:!bg-main/20
 }
