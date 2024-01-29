@@ -36,4 +36,28 @@ function useOrders() {
     })
   }
 
+  export function useAllOrders(initialData: AllUsersOrders[]) {
+    useAxiosAuth()
+    const {data, isLoading, isError} = useQuery<AllUsersOrders[]>({
+          queryKey:['all-orders'],
+          initialData:initialData,
+          queryFn:()=>axiosAuth.get(`/api/Order/GetAllOrders`).then((res)=>res.data)
+        })
+    return {data, isLoading, isError}
+  }
+
+  
+
+  export function UpdateOrderStatus() {
+    useAxiosAuth()
+    return useMutation({
+      mutationFn: async ({ id, isPaid, orderStatus }: { id: string, isPaid?: boolean, orderStatus: string })=>{
+        if(isPaid){
+          await axiosAuth.post(`/api/order/ConfirmPayment`, {orderId:id}).then((res)=>toast.error(res.data as string)).catch((err)=> toast.error((err as any).response.data as string))
+        }
+        return await axiosAuth.put(`/api/order/changeOrderStatus`, {orderId:id, status:orderStatus}).then((res)=>res.data).catch((err)=> toast.error((err as any).response.data as string))
+      },
+    })
+  }
+
   

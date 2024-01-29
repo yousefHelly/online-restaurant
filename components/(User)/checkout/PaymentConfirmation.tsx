@@ -5,12 +5,14 @@ import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import OrderSummary from './OrderSummary'
 import { useSession } from 'next-auth/react'
+import { DeleteCartAllItems } from '@/lib/api/useCart'
 
 type Props = {}
 
 export default function PaymentConfirmation({}: Props) {
     const searchParams = useSearchParams()
     const confirm = ConfirmOrder()
+    const deleteCart = DeleteCartAllItems()
     const [orderDetails, setOrderDetails] = useState<PostOrderResponse|undefined>(undefined)
     const {data:s} = useSession()
     useEffect(()=>{
@@ -18,6 +20,7 @@ export default function PaymentConfirmation({}: Props) {
             confirm.mutate({success:searchParams.get('s') === 'success', ID:searchParams.get('id') || undefined, token:s?.user.token}, {
                 onSuccess(data, variables, context) {
                     setOrderDetails(data)
+                    deleteCart.mutate()
                 },
             })
         }

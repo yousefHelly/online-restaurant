@@ -1,20 +1,51 @@
-import { BadgeCent, Beef, CakeSlice, CalendarRange, Car, MailCheck, Navigation2, PackageCheck, Wallet } from 'lucide-react'
+import { BadgeCent, Beef, CakeSlice, CalendarRange, Car, MailCheck, Microwave, Navigation2, PackageCheck, PackageCheckIcon, Wallet } from 'lucide-react'
 import ShowAddress from '../layout/ShowAddress'
 import React, { Children } from 'react'
 import Link from 'next/link'
 import DateConverter from '@/lib/DateConverter'
+import Image from 'next/image'
 
 type Props = {
     order:UserOrder,
-    index: number
+    index: number,
+} | {
+  order:AllUsersOrders,
+  index: number,
+  admin: boolean,
+  withUser: boolean
 }
-
+enum Status {
+  Processing = 'Processing',
+  Cooking = 'Cooking',
+  Delivering = 'Delivering',
+  Delivered = 'Delivered'
+}
+function IsAdminOrder(order: UserOrder | AllUsersOrders): order is AllUsersOrders{
+  return !!(order as AllUsersOrders)?.userName
+  }
 function OrderItem({order, index}: Props) {
   return (
-    <Link href={`/my-orders/track?o=${order.id}`} className="w-full grid grid-cols-3 grid-rows-2 items-center  bg-slate-100 hover:bg-main/5 dark:bg-stone-800 dark:hover:bg-main/20 p-5 rounded-2xl shadow-md hover:scale-[101%] transition duration-150">
+    <Link href={IsAdminOrder(order)?`/admin/orders/update?o=${order.id}`:`/my-orders/track?o=${order.id}`} className="w-full grid grid-cols-3 grid-rows-2 items-center  bg-slate-100 hover:bg-main/5 dark:bg-stone-800 dark:hover:bg-main/20 p-5 rounded-2xl shadow-md hover:scale-[101%] transition duration-150">
       <div className="flex flex-col gap-2 col-span-3 row-span-1">
        <div className='w-full flex justify-between items-center'>
-        <h3 className='text-main font-header font-bold text-2xl'>طلبية #{index}</h3>
+        {
+          !IsAdminOrder(order)? 
+          <h3 className='text-main font-header font-bold text-2xl'>طلبية #{index}</h3>:
+          <div className='text-main font-header font-bold text-2xl flex items-center gap-2'>
+              <div className='w-[35px] h-[35px] rounded-full border border-main'>
+                  <Image
+                  src={order.userImg || '/static/default-user-icon.jpg'}
+                  alt={order.userName}
+                  width={35}
+                  height={35}
+                  className='object-cover rounded-full'
+                  />
+              </div>
+            طلبية من {order.userName}
+          </div>
+
+        }
+        
         <h3 className='text-main font-header font-bold text-xl'>إجمالي الطلب {order.totalCost} ج </h3>
        </div>
         <div className='w-full flex gap-8 items-center'>
@@ -29,16 +60,20 @@ function OrderItem({order, index}: Props) {
        <div className='flex gap-5 items-center'>
        <OrderItem.Icon>
           {
-            order.status === 'Processing'?<>
+            order.status === Status.Processing?<>
             <CalendarRange className='text-main'/>
             تم إستلام الطلب
             </>
-            : order.status === 'Ready For Shipping'?<>
-            <PackageCheck/>
-            جاهز للتوصيل
-            </>:<>
-            <Car/>
+            : order.status === Status.Cooking?<>
+            <Microwave className='text-main'/>
+            جاري الطهي
+            </>:
+            order.status === Status.Delivering?
+            <><Car className='text-main'/>
             في طريقة إليك
+            </>:<>
+            <PackageCheck className='text-main'/>
+            تم التوصيل
             </>
           }
         </OrderItem.Icon>

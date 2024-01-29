@@ -13,15 +13,15 @@ export async function generateMetadata({searchParams}: Props): Promise<Metadata>
     const data = await getOrderStatus(searchParams?.o as string)
     if(!data){
         return {
-            title:'حالة طلبية غير موجودة'
+            title:'تعديل طلبية غير موجودة'
         }
     }
     return {
-        title:`حالة الطلبية كود ${data.id}`,
+        title:`تعديل الطلبية كود ${data.id}`,
     }
 }
 
-async function TrackOrderPage({searchParams}: Props) {
+async function UpdateOrderPage({searchParams}: Props) {
     if( !searchParams || !searchParams?.o){
         notFound()
     }
@@ -30,10 +30,10 @@ async function TrackOrderPage({searchParams}: Props) {
         notFound()
     }
   return (
-    <PageHeaderWithoutLink header='حالة طلبيتك'>
-        <TrackingOrder order={data}/>
+    <PageHeaderWithoutLink header='تعديل الطلبية'>
+        <TrackingOrder order={data} admin={true}/>
     </PageHeaderWithoutLink>
   )
 }
 
-export default TrackOrderPage
+export default UpdateOrderPage

@@ -10,7 +10,7 @@ type Props = {}
 function UserOrders({}: Props) {
     const {data:orders} = useOrders()
     return (
-    <div className='flex flex-col gap-8 items-center gap-2'>
+    <div className='flex flex-col items-center gap-2'>
             {
                 orders&&orders.length>0?orders.map((order, i )=>{
                 return (

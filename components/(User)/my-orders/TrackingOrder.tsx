@@ -4,68 +4,73 @@ import CheckoutSummaryTable from '../checkout/CheckoutSummaryTable'
 import { CheckCircleIcon, BadgeCent, Navigation2, Timer, Wallet, CalendarDays } from 'lucide-react'
 import ShowAddress from '../layout/ShowAddress'
 import DateConverter from '@/lib/DateConverter'
+import UpdateOrder from '@/components/(Admin)/orders/UpdateOrder'
 
 type Props = {
-    order: PostOrderResponse
+    order: PostOrderResponse,
+    admin?: boolean
 }
 
-function TrackingOrder({order}: Props) {
+function TrackingOrder({order, admin}: Props) {
   return (
-    <>
-    <div className='grid grid-cols-2 items-start justify-start w-full gap-5 px-12'>
-    <div className='flex items-center gap-2'>
-        <TrackingOrder.Header>
-        <Wallet/>
-        عملية الدفع
-        </TrackingOrder.Header>
+    <div className={admin?'grid grid-cols-4 grid-rows-2 ':''}>
+        <div className='col-span-3 col-start-1 col-end-4 grid grid-cols-2 items-start justify-start w-full gap-5 px-12'>
+        <div className='flex items-center gap-2'>
+            <TrackingOrder.Header>
+            <Wallet/>
+            عملية الدفع
+            </TrackingOrder.Header>
+            {
+                order.isPaid?
+                <span className='flex items-center gap-1 dark:text-stone-300'>
+                    تم الدفع
+                </span>:
+                <span className='flex items-center gap-1 font-bold dark:text-stone-300'>
+                    لم يتم الدفع بعد
+                </span>
+            }
+        </div>
+        <div className='flex items-center gap-2'>
+            <TrackingOrder.Header>
+            <BadgeCent className='pt-1 text-main'/>
+            وسيلة الدفع
+            </TrackingOrder.Header>
+                <div className='flex items-center gap-1 font-bold dark:text-stone-300'>
+                    {order.paymentMethod}
+                </div>
+        </div>
+        <div className='flex items-center gap-2'>
+            <TrackingOrder.Header>
+            <CalendarDays className='pt-1 text-main'/>
+            تاريخ الطلب
+            </TrackingOrder.Header>
+            <div className='flex items-center gap-1 font-bold dark:text-stone-300'>
+                {DateConverter(order.date)}
+            </div>
+        </div>
+        <div className='flex items-center gap-2 col-span-2'>
+            <TrackingOrder.Header>
+            <Navigation2 className='pt-1 text-main'/>
+            عنوان الطلبية
+            </TrackingOrder.Header>
+            <div className='flex items-center gap-1 font-bold dark:text-stone-300'>
+                <ShowAddress city={order.city} departmentNum={order.departmentNum} phoneNumber={order.phoneNumber} street={order.street}/>
+            </div>
+        </div>
+        </div>
+        <div className={`${admin?'col-span-3 my-8 mr-10 order-2 ':'w-full col-span-full'} grid grid-cols-3 gap-5 justify-center items-center`}>
+            <div className="col-span-2">
+                <h4 className='text-header dark:text-stone-300 font-bold text-2xl'>ملخص الطلبية</h4>
+                <div className='py-2'>
+                <CheckoutSummaryTable orderDetails={order}/>
+                </div>
+            </div>
+            {!admin&&<TraceOrder status={order?.status!} statusDate={order?.statusDate!}/>}
+        </div>
         {
-            order.isPaid?
-            <span className='flex items-center gap-1 dark:text-stone-300'>
-                تم الدفع
-            </span>:
-            <span className='flex items-center gap-1 font-bold dark:text-stone-300'>
-                لم يتم الدفع بعد
-            </span>
+            admin&&<UpdateOrder order={order}/>
         }
     </div>
-    <div className='flex items-center gap-2'>
-        <TrackingOrder.Header>
-        <BadgeCent className='pt-1 text-main'/>
-        وسيلة الدفع
-        </TrackingOrder.Header>
-            <div className='flex items-center gap-1 font-bold dark:text-stone-300'>
-                {order.paymentMethod}
-            </div>
-    </div>
-    <div className='flex items-center gap-2'>
-        <TrackingOrder.Header>
-        <CalendarDays className='pt-1 text-main'/>
-        تاريخ الطلب
-        </TrackingOrder.Header>
-        <div className='flex items-center gap-1 font-bold dark:text-stone-300'>
-            {DateConverter(order.date)}
-        </div>
-    </div>
-    <div className='flex items-center gap-2 col-span-2'>
-        <TrackingOrder.Header>
-        <Navigation2 className='pt-1 text-main'/>
-        عنوان الطلبية
-        </TrackingOrder.Header>
-        <div className='flex items-center gap-1 font-bold dark:text-stone-300'>
-            <ShowAddress city={order.city} departmentNum={order.departmentNum} phoneNumber={order.phoneNumber} street={order.street}/>
-        </div>
-    </div>
-    </div>
-    <div className='w-full col-span-full grid grid-cols-3 gap-5 justify-center items-center'>
-        <div className="col-span-2">
-            <h4 className='text-header dark:text-stone-300 font-bold text-2xl'>ملخص طلبيتك</h4>
-            <div className='py-2'>
-            <CheckoutSummaryTable orderDetails={order}/>
-            </div>
-        </div>
-        <TraceOrder status={order?.status!} statusDate={order?.statusDate!}/>
-    </div>
-    </>
   )
 }
 

@@ -31,7 +31,12 @@ function CheckoutSummaryTable({orderDetails}: Props) {
               className='object-cover w-full h-full rounded-md'
               />
             </div>
-            <p>{meal?.mealName}</p>
+            <p className='flex flex-col gap-2'>
+              {meal?.mealName}
+              {meal.addition.split('\n').map((add)=>{
+              return <span key={add} className='text-sm font-bold text-lighterText dark:text-stone-400'>{add}</span>  
+              })}
+            </p>
           </Table.Td>
           <Table.Td className='dark:text-stone-300'>{meal?.amount}</Table.Td>
           <Table.Td className='dark:text-stone-300'>{meal?.amount * meal?.mealPrice} ج </Table.Td>

@@ -82,11 +82,11 @@ const adminPages = [
         ]
     },
     {
-        label:'الطلبات',
+        label:'الطلبيات',
         icon:<ShoppingBasket/>,
         relativePages:[
             {
-                label:'كل الطلبات',
+                label:'كل الطلبيات',
                 link:'admin/orders',
             },
         ]

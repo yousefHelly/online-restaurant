@@ -160,7 +160,12 @@ type PostOrder = {
     staticAdditionOrders: {id: number, amount: number}[],
     mealOrders: {id: number, addition: string, amount: number, name?: string}[]
 }
-type Status = "Processing" | "Ready For Shipping" | "Shipping"
+enum Status {
+    Processing = 'Processing',
+    Cooking = 'Cooking',
+    Delivering = 'Delivering',
+    Delivered = 'Delivered'
+}
 type PostOrderResponse = {
     id: string,
     date: string,
@@ -189,4 +194,8 @@ type UserOrder = {
     phoneNumber: string,
     numOfMeals: number,
     numOfStaticMealAdditions: number
+}
+type AllUsersOrders = UserOrder & {
+    userImg: string | null,
+    userName: string
 }

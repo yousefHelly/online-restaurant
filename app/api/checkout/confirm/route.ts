@@ -12,7 +12,7 @@ export async function POST(req: NextRequest, res: NextResponse){
         return new Response('فشل تأكيد الطلبية ، تأكد من كود تتبع الطلبية', {status:400})
     }
     if(!body.ID && body.success){
-        const order = JSON.parse(convert(cookieStore.get('orderState')?.value!)) as unknown as PostOrder
+        const order = JSON.parse(cookieStore.get('orderState')?.value!) as unknown as PostOrder
         cookieStore.delete('orderState')        
         try {
             const resp = await axios.post<PostOrderResponse>(`${process.env.BACK_END_URL}/api/order`, order, {headers:{
