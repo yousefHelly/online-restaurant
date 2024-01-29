@@ -95,3 +95,6 @@ html.lenis {
 [data-mantine-color-scheme=light] .m-4271d21b:not(:disabled,[data-disabled]):hover, [data-mantine-color-scheme=light] .m-6939a5e9:not(:disabled,[data-disabled]):hover {
   --_control-background-color: rgb(255 160 6 / 50%) !important;
 }
+[data-mantine-color-scheme] .m-4e7aa4fd:hover[data-hover]{
+  @apply !bg-main/20 dark:!bg-main/20
+}

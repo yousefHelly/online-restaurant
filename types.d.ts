@@ -99,6 +99,8 @@ type Wishlist = {
 
 type Sort = 'PD' | 'PA' | 'SD' | 'RD'
 
+type Role = 'Admin' | 'User'
+
 type Address = {
     id: number,
     street: string,
@@ -115,10 +117,11 @@ type AuthResponse = {
     email: string,
     firstName: string,
     lastName: string,
-    roles: 'User' | 'Admin'[],
+    roles: Role[],
     token: string,
     expiresOn: string,
 }
+
 type UpdateAuth = {
     user: {
         message: string,
@@ -127,7 +130,7 @@ type UpdateAuth = {
         email: string,
         firstName: string,
         lastName: string,
-        roles: 'User' | 'Admin'[],
+        roles: Role[],
         token: string,
         expiresOn: string,
         userImgUrl: string | null
@@ -141,6 +144,7 @@ type FixedAddition = {
     price: number,
     additionUrl: string
 }
+
 type Cart = {
     id: string,
     type:'dish' | 'side dish',
@@ -153,6 +157,7 @@ type Cart = {
     categoryName: number,
     additions: { id: number, val:string }[]  
 }[]
+
 type PostOrder = {
     totalPrice: number,
     paymentMethod: string,
@@ -160,12 +165,14 @@ type PostOrder = {
     staticAdditionOrders: {id: number, amount: number}[],
     mealOrders: {id: number, addition: string, amount: number, name?: string}[]
 }
+
 enum Status {
     Processing = 'Processing',
     Cooking = 'Cooking',
     Delivering = 'Delivering',
     Delivered = 'Delivered'
 }
+
 type PostOrderResponse = {
     id: string,
     date: string,
@@ -181,6 +188,7 @@ type PostOrderResponse = {
     meals: {id: number, mealName: string, addition: string, amount: number, mealImgUrl: string, mealPrice: number}[],
     staticAdditions: {id: number, staticAdditionName: string, amount: number, staticAdditionImgUrl: string, staticAdditionPrice: number}[]
 }
+
 type UserOrder = {
     id: string,
     date: string,
@@ -195,7 +203,15 @@ type UserOrder = {
     numOfMeals: number,
     numOfStaticMealAdditions: number
 }
+
 type AllUsersOrders = UserOrder & {
     userImg: string | null,
     userName: string
+}
+
+type User = {
+    userId: string,
+    userName: string,
+    userImgUrl: string | null,
+    role: Role
 }
