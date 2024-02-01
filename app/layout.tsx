@@ -8,7 +8,22 @@ import { LayoutChanger } from '@/lib/LayoutChanger'
 import { Toaster } from 'react-hot-toast'
 import ThemeChanger from '@/lib/ThemeChanger'
 import { ColorSchemeScript ,MantineProvider } from '@mantine/core';
+import type { Viewport } from 'next'
+import { Almarai, Cairo } from 'next/font/google'
 
+const almarai = Almarai({
+  weight:['400', '700', '800'],
+  subsets: ['arabic'],
+  display: 'swap',
+  variable: '--font-almarai',
+})
+ 
+const cairo = Cairo({
+  weight:['300', '400', '500', '700'],
+  subsets: ['arabic'],
+  display: 'swap',
+  variable: '--font-cairo',
+})
 export const metadata: Metadata = {
   title: {
     template:'%s - جو فاست فوود',
@@ -18,7 +33,10 @@ export const metadata: Metadata = {
   twitter:{
     card:'summary_large_image'
   },
-  themeColor:'#ffa006',
+}
+
+export const viewport: Viewport = {
+  themeColor: '#ffa006',
 }
 
 export default function RootLayout({
@@ -33,7 +51,7 @@ export default function RootLayout({
       </head>
       <MantineProvider>
       <ThemeChanger>
-      <body className='dark:bg-stone-900'>
+      <body className={`${almarai.variable} ${cairo.variable} dark:bg-stone-900 font-cairo`}>
         <NextAuthProvider>
           <Query>
           <LayoutChanger>

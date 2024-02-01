@@ -7,9 +7,11 @@ import OurBranches from "@/components/home/OurBranches";
 import TopSellingDishes from "@/components/home/TopSellingDishes";
 import type { Metadata } from 'next'
 
+
 export const metadata: Metadata = {
-  title: 'جو فاست فوود | الرئيسية'
+  title: 'الرئيسية - جو فاست فوود'
 }
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between pt-20 px-12 xl:px-24 overflow-x-hidden dark:bg-stone-900">
