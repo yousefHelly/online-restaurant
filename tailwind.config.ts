@@ -16,7 +16,8 @@ const config: Config = {
         lighterText:'#a8a8a8'
       },
       fontFamily:{
-        header:'Almarai, sans-serif',
+        header:['var(--font-almarai)'],
+        cairo:['var(--font-cairo)'],
       },
       backgroundImage: {
         'waves':"url('/static/waves.png')",

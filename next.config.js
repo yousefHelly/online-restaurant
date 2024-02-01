@@ -3,7 +3,6 @@
  */
 module.exports = {
     experimental: {
-      serverActions:true,
       optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
     },
     swcMinify: true,
