@@ -6,9 +6,10 @@ import { Toaster } from 'react-hot-toast'
 
 export const metadata: Metadata = {
   title: {
-    template:'جو فاست فوود | %s',
+    template:'%s - جو فاست فوود',
     default:'جو فاست فوود'
   },
+  themeColor:'#ffa006',
 }
 
 export default function DashboardLayout({
