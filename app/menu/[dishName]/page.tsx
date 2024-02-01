@@ -23,6 +23,15 @@ export async function generateMetadata({params:{dishName}}: Props): Promise<Meta
         description:DishData.description || `طبق ${DishData.name} المميز المقدم من الشيف ${DishData.chefName} تحت تصنيف ${DishData.categoryName}`,
         keywords:['go fast food', 'جو فاست فوود', DishData.name,  DishData.chefName, DishData.categoryName],
         authors:{name:"جو فاست فوود", url:process.env.URL},
+        openGraph:{
+          images:[{
+             url:DishData.image,
+             alt:DishData.name,
+          }],
+        },
+        twitter:{
+          card:'summary'
+        }
       }
     }    
 }
