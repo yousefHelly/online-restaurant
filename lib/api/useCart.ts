@@ -1,3 +1,5 @@
+'use client'
+
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 
 export default function useCart() {

@@ -42,7 +42,7 @@ function Navbar({}: Props) {
     useUpdateEmailSession()
   return (
     <>
-    <nav className={`w-full flex items-center justify-between px-12 z-40 sticky top-0 py-4 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
+    <nav className={`hidden w-full  items-center justify-between px-12 z-40 sticky top-0 py-4 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
         <Logo/>
         <div className='flex gap-10 pt-3'>
             {

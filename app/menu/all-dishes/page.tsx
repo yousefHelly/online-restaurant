@@ -67,7 +67,7 @@ function AllDishesPage({}: Props) {
   const categories = useCategories();
   const chefs = useChefs();
   return (
-    <main className='flex min-h-screen flex-col items-start pb-20 px-24 overflow-hidden'>
+    <main className='flex min-h-max flex-col items-start pb-10 md:pb-20 px-8 md:px-24 overflow-hidden'>
       <div className='grid grid-cols-4 w-full border-r border-t border-l dark:border-stone-600'>
       {/* filter header */}
         <div className='col-span-4 grid grid-cols-4'>

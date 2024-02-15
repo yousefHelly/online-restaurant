@@ -1,4 +1,5 @@
 import NotFound from '@/components/layout/NotFound'
+import PageHeaderWithoutLink from '@/components/layout/PageHeaderWithoutLink'
 import Chefs from '@/components/menu/Chefs'
 import { getChefs } from '@/lib/api/server api calls/getChefs'
 import { Metadata } from 'next'
@@ -25,15 +26,12 @@ export async function generateMetadata(): Promise<Metadata> {
 async function ChefsPage() {
   const chefsData = await getChefs()
   return (
-    <main className="flex min-h-screen flex-col items-start pb-20 px-24 overflow-x-hidden">
-    <div className='flex flex-col gap-10 w-full my-5'>
-       <div className='flex justify-between items-center dark:text-stone-300'>
-       <h2 className='text-3xl'>كل الشيفات</h2>
-       </div>
+    <main className="flex min-h-max flex-col items-start pb-5 md:pb-20 px-8 md:px-24 overflow-x-hidden">
+    <PageHeaderWithoutLink header='كل الشيفات'>
        {
         chefsData? <Chefs initialData={chefsData}/>:<NotFound name='شيفات'/>
        }
-     </div>
+     </PageHeaderWithoutLink>
  </main>
   )
 }

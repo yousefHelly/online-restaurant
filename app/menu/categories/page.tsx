@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
 async function CategoriesPage() {
   const categroiesData = await getCategories()
   return (
-    <main className="flex min-h-screen flex-col items-start pb-20 px-24 overflow-x-hidden">
+    <main className="flex min-h-max flex-col items-start pb-5 md:pb-20 px-8 md:px-24 overflow-x-hidden">
         <PageHeaderWithoutLink header='كل التصنيفات'>
           {
             categroiesData?<Categories initialData={categroiesData}/>:<NotFound name='تصنيفات'/>
