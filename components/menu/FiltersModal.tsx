@@ -1,11 +1,14 @@
 'use client'
+import { Dialog } from '@headlessui/react'
 import React from 'react'
-import FilterAccordion from './FilterAccordion'
 import { motion } from 'framer-motion';
+import FilterAccordion from './FilterAccordion';
 import { QueryClient } from 'react-query';
 import * as Slider from '@radix-ui/react-slider';
 
 type Props = {
+    isOpen: boolean,
+    setIsOpen: (val: boolean)=>void,
     filterList:{categories: string[],
         chefs: string[],
         price: {
@@ -40,11 +43,18 @@ type Props = {
         isError: boolean;
     }
 }
-
-function AllDishesFilters({categories, chefs, dishes, filterList, setFilterList}: Props) {
+function FiltersModal({isOpen, setIsOpen, categories, chefs, dishes, filterList, setFilterList}: Props) {
     const queryClient = new QueryClient()
-  return (
-    <aside className='hidden lg:flex flex-col border-l dark:border-stone-600 h-screen'>
+    return (
+      <Dialog
+      open={isOpen}
+      onClose={() => setIsOpen(false)}
+      className='relative z-[999]'
+    >
+      <div className="fixed inset-0 dark:bg-stone-950/30 bg-black/30 backdrop-blur-md" aria-hidden="true" />
+      <motion.div initial={{x:-25, opacity:0}} animate={{x:0,opacity:1}} exit={{x:-25, opacity:0}} className="fixed left-0 top-0 h-screen flex w-[250px] bg-stone-100 dark:bg-stone-800 border-r dark:border-stone-60  items-center justify-center p-4">
+        <Dialog.Panel>
+        <aside className='flex flex-col items-stretch h-screen w-[250px]'>
           {/* filter content */}    
           <FilterAccordion open={true} name='التصنيفات'  setFilterArray={()=>setFilterList({...filterList, categories:[]})} selectedCount={filterList.categories.length>0?filterList.categories.length : undefined} queryClient={queryClient}>
             {
@@ -60,7 +70,7 @@ function AllDishesFilters({categories, chefs, dishes, filterList, setFilterList}
                       setFilterList({...filterList, categories:[...filterList.categories.filter((cat)=>{return cat!=category.name&&category.name})]})
                     queryClient.removeQueries(['dishes'])  
                     }
-                    } key={i} initial={{opacity:0}} animate={{opacity:1, transition:{delay:`0.${i}` } as {}}} className={`flex justify-between items-center px-6 py-2 text-sm font-bold font-header  transition duration-150 ${filterList.categories.includes(category.name)?'text-main text-[1rem]':'text-header dark:text-stone-400 dark:hover:text-main hover:text-main'} cursor-pointer`}>
+                    } key={i} initial={{opacity:0}} animate={{opacity:1, transition:{delay:`0.${i}` } as {}}} className={`flex justify-between items-center px-6 py-2 text-sm font-bold font-header transition duration-150 ${filterList.categories.includes(category.name)?'text-main text-[1rem]':'text-header dark:text-stone-400 dark:hover:text-main hover:text-main'} cursor-pointer`}>
                     <p>{category.name}</p>
                     <p>{category.numOfMeals}</p>
                   </motion.div>
@@ -118,7 +128,7 @@ function AllDishesFilters({categories, chefs, dishes, filterList, setFilterList}
                 value={filterList.price.to}
                 />
               </div>
-              <Slider.Root dir='rtl' defaultValue={[+filterList.price.from , +filterList.price.to]} onValueCommit={([val1,val2])=>{setFilterList({...filterList, price:{from:`${val1>0?val1:1}`, to:`${val2}`}});;queryClient.removeQueries(['dishes']);}} minStepsBetweenThumbs={1} min={1} max={dishes.data?.maxprice} className="my-4 relative flex items-center select-none touch-none w-[200px] h-5">
+              <Slider.Root dir='rtl' defaultValue={[+filterList.price.from , +filterList.price.to]} onValueCommit={([val1,val2])=>{setFilterList({...filterList, price:{from:`${val1>0?val1:1}`, to:`${val2}`}});;queryClient.removeQueries(['dishes']);}} minStepsBetweenThumbs={1} min={1} max={dishes.data?.maxprice} className="my-4 relative flex items-center select-none touch-none w-[185px] lg:w-[200px] h-5">
                 <Slider.Track  className="bg-main/50 relative grow rounded-full h-[5px]">
                   <Slider.Range  className="absolute bg-main rounded-full h-full"/>
                 </Slider.Track>
@@ -127,8 +137,10 @@ function AllDishesFilters({categories, chefs, dishes, filterList, setFilterList}
               </Slider.Root>
             </div>
           </FilterAccordion>
-    </aside>
-  )
-}
-
-export default AllDishesFilters
+        </aside>
+        </Dialog.Panel>
+      </motion.div>
+    </Dialog>
+    )
+  }
+export default FiltersModal

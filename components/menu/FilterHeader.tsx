@@ -2,8 +2,8 @@
 import { sorting, view } from '@/Data';
 import { Listbox } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowDownNarrowWide, CheckCircle, ChevronDown, Filter, LayoutGrid, RotateCcw, TableProperties } from 'lucide-react';
-import React from 'react'
+import { ArrowDownNarrowWide, CheckCircle, ChevronDown, Filter, LayoutGrid, LucideListFilter, Menu, RotateCcw, TableProperties } from 'lucide-react';
+import React, { useState } from 'react'
 import { QueryClient } from 'react-query';
 
 type Props = {
@@ -29,30 +29,34 @@ type Props = {
         },
         setSelectedView:(val:{
             value: number
-        })=>void
+        })=>void,
+        setFiltersModal: (val: boolean)=>void
 }
 
-function FilterHeader({cardView, setCardView, setFilterList, selectedSort, setSelectedSort, selectedView, setSelectedView}: Props) {
+function FilterHeader({cardView, setCardView, setFilterList, selectedSort, setSelectedSort, selectedView, setSelectedView, setFiltersModal}: Props) {
     const queryClient = new QueryClient()
   return (
-    <div className='col-span-4 grid grid-cols-4'>
+    <div className='col-span-full grid lg:grid-cols-4'>
     {/* name and reset */}
-    <div className='flex items-center border-l dark:border-stone-600'>
-      <div className='flex-1 flex items-center gap-3 border-l border-b dark:border-stone-600 px-6 py-4'>
+    <div className='flex items-center lg:border-l h-full dark:border-stone-600'>
+      <div className='flex-1 flex items-center gap-3 border-l h-full border-b dark:border-stone-600 px-4 lg:px-6 py-4'>
         <Filter className='text-main'/>
         <p className='text-header dark:text-stone-400 font-bold'>فلترة</p>
       </div>
-      <div onClick={()=>{setFilterList({categories:[], chefs:[], price:{from:'', to:''}, search:''});queryClient.removeQueries(['dishes']);}} className='px-4 py-4 border-b dark:border-stone-600 text-main cursor-pointer transition duration-150 hover:text-header'>
+      <div onClick={()=>{setFilterList({categories:[], chefs:[], price:{from:'', to:''}, search:''});queryClient.removeQueries(['dishes']);}} className='px-4 py-4 border-l lg:border-l-0 h-full flex items-center justify-center border-b dark:border-stone-600 text-main cursor-pointer transition duration-150 hover:text-header dark:hover:text-main/75'>
         <RotateCcw />
+      </div>
+      <div onClick={()=>{setFiltersModal(true)}} className='lg:hidden px-4 py-4 border-b dark:border-stone-600 text-main cursor-pointer transition duration-150 hover:text-header dark:hover:text-main/75'>
+        <LucideListFilter />
       </div>
     </div>
     {/* sorting */}
-    <div className='border-b border-l dark:border-stone-600 relative'>
+    <div className='border-b lg:border-l dark:border-stone-600 relative py-1 lg:py-0'>
       <Listbox value={selectedSort} onChange={setSelectedSort}>
         {
           ({open})=>(<>
-            <Listbox.Button className={'flex items-center justify-between  w-full'}>
-                <div className='flex-1 flex items-center gap-3 px-6 py-3'>
+            <Listbox.Button className={'flex items-center justify-between h-full w-full'}>
+                <div className='flex-1 flex items-center gap-3 px-4 lg:px-6 py-3'>
                 <ArrowDownNarrowWide size={21} className='text-main mt-1'/>
                   <p className='text-header dark:text-stone-400 font-bold'>ترتيب حسب :</p>
                 </div>
@@ -94,12 +98,12 @@ function FilterHeader({cardView, setCardView, setFilterList, selectedSort, setSe
       </Listbox>
     </div>
     {/* number of viewed cards */}
-    <div className='border-b border-l dark:border-stone-600 relative'>
+    <div className='border-b lg:border-l dark:border-stone-600 relative py-1 lg:py-0'>
       <Listbox value={selectedView} onChange={setSelectedView}>
         {
           ({open})=>(<>
-            <Listbox.Button className={'flex items-center justify-between  w-full'}>
-                <div className='flex-1 flex items-center gap-3 px-6 py-3'>
+            <Listbox.Button className={'flex items-center justify-between  h-full w-full'}>
+                <div className='flex-1 flex items-center gap-3 px-4 lg:px-6 py-3'>
                 <ArrowDownNarrowWide size={21} className='text-main mt-1'/>
                   <p className='text-header dark:text-stone-400 font-bold'>عرض :</p>
                 </div>
@@ -141,7 +145,7 @@ function FilterHeader({cardView, setCardView, setFilterList, selectedSort, setSe
       </Listbox>
     </div>
     {/* changing the view */}
-    <div className='flex items-center justify-center gap-10  border-b dark:border-stone-600'>
+    <div className='flex items-center justify-center gap-10  border-b dark:border-stone-600  py-5 lg:py-0'>
         <LayoutGrid onClick={()=>setCardView('grid')} size={21} className={`cursor-pointer dark:text-stone-400 transition duration-150 ${cardView==='grid'&&'text-main dark:!text-main'}`}/>
         <TableProperties onClick={()=>setCardView('row')} size={21} className={`cursor-pointer dark:text-stone-400 transition duration-150 ${cardView==='row'&&'text-main dark:!text-main'}`}/>
     </div>

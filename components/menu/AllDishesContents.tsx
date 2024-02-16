@@ -9,6 +9,8 @@ import { useQueryClient } from 'react-query';
 import FilterHeader from '@/components/menu/FilterHeader'
 import AllDishesView from '@/components/menu/AllDishesView'
 import AllDishesFilters from '@/components/menu/AllDishesFilters'
+import { AnimatePresence } from 'framer-motion'
+import FiltersModal from './FiltersModal'
 
 type Props  = {
     initialCategories?: Category[],
@@ -34,8 +36,9 @@ function AllDishesContents({initialCategories,initialChefs, initialDishes}: Prop
     const queryClient =  useQueryClient();
     const categories = useCategories(initialCategories);
     const chefs = useChefs(initialChefs);
+    const [filterModal,setFiltersModal] = useState(false)
   return (
-    <div className='grid grid-cols-4 w-full border-r border-t border-l dark:border-stone-600'>
+    <div className='grid grid-cols-4 w-full border pb-5 dark:border-stone-600'>
     {/* filter header */}
     <FilterHeader 
     selectedView={selectedView} 
@@ -45,10 +48,24 @@ function AllDishesContents({initialCategories,initialChefs, initialDishes}: Prop
     setSelectedSort={setSelectedSort}
     setCardView={setCardView} 
     setSelectedView={setSelectedView}
+    setFiltersModal={setFiltersModal}
     />
     {/* filter */}
     <AllDishesFilters categories={categories} chefs={chefs} dishes={dishes} filterList={filterList} setFilterList={setFilterList}/>
     <AllDishesView cardView={cardView} filterList={filterList} dishes={dishes}/>
+    <AnimatePresence>
+      {
+        filterModal&&<FiltersModal 
+                      isOpen={filterModal} 
+                      setIsOpen={setFiltersModal} 
+                      categories={categories} 
+                      chefs={chefs} 
+                      dishes={dishes} 
+                      filterList={filterList} 
+                      setFilterList={setFilterList}
+                      />
+      }
+    </AnimatePresence>
   </div>
   )
 }

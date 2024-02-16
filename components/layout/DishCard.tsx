@@ -66,7 +66,7 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
     const toggleWishlist = ToggleWishlist()
   return (
     <motion.div initial={{opacity:0, y:15}} whileInView={{opacity:1, y:0, transition:{duration:0.15}}} viewport={{amount:0.4, once:true}} className={`group border dark:border-stone-600 bg-slate-50/40 dark:bg-stone-600/40 dark:hover:bg-main/20 transition duration-300 hover:bg-main/20 relative flex ${cardView==='grid'?'flex-col':''} gap-2 shadow-md max-h-[400px] overflow-x-hidden`}>
-    <figure className={`${cardView==='grid'?'w-full h-[175px]':' w-[200px] h-full'} overflow-hidden relative`}>
+    <figure className={`${cardView==='grid'?'w-full h-[175px]':'w-2/6 lg:w-[200px] h-full'} overflow-hidden relative`}>
         <Link href={`/menu/${name}`} >
         <Image 
         src={image}
@@ -81,28 +81,28 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
         </span>
     </figure>
     <div className='flex-1 flex flex-col gap-2 justify-center'>
-        <Link href={`/menu/${name}`} className='font-header dark:text-stone-300 dark:hover:text-main font-bold text-xl px-4 mt-2 hover:text-main transition duration-150'>{name}</Link>
-        <div className='w-full flex justify-between items-center px-4'>
+        <Link href={`/menu/${name}`} className={`font-header dark:text-stone-300 dark:hover:text-main font-bold ${cardView==='grid'?'text-xl px-4':'text-md lg:text-xl px-1 lg:px-4'} mt-2 hover:text-main transition duration-150`}>{name}</Link>
+        <div className={`w-full flex justify-between items-center ${cardView==='grid'?'px-4':' px-1 lg:px-4'}`}>
             <div className='flex items-center gap-1 '>
                 <ChefHat size={18} className='text-main dark:fill-main dark:text-stone-800'/>
-                <Link href={`/menu/all-dishes?f=chef&n=${chef}`} className='text-lighterText  text-sm font-bold cursor-pointer hover:text-header  dark:hover:text-main transition duration-150'>{chef}</Link>
+                <Link href={`/menu/all-dishes?f=chef&n=${chef}`} className={`text-lighterText ${cardView==='grid'?'text-sm':' text-xs md:text-sm'} font-bold cursor-pointer hover:text-header  dark:hover:text-main transition duration-150`}>{chef}</Link>
             </div>
             <div className='flex items-center justify-center gap-1'>
                 <LucidePizza size={18} className='text-main dark:fill-main dark:text-stone-800'/>
-                <Link href={`/menu/all-dishes?f=category&n=${category}`} className='text-lighterText  text-sm font-bold cursor-pointer hover:text-header dark:hover:text-main  transition duration-150'>{category}</Link>
+                <Link href={`/menu/all-dishes?f=category&n=${category}`} className={`text-lighterText ${cardView==='grid'?'text-sm':' text-xs md:text-sm'} font-bold cursor-pointer hover:text-header dark:hover:text-main  transition duration-150`}>{category}</Link>
             </div>
         </div>
-        <div className='flex items-center justify-between px-4  py-4'>
-        <div className='flex items-center gap-0 text-sm dark:text-stone-400'>
+        <div className={`flex items-center justify-between  ${cardView==='grid'?'px-4 py-4':'px-1 lg:px-4 py-1 lg:py-4'} `}>
+        <div className={`flex items-center gap-0  ${cardView==='grid'?'text-sm':' text-xs md:text-sm'} dark:text-stone-400`}>
             <RatingStars rating={rating}/>
             ({ratingCount})
         </div>
         </div>
 
-        <div className='flex items-center justify-between px-4 py-4'>
+        <div className={`flex items-center justify-between ${cardView==='grid'?'px-4 py-4':'px-1 lg:px-4 py-3 lg:py-4'} `}>
             <div className='relative'>
                 {
-                    oldPrice!>0&&<p className='absolute -top-7 font-header font-bold text-md text-red-500 line-through w-24'>{oldPrice}{' '}ج</p>
+                    oldPrice!>0&&<p className={`absolute ${cardView==='grid'?'-top-7 text-md':'-top-5 lg:-top-7  text-sm md:text-md'}  font-header font-bold  text-red-500 line-through w-24`}>{oldPrice}{' '}ج</p>
                 }
                 <p className='font-header font-bold text-xl text-main'>{cart.quriedItem?cart.quriedItem.totalPrice: price}{' '}ج</p>
             </div>
@@ -119,7 +119,7 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
                             })
                         }
                     } 
-                    className={`flex items-center border border-transparent gap-3 bg-main text-slate-50 hover:text-main dark:hover:text-main px-3 py-2 rounded-2xl hover:bg-slate-50 dark:hover:bg-stone-950  transition duration-150 font-bold`}
+                    className={`flex items-center border border-transparent gap-3 bg-main text-slate-50 hover:text-main dark:hover:text-main ${cardView==='grid'?' px-3 py-2 ':'px-2 lg:px-3 py-1 lg:py-2'} rounded-2xl hover:bg-slate-50 dark:hover:bg-stone-950  transition duration-150 font-bold`}
                     >
                         اضف الي السلة
                     </button>
