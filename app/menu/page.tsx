@@ -8,9 +8,33 @@ import { Metadata } from 'next'
 import { getChefs } from '@/lib/api/server api calls/getChefs'
 import { getCategories } from '@/lib/api/server api calls/getCategories'
 import NotFound from '@/components/layout/NotFound'
+import { getDishes } from '@/lib/api/server api calls/getDishes'
 
-export const metadata: Metadata = {
-  title: 'قائمة الطعام',
+export async function generateMetadata(): Promise<Metadata> {
+  const categroiesData = await getCategories()
+  let catnames: string[] = []
+  categroiesData?.map((cat)=>{
+    catnames.push(cat.name)
+  })
+  const chefsData = await getChefs()
+  let chefsnames: string[] = []
+  chefsData?.map((chef)=>{
+    chefsnames.push(chef.name)
+  })
+  const dishesData = await getDishes()
+  let dishesnames: string[] = []
+  dishesData?.meals.map((meal)=>{
+    dishesnames.push(meal.name)
+  })
+  return {
+    title: 'قائمة الطعام',
+    description:`استمتع بالأطباق من كل التصنيفات ! لدينا العديد من الصتنيفات في جو فاست فوود منها ${catnames.join('، ')} ، كما ان لدينا العديد من الشيفات المتميزين مثل ${chefsnames.join('، ')} . هؤلاء الشيفات المميزون يقدمون العديد من الأطباق اللذيذة مثل ${dishesnames.join('، ')}`,
+    keywords:[...catnames, ...chefsnames, ...dishesnames],
+    authors:{
+      name:'جو فاست فوود',
+      url:process.env.URL
+    },
+  }
 }
 
 function FilterationTypeHeader({filter, link, children}:{filter: string,link: string, children:React.ReactNode}){
@@ -30,6 +54,7 @@ return (
 async function MenuPage() {
   const chefsData = await getChefs()
   const categroiesData = await getCategories()
+  const dishesData = await getDishes(undefined, undefined, undefined, undefined, undefined, undefined, undefined, 'RD')
   return (
     <main className="flex min-h-max flex-col items-start pb-5 md:pb-10 px-8 md:px-24 overflow-x-hidden">
         <FilterationTypeHeader filter='التصنيف' link='categories'>
@@ -45,7 +70,7 @@ async function MenuPage() {
           <ArrowLeft size={21}/>
           </Link>
           </div>
-          <TopDishes filter='RD'/>
+          <TopDishes filter='RD' initialData={dishesData}/>
         </div>
   </main>
   )

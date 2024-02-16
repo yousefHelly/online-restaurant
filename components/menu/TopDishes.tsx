@@ -10,9 +10,9 @@ import AdminDishCard from '../(Admin)/dishes/AdminDishCard'
 import Link from 'next/link'
 import { PlusSquare } from 'lucide-react'
 
-function TopDishes({filter, cardView='grid', admin=false}:{filter: Sort, cardView?:'grid' | 'row', admin?: boolean}) {
+function TopDishes({filter, cardView='grid', admin=false, initialData}:{filter: Sort, cardView?:'grid' | 'row', admin?: boolean, initialData?: Dishes}) {
   useAxiosAuth()
-    let {data, isLoading, isError} = useDishes(undefined,undefined,undefined,undefined,undefined,undefined,undefined, filter)
+    let {data, isLoading, isError} = useDishes(undefined,undefined,undefined,undefined,undefined,undefined,undefined, filter, initialData)
     if(!admin && isError && !isLoading){
       return <LoadingErrorFetching data={data} isError={isError} isLoading={isLoading} name='أطباق'/>
     }
