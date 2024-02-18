@@ -1,8 +1,8 @@
 'use client'
 import { Popover } from '@headlessui/react'
-import { Search, ShoppingBag, ArrowRightCircle, Loader2Icon } from 'lucide-react'
+import { Search, ShoppingBag, ArrowRightCircle, Loader2Icon, Sun, Moon, AlignLeft } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import ItemCart from './ItemCart'
 import {motion, AnimatePresence, useScroll, useMotionValueEvent} from 'framer-motion'
 import { usePathname } from 'next/navigation'
@@ -14,9 +14,11 @@ import {useTheme} from 'next-themes'
 import useUpdateEmailSession from '@/lib/hooks/useUpdateEmailSession'
 import UserPopover from '../(User)/layout/UserPopover'
 import SearchDialog from './SearchDialog'
-import useDishes from '@/lib/api/useDishes'
 import NotFound from './NotFound'
 import useCart from '@/lib/api/useCart'
+import ModalNavbar from './ModalNavbar'
+import ThemeIcon from './ThemeIcon';
+import SearchIcon from './SearchIcon'
 type Props = {}
 
 function Navbar({}: Props) {
@@ -38,12 +40,16 @@ function Navbar({}: Props) {
     const [hovered, setHovered] = useState(pathname)
     const [darkMode, setDarkMode] = useState<boolean>(typeof window !='undefined'&&window.localStorage.getItem('theme')==='dark'?true:false)
     const {setTheme} = useTheme()
+    const [isOpen, setIsOpen] = useState(false)
+    useEffect(()=>{
+    },[darkMode])
     darkMode?setTheme('dark'):setTheme('light')
+
     useUpdateEmailSession()
   return (
     <>
-    <nav className={`flex w-full  items-center justify-between px-12 z-40 sticky top-0 py-4 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
-        <Logo/>
+    <nav className={`hidden lg:flex w-full items-center justify-between px-12 z-40 sticky top-0 py-4 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
+        <Logo color={topScreen?'text-main transition': undefined}/>
         <div className='flex gap-10 pt-3'>
             {
                 links.map((link, i)=>{
@@ -78,14 +84,8 @@ function Navbar({}: Props) {
                     )
                 })
             }
-            <button className='flex items-center focus-within:outline-none' onClick={()=>spotlight.open()}>
-                    <Search className={`text-lighterText font-bold transition duration-150 hover:text-main cursor-pointer`}/>
-                    <span className='flex flex-row-reverse items-center text-header dark:text-stone-300 text-xs  font-bold p-1'>
-                        <span className='border dark:border-stone-600 rounded-2xl py-[0.15rem] px-1 bg-slate-100 dark:bg-stone-800 '>Ctrl</span>
-                        <span>+</span>
-                        <span className='border dark:border-stone-600 rounded-2xl py-[0.15rem] px-1 bg-slate-100 dark:bg-stone-800'>J</span>
-                    </span>
-            </button>              
+            <SearchIcon topScreen={topScreen}/>
+            <ThemeIcon darkMode={darkMode}  setDarkMode={setDarkMode} topScreen={topScreen}/> 
         </div>
         <div className={`flex items-center ${session?.user?'gap-10 ml-10 translate-y-2 ':'gap-3 pt-3'}`}>
             <Popover className="relative mt-2 z-30">
@@ -125,13 +125,26 @@ function Navbar({}: Props) {
                 :status==='unauthenticated'?
                 <>
                     <button onClick={()=>signIn()} className='text-main font-bold px-3 py-2 rounded-2xl transition duration-150 border border-transparent hover:!border-main'>تسجيل الدخول</button>
-                    <Link href={`/register`} className='text-slate-50 dark:text-stone-900 dark:hover:text-main font-bold bg-main px-3 py-2 rounded-2xl  transition duration-150 hover:bg-transparent hover:text-main'>إنشاء حساب جديد</Link>
+                    <Link href={`/register`} className={`${topScreen?'text-stone-900':'text-slate-50'} dark:text-stone-900 dark:hover:text-main font-bold bg-main px-3 py-2 rounded-2xl  transition duration-150 hover:bg-transparent hover:text-main`}>إنشاء حساب جديد</Link>
                 </>
                 :<>
                 <Loader2Icon className='animate-spin text-main'/>
                 </>
             }
         </div>
+    </nav>
+    <nav className={`sticky lg:hidden z-40 top-0 w-full flex items-center justify-between px-6 py-5 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
+        <Logo color={topScreen?'text-main transition': undefined} iconColor={`${!topScreen?'text-stone-600 dark:text-main':'text-main'}`} fontSize='text-2xl' iconSize='24'/>
+        <div className='flex items-center justify-center gap-8'>
+            <SearchIcon topScreen={topScreen}  mobile={true}/>
+            <ThemeIcon mobile={true} darkMode={darkMode} setDarkMode={setDarkMode} topScreen={topScreen}/>   
+            <AlignLeft onClick={()=>setIsOpen(true)} className={` ${!topScreen?'text-stone-600 dark:text-main':'text-main'}`}/>
+        </div>
+        <AnimatePresence mode='wait'>
+            {
+                isOpen&&<ModalNavbar isOpen={isOpen} setIsOpen={setIsOpen} />
+            }
+        </AnimatePresence>
     </nav>
     <AnimatePresence mode='wait'>
     {  

@@ -10,7 +10,7 @@ type Props = {}
 
 function Review({img, name, rateNum, rateText}:{img: string, name:string, rateNum: number, rateText: string}){
 return (
-    <div className='col-span-1 flex flex-col items-center justify-center gap-3 p-2 rounded-2xl bg-slate-50/75 dark:bg-stone-900/75 backdrop-blur-2xl'>
+    <div className='col-span-1 flex flex-col items-center justify-center gap-3 px-4 lg:p-2 rounded-2xl bg-slate-50/75 dark:bg-stone-900/75 backdrop-blur-2xl'>
         <Image src={img} alt={name} width={64} height={64} className='w-16 h-16 object-cover rounded-full'/>
         <strong className='text-header dark:text-stone-300 font-bold text-sm text-center'>{name}</strong>
         <RatingStars rating={rateNum}/>
@@ -52,7 +52,7 @@ function CustomersReviews({}: Props) {
     <div ref={ref} className='flex flex-col gap-5 w-full my-10'>
         <div className='flex flex-col gap-3 text-center py-3'>
             <h2 className='text-3xl text-header dark:text-stone-300 font-bold py-4 leading-[4rem]'>قال عنا زبائننا</h2>
-            <div className='grid grid-cols-4 gap-5 items-start justify-around bg-slate-200 dark:bg-stone-800 p-4 overflow-hidden relative max-h-[500px]'>
+            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 items-start justify-around bg-slate-200 dark:bg-stone-800 p-4 overflow-hidden relative max-h-[500px]'>
                 <Column y={y} ititialY='top-[-65%]'>
                     <Review name='احمد' img='https://randomuser.me/api/portraits/men/29.jpg' rateNum={4.5} rateText='تجربة جيدة شكرا جو فاست فوود'/>
                     <Review name='امنية' img='https://randomuser.me/api/portraits/women/72.jpg' rateNum={5} rateText='عندهم اصناف كتير جدا و متنوعة'/>

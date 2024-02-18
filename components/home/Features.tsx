@@ -4,11 +4,11 @@ type Props = {}
 
 function Header({heading , desc}:{heading:string, desc:string}){
     return(
-        <div className='flex flex-col gap-3 text-center py-10'>
+        <div className='mx-6 lg:mx-0 flex flex-col gap-3 text-center py-5 lg:py-10 bg-slate-50/75 dark:bg-stone-800/75 rounded-2xl mt-5'>
         <h2 className='text-3xl text-header dark:text-stone-300 font-bold py-4 xl:leading-[4rem]'>
             {heading}
         </h2>
-        <p className='text-sm text-lighterText leading-6'>
+        <p className='text-sm text-stone-600 leading-6'>
             {desc}</p>
     </div>
     )
