@@ -9,7 +9,7 @@ type Props = {}
 function Landing({}: Props) {
   return (
     <div  
-    className='flex flex-col-reverse xl:flex-row justify-center items-center relative z-0 after:absolute after:bg-waves after:-left-[8.2rem] after:-bottom-32 after:-z-10 after:w-[16rem] after:h-[17rem] after:rotate-180'
+    className='flex flex-col-reverse -mt-16 lg:mt-0 xl:flex-row justify-center items-center relative z-0 lg:after:absolute lg:after:bg-waves lg:after:-left-[8.2rem] lg:after:-bottom-32 lg:after:-z-10 lg:after:w-[16rem] lg:after:h-[17rem] lg:after:rotate-180'
     >
         <motion.div
         initial={{
@@ -32,14 +32,14 @@ function Landing({}: Props) {
         }}
         className='basis-1/2 flex flex-col gap-5 items-center xl:items-start'
         >
-            <motion.h1 initial={{translateX:'2%', opacity:'0'}} animate={{translateX:'0%',opacity:'1', transition:{delay:0.5, duration:0.3}}} className='text-4xl md:text-5xl text-header dark:text-stone-300 text-center xl:text-start font-bold py-4 leading-[4rem]'> أفضل الأصناف لتناسب ذوقك المميز</motion.h1>
+            <motion.h1 initial={{translateX:'2%', opacity:'0'}} animate={{translateX:'0%',opacity:'1', transition:{delay:0.5, duration:0.3}}} className='text-4xl md:text-5xl text-main text-center xl:text-start font-bold py-4 leading-[4rem]'> أفضل الأصناف لتناسب ذوقك المميز</motion.h1>
             <motion.p initial={{translateX:'2%', opacity:'0'}} animate={{translateX:'0%',opacity:'1', transition:{delay:0.8, duration:0.3}}} className='text-center md:text-start text-sm text-lighterText leading-6'>
             مرحبًا بك في مطعمنا الإلكتروني ، حيث نقدم لك أشهى الأطباق من جميع أنحاء العالم.  سواء كنت تبحث عن وجبة سريعة أو عشاء رومانسي أو احتفال خاص ، لدينا ما تحتاجه.  يمكنك تصفح قائمتنا المتنوعة والمتجددة ، والتي تشمل المأكولات العربية والإيطالية والهندية والصينية وغيرها الكثير.  يمكنك أيضًا الاستمتاع بخدمة التوصيل المجانية والدفع الآمن عبر الإنترنت .
             </motion.p>
             <motion.div  initial={{translateX:'2%', opacity:'0'}} animate={{translateX:'0%',opacity:'1', transition:{delay:1.1, duration:0.3}}}className='flex justify-center items-center gap-5'>
             <Link href={`/menu/chefs`} className='flex gap-1 items-center text-main font-bold px-3 py-2 rounded-2xl transition duration-150 border border-transparent hover:border-main '>الشيفات
             <ChefHat /></Link>
-            <Link href={'/menu/all-dishes'} className='text-slate-50 dark:text-stone-900 dark:hover:text-main font-bold bg-main px-3 py-2 rounded-2xl  transition duration-150 hover:bg-transparent hover:text-main'>تصفح أطباقنا !
+            <Link href={'/menu/all-dishes'} className='text-stone-900 dark:hover:text-main font-bold bg-main px-3 py-2 rounded-2xl  transition duration-150 hover:bg-transparent hover:text-main'>تصفح أطباقنا !
             </Link>
             </motion.div>
         </motion.div>

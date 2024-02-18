@@ -13,9 +13,6 @@ type Props = {
 }
 
 function UserPopover({text}: Props) {
-    const [darkMode, setDarkMode] = useState<boolean>(typeof window !='undefined'&&window.localStorage.getItem('theme')==='dark'?true:false)
-    const {setTheme} = useTheme()
-    darkMode?setTheme('dark'):setTheme('light')
     const {data:session} = useSession()
   return (
     <Popover className="relative mt-2">
@@ -53,24 +50,6 @@ function UserPopover({text}: Props) {
                                     <UserCog/>
                                     الإعدادات
                                 </Link>
-                                <div className='flex items-center justify-center p-2 gap-2 border-b dark:border-stone-600 '>
-                                    <Moon className='text-main'/>
-                                    <Switch
-                                    checked={darkMode}
-                                    onChange={setDarkMode}
-                                    className={`${
-                                        darkMode ? 'bg-main' : 'bg-gray-200'
-                                    } relative inline-flex h-6 w-11 items-center rounded-full`}
-                                    >
-                                        <span className="sr-only">تفعيل الوضع الليلي</span>
-                                        <span
-                                            className={`${
-                                                darkMode ? 'translate-x-[-0.2rem]' : '-translate-x-6'
-                                            } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                                        />
-                                    </Switch>
-                                    <Sun className='text-main'/>
-                                </div>
                                 <button onClick={()=>signOut()} className='text-main font-bold px-3 py-2 rounded-b-2xl transition duration-150 hover:bg-main hover:text-slate-50'>تسجيل الخروج</button>
                             </div>
                         </Popover.Panel>
