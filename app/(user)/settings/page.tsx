@@ -1,3 +1,4 @@
+import AccountSettings from '@/components/(User)/settings/AccountSettings'
 import PageHeaderWithoutLink from '@/components/layout/PageHeaderWithoutLink'
 import { Metadata } from 'next'
 import React from 'react'
@@ -11,7 +12,9 @@ type Props = {}
 function SettingsPage({}: Props) {
   return (
     <PageHeaderWithoutLink header='الإعدادات'>
-      الاعدادات
+      <div className='min-h-[26vh]'>
+        <AccountSettings/>
+      </div>
     </PageHeaderWithoutLink>
   )
 }

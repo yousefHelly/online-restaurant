@@ -1,7 +1,8 @@
-import React from 'react'
-import { motion } from 'framer-motion';
+import React, { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion';
 import { Trash2Icon } from 'lucide-react';
 import { DeleteAddress } from '@/lib/api/UseAddress';
+import ActionModal from '@/components/layout/ActionModal';
 
 type Props = {
     address: Address,
@@ -12,9 +13,11 @@ type Props = {
 
 function AddressItem({address, i, setIsOpen, setSelectedAddress}: Props) {
   const deleteAddress = DeleteAddress()
+  const [deleteModal, setDeleteModal] = useState(false)
   return (
+    <>
     <motion.div key={i} initial={{opacity:0, y:15}} animate={{opacity:1,y:0, transition:{duration:0.25}}} exit={{opacity:0, y:15}} className='flex items-center gap-3' >
-        {setIsOpen&&<Trash2Icon onClick={()=>deleteAddress.mutate({id:address.id})} className='text-red-500 cursor-pointer hover:bg-red-500 hover:text-slate-50 dark:hover:text-stone-900 transition duration-150 p-2 rounded-full w-10 h-10 flex items-center justify-center'/>}
+        {setIsOpen&&<Trash2Icon onClick={()=>setDeleteModal(true)} className='text-red-500 cursor-pointer hover:bg-red-500 hover:text-slate-50 dark:hover:text-stone-900 transition duration-150 p-2 rounded-full w-10 h-10 flex items-center justify-center'/>}
             <div onClick={()=>{setSelectedAddress(address); setIsOpen&&setIsOpen(true)}} className={`my-4 cursor-pointer hover:bg-main/20 py-2 px-3 rounded-2xl`}>
                 <div className='flex flex-col gap-3'>
                     <span className={`px-3 py-2 rounded-2xl transition duration-150 dark:text-stone-300`}>عنوان<span className='text-sm font-bold text-main'>{i+1}#</span></span>
@@ -22,6 +25,18 @@ function AddressItem({address, i, setIsOpen, setSelectedAddress}: Props) {
                 </div>
             </div>
     </motion.div>
+    <AnimatePresence mode='wait'>
+        {deleteModal&&
+        <ActionModal 
+        isOpen={deleteModal} 
+        setIsOpen={setDeleteModal} 
+        action={()=>deleteAddress.mutate({id:address.id})}
+        title={`هل انت متأكد من حذف هذا العنوان ؟`}
+        description='لن تتمكن من إعادة هذا العنوان مره اخري في حالة الحذف.'
+        />
+        }
+    </AnimatePresence>  
+    </>
   )
 }
 

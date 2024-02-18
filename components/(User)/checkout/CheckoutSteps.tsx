@@ -28,7 +28,6 @@ function CheckoutSteps({}: Props) {
     const {data:cart, isLoading} = useCart()
     const emptyCart = DeleteCartAllItems()
     const [orderResponse, setOrderResponse] = useState<PostOrderResponse>()
-    console.log('rendered!')
     useEffect(()=>{
         setOrder({
             ...order,
@@ -85,7 +84,7 @@ function CheckoutSteps({}: Props) {
     const router = useRouter()
   return (
     <>
-    <div className='mt-12 col-span-3 flex flex-col w-full bg-slate-100 dark:bg-stone-800 dark:border-stone-600'>
+    <div className='lg:mt-12 col-span-full lg:col-span-3 flex flex-col w-full bg-slate-100 dark:bg-stone-800 dark:border-stone-600'>
         <Accordion classNames={{item:'dark:border-stone-600', chevron:'dark:text-stone-400'}} value={!session?.user?'loginToAccount':!address?'addressSelection':!payment?'paymentSelection':'done'} variant="contained">
             <CheckoutAccordionItem name='loginToAccount'>
                 <Accordion.Control disabled={!!session?.user}>
@@ -135,7 +134,7 @@ function CheckoutSteps({}: Props) {
                 </Center>
                 <Accordion.Panel>
                     <CheckoutAccordionItem.PanelSkeleton action={'اختار عنوان توصيل :'}>
-                        <div className='w-full grid grid-cols-2 items-center'>
+                        <div className='w-full grid lg:grid-cols-2 items-center'>
                             {
                             addresses&&addresses.length>0?addresses?.map((add, i)=>{
                                 return (
@@ -194,7 +193,7 @@ function CheckoutSteps({}: Props) {
             </CheckoutAccordionItem>
         </Accordion>
     </div>
-    <ViewActionTable action={setConfirmOrder} order={order} setOrder={setOrder} actionName='تأكيد الطلب' />
+    <ViewActionTable disable={!session?.user || !payment || !address} action={setConfirmOrder} order={order} setOrder={setOrder} actionName='تأكيد الطلب' />
     <AddressModal isOpen={isOpen} setIsOpen={setIsOpen}/>
     <ActionModal 
     isOpen={confirmOrder} 

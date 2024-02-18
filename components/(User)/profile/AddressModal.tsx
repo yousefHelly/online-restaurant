@@ -4,17 +4,11 @@ import { motion } from 'framer-motion';
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { PenBox, PlusCircle, XOctagon } from 'lucide-react'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
-import { z } from 'zod';
 import { PostAddress, UpdateAddress } from '@/lib/api/UseAddress';
+import { AddressInput, AddressSchema } from '@/model/Address';
 
 export default function AddressModal({isOpen, setIsOpen, address}:{isOpen: boolean, setIsOpen:(state: boolean)=>void,address?: Partial<Address>}){
-    const AddressSchema = z.object({
-        street: z.string({ required_error:'ادخل اسم الشارع'}),
-        city: z.string({ required_error:'ادخل اسم المدينة او المحافظة'}),
-        departmentNum: z.number({required_error:'ادخل رقم المبني', invalid_type_error:'ادخل رقم صحيح'}),
-        phoneNumber: z.string({ required_error:'ادخل رقم الهاتف'}).min(11, 'رقم الهاتف يجب ان يكون 11 رقم').max(11, 'رقم الهاتف يجب ان يكون 11 رقم')
-      })
-      type AddressInput = z.infer<typeof AddressSchema>
+
       const postAddress = PostAddress()
       const updateAddress = UpdateAddress()
     return(

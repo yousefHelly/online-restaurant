@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function NotFoundPage(){
     return (
         <div className='flex flex-col w-full col-span-full items-center justify-center gap-5 pt-8 pb-8'>
-        <h3 className='text-6xl font-bold font-header text-transparent bg-clip-text bg-gradient-to-l min-h-[70px] from-[#FDC830] to-[#F37335] dark:to-main drop-shadow-md '>
+        <h3 className='text-5xl md:text-6xl font-bold font-header text-transparent bg-clip-text bg-gradient-to-l min-h-[70px] from-[#FDC830] to-[#F37335] dark:to-main drop-shadow-md '>
         صفحة غير موجودة!
         </h3>
         <Image

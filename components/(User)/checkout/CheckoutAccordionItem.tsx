@@ -41,8 +41,8 @@ CheckoutAccordionItem.CurrentState = function CurrentState({children}:{children:
 }
 
 CheckoutAccordionItem.PanelSkeleton = function PanelSkeleton({action, children}:{action: string, children:React.ReactNode}){
-    return <div className='w-full flex flex-col justify-start items-start gap-3 px-8 dark:text-stone-300 dark:bg-stone-600'>
-        <p className='text-md font-bold font-header'>{action}</p>
+    return <div className='w-full flex flex-col justify-start items-start gap-3 px-6 md:px-8 dark:text-stone-300 dark:bg-stone-600'>
+        <p className='md:text-md font-bold font-header'>{action}</p>
         {
             children
         }

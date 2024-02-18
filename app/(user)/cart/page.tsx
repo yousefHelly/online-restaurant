@@ -14,7 +14,7 @@ function CartPage() {
         <div className='w-full grid grid-cols-4 gap-5 items-start'>
           <CartDishes/> 
           <ViewActionTable link='/checkout' actionName='إتمام الطلب'/>
-          <div className='col-span-3 flex flex-col border-t dark:border-stone-600'>
+          <div className='col-span-full lg:col-span-3 flex flex-col border-t dark:border-stone-600'>
             <h3 className='text-xl font-bold font-header text-header dark:text-stone-300 pt-5'>لديك كوبون خصم ؟</h3>
             <p className='text-sm font-bold text-lighterText dark:text-stone-400 py-2'>اضف كوبون خصم و احصل علي تخفيضات تصل إلي 50% !</p>
             <div className='w-full grid grid-cols-4'>
