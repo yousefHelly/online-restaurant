@@ -9,7 +9,7 @@ type Props = {}
 function CartDishes({}: Props) {
     const cart = useCart()
   return (
-    <div className='col-span-3 flex flex-col'>
+    <div className='col-span-full lg:col-span-3 flex flex-col'>
     <div className='border-b dark:border-stone-600 py-3 text-xl font-bold font-header text-header dark:text-stone-300'>
       سلة التسوق 
     </div>

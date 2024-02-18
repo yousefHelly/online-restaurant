@@ -13,7 +13,7 @@ function CheckoutPage({}: Props) {
 
   return (
     <PageHeaderWithoutLink header='تأكيد الطلبية'>
-      <div className='w-full grid grid-cols-4 gap-5 items-start'>
+      <div className='w-full grid grid-cols-4 lg:gap-5 items-start'>
         <CheckoutSteps/>
       </div>
     </PageHeaderWithoutLink>

@@ -14,7 +14,7 @@ type Props = {
 function TrackingOrder({order, admin}: Props) {
   return (
     <div className={admin?'grid grid-cols-4 grid-rows-2 ':''}>
-        <div className='col-span-3 col-start-1 col-end-4 grid grid-cols-2 items-start justify-start w-full gap-5 px-12'>
+        <div className='lg:col-span-3 lg:col-start-1 lg:col-end-4 grid lg:grid-cols-2 items-start justify-start w-full gap-5 lg:px-12'>
         <div className='flex items-center gap-2'>
             <TrackingOrder.Header>
             <Wallet/>
@@ -48,7 +48,7 @@ function TrackingOrder({order, admin}: Props) {
                 {DateConverter(order.date)}
             </div>
         </div>
-        <div className='flex items-center gap-2 col-span-2'>
+        <div className='flex items-center gap-2 lg:col-span-2'>
             <TrackingOrder.Header>
             <Navigation2 className='pt-1 text-main'/>
             عنوان الطلبية
@@ -58,8 +58,8 @@ function TrackingOrder({order, admin}: Props) {
             </div>
         </div>
         </div>
-        <div className={`${admin?'col-span-3 my-8 mr-10 order-2 ':'w-full col-span-full'} grid grid-cols-3 gap-5 justify-center items-center`}>
-            <div className="col-span-2">
+        <div className={`${admin?'col-span-3 my-8 mr-10 order-2 ':'w-full col-span-full my-8 lg:my-0'} grid lg:grid-cols-3 gap-5 justify-center items-center`}>
+            <div className="lg:col-span-2 order-2 lg:order-first">
                 <h4 className='text-header dark:text-stone-300 font-bold text-2xl'>ملخص الطلبية</h4>
                 <div className='py-2'>
                 <CheckoutSummaryTable orderDetails={order}/>
@@ -75,7 +75,7 @@ function TrackingOrder({order, admin}: Props) {
 }
 
 TrackingOrder.Header = function Header({children}: {children: React.ReactNode}){
-    return <strong className='text-lg font-bold text-main flex items-center gap-1'>{children} : </strong>
+    return <strong className='text-lg min-w-max font-bold text-main flex items-center gap-1'>{children} : </strong>
 
 }
 

@@ -13,7 +13,7 @@ type Props = {
 
 function Quantity({quantityChange, price, setQuantityChange, page, action, enableZero= false}: Props) {
   return (
-    <div className='flex items-center justify-between'>
+    <div className='mt-[55px] lg:mt-0 flex items-center justify-between'>
             {price&&
                 <div className={`text-main font-bold ${page==='cart'?'text-lg py-1':''}`}>
                     {price} ج

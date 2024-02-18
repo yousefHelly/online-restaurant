@@ -32,7 +32,7 @@ function ItemCart({image, name, status, quantity, totalPrice, page='nav', close 
     alt={name}
     width={150}
     height={150}
-    className={`object-cover rounded-r-2xl h-full ${page==='cart'?'w-[150px]  h-[150px]':'w-[75px]'}`}
+    className={`object-cover rounded-r-2xl h-full ${page==='cart'?'w-[150px] h-[150px]':'w-[75px]'}`}
     />
     </Link>
     <div className='flex flex-col justify-center flex-1 m-1 p-1 '>

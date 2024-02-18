@@ -12,7 +12,9 @@ type Props = {}
 function WishlistPage({}: Props) {
   return (
     <PageHeaderWithoutLink header='المفضلة'>
-      <FavouriteDishes/>
+      <div className='py-5'>
+        <FavouriteDishes/>
+      </div>
     </PageHeaderWithoutLink>
   )
 }
