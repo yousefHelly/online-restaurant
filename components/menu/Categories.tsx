@@ -21,7 +21,7 @@ function Categories({initialData, count = 'all', admin}: Props) {
   return (
     <>
     <LoadingErrorFetching data={data} isLoading={isLoading} isError={isError} name='تصنيفات'/>
-    <div className='grid grid-cols-5 gap-5 w-full'>
+    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 md:w-full'>
       {
         (!admin && count!='all')?data&&data.length>0?data.map((category, i)=>{
           return(
