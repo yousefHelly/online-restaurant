@@ -7,6 +7,7 @@ import { signIn } from 'next-auth/react';
 import VerificationInput from 'react-verification-input';
 import { XOctagon } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { Confirm, ConfirmSchema } from '@/model/Confirmation';
 
 type Props = {
     loginData: {
@@ -18,14 +19,11 @@ type Props = {
 }
 
 function AccountVerification({loginData, verCode, setStep}: Props) {
-    const ConfirmSchema = z.object({
-        confirmationCode:z.string({required_error:'رسالة التأكيد مطلوبة'}).min(6,{message:'رسالة التأكيد يجب ان تتكون من 6 ارقام'}).max(6,{message:'رسالة التأكيد يجب ان تتكون من 6 ارقام'})
-    })
-    type Confirm = z.infer<typeof ConfirmSchema>
+
   return (
-    <motion.div key={2} initial={{opacity:0, x:-25}} animate={{opacity:1, x:0}} exit={{opacity:0, x:25}} className='w-4/5 mx-auto'>
-                <h3 className='text-3xl font-bold text-header dark:text-stone-300 font-header'>تأكيد الحساب</h3>
-                <p className='text-lighterText dark:text-stone-400 text-sm font-bold my-2'>لقد تم ارسال رمز مكون من 6 ارقام الي بريدك الإلكتروني. الرجاء مراجعة بريدك و ادخال الرمز لتتمكن من المتابعة</p>
+    <motion.div key={2} initial={{opacity:0, x:-25}} animate={{opacity:1, x:0}} exit={{opacity:0, x:25}} className='lg:w-4/5 mx-auto'>
+                <h3 className='text-2xl text-center lg:text-start lg:text-3xl font-bold text-stone-300 lg:text-header dark:text-stone-300 font-header'>تأكيد الحساب</h3>
+                <p className='text-main/75 lg:text-lighterText dark:text-stone-400 text-center lg:text-start text-sm font-bold my-2'>لقد تم ارسال رمز مكون من 6 ارقام الي بريدك الإلكتروني. الرجاء مراجعة بريدك و ادخال الرمز لتتمكن من المتابعة.</p>
                 <Formik<Confirm>
                 initialValues={{
                     confirmationCode:'',
@@ -44,8 +42,8 @@ function AccountVerification({loginData, verCode, setStep}: Props) {
                     ({errors,touched, setValues, values})=>{
                         return <Form className='grid grid-cols-2 gap-4 mt-6'>
                             <div className='flex flex-col items-center col-span-full my-4 gap-3'>
-                                <label className='text-header dark:text-stone-300 font-bold' htmlFor='firstName'>رسالة التأكيد</label>
-                                <bdi>
+                                <label className='text-stone-300 lg:text-header dark:text-stone-300 font-bold' htmlFor='firstName'>رسالة التأكيد</label>
+                                <bdi dir='ltr'>
                                 <VerificationInput
                                 autoFocus
                                 classNames={{
