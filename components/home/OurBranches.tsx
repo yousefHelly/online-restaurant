@@ -1,12 +1,8 @@
 'use client'
-import { useElementSize } from '@mantine/hooks'
-import Lenis from '@studio-freight/lenis';
 import {motion, useScroll, useTransform} from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { MapPin, Pointer } from 'lucide-react'
 import Image from 'next/image'
-import React, { useLayoutEffect, useRef, useState, useEffect } from 'react'
+import React, { useLayoutEffect, useRef, useState } from 'react'
 
 type Props = {}
 const branches = [

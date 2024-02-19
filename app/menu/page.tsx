@@ -41,7 +41,7 @@ function FilterationTypeHeader({filter, link, children}:{filter: string,link: st
 return (
   <div className='flex flex-col gap-10 w-full my-5'>
     <div className='flex justify-between items-center dark:text-stone-300'>
-    <h2 className='text-xl md:text-3xl'>إختر طبقك حسب {filter}</h2>
+    <h2 className='text-lg md:text-3xl'>إختر طبقك حسب {filter}</h2>
     <Link className='flex justify-between items-center gap-3 transition duration-150 hover:text-main' href={`/menu/${link}`}>كل {filter}ات
     <ArrowLeft size={21}/>
     </Link>

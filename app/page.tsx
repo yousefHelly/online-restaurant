@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <>
     <LandingVideo/>
-    <main className="flex min-h-screen flex-col items-center justify-between pt-20 px-12 xl:px-24 overflow-x-hidden">
+    <main className="flex min-h-screen flex-col items-center justify-between pt-20 px-6 lg:px-12 xl:px-24 overflow-x-hidden">
       <Landing/>
       <Features/>
       <TopSellingDishes/>

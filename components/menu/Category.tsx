@@ -12,7 +12,7 @@ export function Category({image, name, amount, chefs}:{image: string, name: stri
             height={75}
             className="w-[75px] h-[75px]"
             />
-            <p className='text-xl font-bold font-header'>{name}</p>
+            <p className='md:text-xl font-bold font-header'>{name}</p>
             <span className='group-hover:left-0 text-xs absolute -left-[100%] top-5 bg-main/75 backdrop-blur-md rounded-r-2xl px-4 py-2 text-slate-50 '>
                 {
                     amount>0?

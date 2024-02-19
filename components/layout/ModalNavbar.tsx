@@ -33,7 +33,7 @@ function ModalNavbar({isOpen, setIsOpen}: Props) {
     <motion.div initial={{x:-25, opacity:0}} animate={{x:0,opacity:1}} exit={{x:-25, opacity:0}} className="fixed left-0 top-0 p-4 h-screen flex w-64 items-start justify-start bg-stone-100 dark:bg-stone-800 border-r dark:border-stone-600">
       <Dialog.Panel className='py-2 px-5'>
         <div className='flex flex-col items-center gap-5'>
-        <Logo onClick={()=>setIsOpen(false)} color={'text-main transition'} iconColor={`text-stone-600 dark:text-main`} fontSize='text-2xl' iconSize='24'/>
+        <Logo onClick={()=>setIsOpen(false)} color={'text-main transition'} iconColor={`text-stone-600 dark:text-main`} fontSize='text-xl font-bold' iconSize='24'/>
             {
                 links.map((link, i)=>{
                     const isActive = link.href === pathname
