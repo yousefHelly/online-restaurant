@@ -40,7 +40,7 @@ function InputSteps() {
             alt={''}
             width={400}
             height={800}
-            className='w-full h-full object-cover absolute inset-0'
+            className='w-full h-screen object-cover absolute inset-0'
             />
         <div className='w-full h-full flex flex-col gap-2 mx-auto p-5 relative bg-stone-900/20 backdrop-blur-lg'>
             <Logo fontSize='text-2xl pb-1' color='text-stone-300' iconSize='28'/>

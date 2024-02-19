@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 function LoginPage({searchParams}: Props) {
 
   return (
-    <main className='grid grid-cols-12 lg:p-1 h-full lg:h-screen overflow-y-auto'>
+    <main className='grid grid-cols-12 lg:p-1 h-screen overflow-y-auto'>
         <SideInformativeImg header='سجل دخولك الأن' description='لتتمكن من إكمال طلباتك و تستمتع بالحصول علي وجباتك في خلال دقائق'/>
         <LoginForm searchParams={searchParams}/>
     </main>
