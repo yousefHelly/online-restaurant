@@ -11,6 +11,7 @@ import useAddress from '@/lib/api/UseAddress';
 import toast from 'react-hot-toast';
 import AddressItem from '../(User)/profile/AddressItem';
 import Image from 'next/image';
+import Addresses from '../(User)/profile/Addresses';
 
 type Props = {
     setIsOpen: (val:boolean)=>void,
@@ -33,7 +34,7 @@ function ProfileCompletion({ setIsOpen, setSelectedAddress }: Props) {
     const {data:addresses, isError, isLoading} = useAddress()
   return (
     <motion.div key={3} initial={{opacity:0, x:-25}} animate={{opacity:1, x:0}} className='w-4/5 mx-auto'>
-                <h3 className='text-3xl font-bold text-header dark:text-stone-300 font-header'>إكمال بيانات الحساب</h3>
+                <h3 className='text-2xl text-center lg:text-start lg:text-3xl font-bold text-stone-300 lg:text-header dark:text-stone-300 font-header'>إكمال بيانات الحساب</h3>
                 <div className='flex flex-col w-full my-10'>
                 { 
                 session?.user.provider==='credentials'&&<div className='flex flex-col w-full '>
@@ -51,23 +52,11 @@ function ProfileCompletion({ setIsOpen, setSelectedAddress }: Props) {
                     </div>
                 }
                     <div className='w-full flex flex-col justify-start items-start gap-3'>
-                      <p className='text-xl font-bold font-header dark:text-stone-300'>اضف عنوان :</p>
-                      <AnimatePresence mode='wait'>
-                        {
-                            addresses&&addresses.length>0?addresses.map((address, i)=>{
-                                return (
-                                <AddressItem key={address.id} address={address} i={i} setIsOpen={setIsOpen} setSelectedAddress={setSelectedAddress}/>
-                                )
-                            }):isLoading?<span className='w-full flex flex-col items-center justify-center gap-3 dark:text-stone-400 text-lighterText'>جاري التحميل ...<Loader2 className='text-main animate-spin'/></span>:!isLoading&&!isError&&<NotFound name='عناوين'/>
-                        }
-                        </AnimatePresence>
-                        <button onClick={()=>{setSelectedAddress(undefined);setIsOpen(true)}} className='flex gap-1 items-center px-3 py-2 rounded-2xl text-slate-50 dark:text-stone-900 dark:hover:text-main bg-main hover:bg-transparent hover:text-main transition duation-150'>
-                            <Plus/>
-                            عنوان جديد
-                        </button>
+                      <p className='text-stone-300 lg:text-header text-xl font-bold font-header dark:text-stone-300'>اضف عنوان :</p>
+                      <Addresses/>
                     </div>
                     <div className='flex flex-row-reverse mt-8 mx-auto gap-3'>
-                        <button disabled={addresses?.length===0} onClick={()=>router.replace(`/`)} className={`'self-center flex gap-1 items-center px-3 py-2 rounded-2xl text-slate-50 dark:text-stone-900 disabled:text-header bg-main dark:disabled:bg-stone-800 dark:disabled:text-main disabled:bg-slate-400  disabled:hover:text-header transition duation-150`}>
+                        <button disabled={addresses?.length===0} onClick={()=>router.replace(`/`)} className={`self-center flex gap-1 items-center px-3 py-2 rounded-2xl text-slate-50 dark:text-stone-900 disabled:text-header bg-main dark:disabled:bg-stone-800 dark:disabled:text-main disabled:bg-slate-400  disabled:hover:text-header transition duation-150`}>
                             حفظ
                         </button>  
                         <button onClick={()=>router.replace(`/`)} className='self-center flex gap-1 items-center px-3 py-2 rounded-2xl text-lighterText dark:text-stone-400 font-bold bg-transparent dark:hover:bg-stone-700 hover:bg-slate-200 transition duation-150'>

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 function RegisterPage() {
     return (
-    <main className='grid grid-cols-12 p-1 h-screen'>
+      <main className='grid grid-cols-12 lg:p-1 h-screen overflow-y-hidden overflow-x-hidden '>
         <SideInformativeImg header='سجل الأن' description='لتتمكن من إكمال طلباتك و تستمتع بالحصول علي وجباتك في خلال دقائق'/>
         <InputSteps/>
     </main>

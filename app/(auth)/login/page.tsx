@@ -16,10 +16,9 @@ export const metadata: Metadata = {
 function LoginPage({searchParams}: Props) {
 
   return (
-    <main className='grid grid-cols-12 p-1 h-screen overflow-y-scroll'>
+    <main className='grid grid-cols-12 lg:p-1 h-screen overflow-y-auto'>
         <SideInformativeImg header='سجل دخولك الأن' description='لتتمكن من إكمال طلباتك و تستمتع بالحصول علي وجباتك في خلال دقائق'/>
         <LoginForm searchParams={searchParams}/>
-        <Toaster toastOptions={{className:'dark:bg-stone-800 dark:text-stone-300 dark:border dark:border-stone-600'}}/>
     </main>
   )
 }
