@@ -2,7 +2,7 @@
 import React from 'react'
 import FilterAccordion from './FilterAccordion'
 import { motion } from 'framer-motion';
-import { QueryClient } from 'react-query';
+import { QueryClient, useQueryClient } from 'react-query';
 import * as Slider from '@radix-ui/react-slider';
 
 type Props = {
@@ -42,7 +42,7 @@ type Props = {
 }
 
 function AllDishesFilters({categories, chefs, dishes, filterList, setFilterList}: Props) {
-    const queryClient = new QueryClient()
+    const queryClient = useQueryClient()
   return (
     <aside className='hidden lg:flex flex-col border-l dark:border-stone-600 h-screen'>
           {/* filter content */}    

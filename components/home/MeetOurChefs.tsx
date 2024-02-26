@@ -1,11 +1,12 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import Chefs from '../menu/Chefs'
+import { getChefs } from '@/lib/api/server api calls/getChefs'
 
 type Props = {}
 
-function MeetOurChefs({}: Props) {
+async function MeetOurChefs({}: Props) {
+  const chefsData = await getChefs()
   return (
     <div className='flex flex-col gap-5 w-full'>
         <div className='flex flex-col gap-3 text-center py-3'>
@@ -15,7 +16,7 @@ function MeetOurChefs({}: Props) {
 نحن فخورون بأن نقدم لكم شيفاتنا الموهوبين والمتميزين، الذين يعملون بجد لإعداد أشهى الأطباق لكم. لدينا شيفات من مختلف الثقافات والخلفيات، ولكل منهم قصة فريدة ومميزة.</p>
             </div>
         </div>
-        <Chefs count={3}/>
+        <Chefs count={3} initialData={chefsData}/>
         <Link href={'/menu/chefs'} className='self-center text-slate-50 dark:text-stone-900 dark:hover:text-main font-bold bg-main px-3 py-2 rounded-2xl  transition duration-150 hover:bg-transparent hover:text-main'>المزيد!</Link>
     </div>
   )

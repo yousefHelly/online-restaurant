@@ -13,7 +13,7 @@ function AdminChef({id, name, image, mealsCount, category, rating, rateNum}:{id:
     return (
     <>
     <div className='flex flex-col h-[325px]'>
-    <Link href={`/menu/all-dishes?f=chef&n=${name}`} className='group col-span-full md:col-span-1'>
+    <Link href={`/menu/all-dishes?f=chef&n=${name}`} className='group col-span-full md:col-span-1 h-full'>
     <div className='h-full rounded-t-md overflow-hidden relative after:content-[""] after:absolute after:inset-0 after:bg-main/25 after:transition after:duration-150 group-hover:after:backdrop-blur-[2px]'>
         <Image
         src={image}

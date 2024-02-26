@@ -21,6 +21,7 @@ type Props  = {
 function AllDishesContents({initialCategories,initialChefs, initialDishes}: Props) {
     const searchParams = useSearchParams()
     const [filterList, setFilterList] = useState<{categories: string[], chefs: string[],price: {from: string, to: string}, search: string}>({categories:[], chefs:[], price:{from:'', to:''}, search:''})
+    const queryClient =  useQueryClient();
     useEffect(() => {
       if(searchParams.get('f')!=null && searchParams.get('n')!=null){
         searchParams.get('f')==='category'?setFilterList({...filterList, categories:[searchParams.get('n') as string]}):
@@ -33,7 +34,6 @@ function AllDishesContents({initialCategories,initialChefs, initialDishes}: Prop
     const [selectedSort, setSelectedSort] = useState(sorting[2]);
     const [selectedView, setSelectedView] = useState(view[1]);
     const dishes = useDishes(filterList.categories.join(',') || undefined, filterList.search || undefined, filterList.chefs.join(',') || undefined, +filterList.price.from || undefined, +filterList.price.to || undefined, 1, selectedView.value, selectedSort.value, initialDishes)
-    const queryClient =  useQueryClient();
     const categories = useCategories(initialCategories);
     const chefs = useChefs(initialChefs);
     const [filterModal,setFiltersModal] = useState(false)

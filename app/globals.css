@@ -89,3 +89,10 @@ html.lenis {
 [data-mantine-color-scheme] .m-4e7aa4fd:hover[data-hover]{
   @apply !bg-main/20 dark:!bg-main/20
 }
+meter::-moz-meter-optimum::-moz-meter-bar{
+  background: #ffa006
+}
+
+meter::-webkit-meter-optimum-value{
+  background: #ffa006
+}

@@ -29,6 +29,9 @@ function ViewActionTable({link, action, actionName, disable=false, order, setOrd
     setSubTotal(totalDishes)
   },[cart.data])
   useEffect(()=>{
+    subTotal>=250?setDeliveryTax(0):setDeliveryTax(25)
+  },[cart.data, subTotal])
+  useEffect(()=>{
     setTotal(subTotal+deliveryTax)
   },[subTotal, deliveryTax])
   if(cart.data?.length===0){
@@ -61,7 +64,7 @@ function ViewActionTable({link, action, actionName, disable=false, order, setOrd
       </div>
       <div className='flex justify-between items-center px-3'>
         <span>التوصيل</span>
-        <span className='text-main font-bold font-header'>{deliveryTax} ج</span>
+        <span className='text-main font-bold font-header'>{deliveryTax>0?`${deliveryTax} ج`:'مجاني'}</span>
       </div>
       {/* <div className='flex justify-between items-center pb-3 border-b dark:border-stone-600 px-3'>
         <span>كوبون خصم</span>

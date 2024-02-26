@@ -4,7 +4,7 @@ import { Listbox } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowDownNarrowWide, CheckCircle, ChevronDown, Filter, LayoutGrid, LucideListFilter, Menu, RotateCcw, TableProperties } from 'lucide-react';
 import React, { useState } from 'react'
-import { QueryClient } from 'react-query';
+import { QueryClient, useQueryClient } from 'react-query';
 
 type Props = {
     cardView: 'grid'|'row',
@@ -34,7 +34,7 @@ type Props = {
 }
 
 function FilterHeader({cardView, setCardView, setFilterList, selectedSort, setSelectedSort, selectedView, setSelectedView, setFiltersModal}: Props) {
-    const queryClient = new QueryClient()
+    const queryClient = useQueryClient()
   return (
     <div className='col-span-full grid lg:grid-cols-4'>
     {/* name and reset */}

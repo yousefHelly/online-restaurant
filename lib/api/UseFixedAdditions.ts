@@ -4,6 +4,8 @@ import { axiosAuth } from './axios';
 import { useRouter } from 'next/navigation';
 import useAxiosAuth from '../hooks/useAxiosAuth';
 import toast from 'react-hot-toast';
+import { startTransition } from 'react';
+import { revalidateFixedAdditions } from '@/app/action';
 
 function useFixedAdditions(initialData?: FixedAddition[]) {
 
@@ -39,6 +41,11 @@ export function PostFixedAddition() {
       formData.append('AdditionImg', FAData.AdditionImg)
       axiosAuth.post(`/api/StaticAddition`,formData, {headers:{'Content-Type':'multipart/form-data'}}).then((res)=>{clientQuery.invalidateQueries(['dishes','fixed additions']);toast.success((res as any).data.message);router.push('/admin/side-dishes')}).catch((err)=> toast.error((err as any).response.data as string))
     },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateFixedAdditions()
+      })
+    },
   })
 }
 
@@ -55,6 +62,11 @@ export function UpdateFixedAddition() {
       FAData.AdditionImg&&formData.append('AdditionImg', FAData.AdditionImg)
       axiosAuth.put(`/api/StaticAddition/${FAData.id}`,formData, {headers:{'Content-Type':'multipart/form-data'}}).then((res)=>{clientQuery.invalidateQueries(['dishes','fixed additions']);toast.success((res as any).data.message);router.push('/admin/side-dishes')}).catch((err)=> toast.error((err as any).response.data as string))
     },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateFixedAdditions()
+      })
+    },
   })
 }
 
@@ -65,6 +77,11 @@ export function DeleteFixedAddition() {
   return useMutation({
     mutationFn: ({ id }: { id: number }): any=>{
       axiosAuth.delete(`/api/StaticAddition/${id}`).then((res)=>{clientQuery.invalidateQueries(['dishes','fixed additions']);toast.success((res as any).data.message)}).catch((err)=> toast.error((err as any).response.data as string))
+    },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateFixedAdditions()
+      })
     },
   })
 }

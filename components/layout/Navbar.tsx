@@ -19,6 +19,7 @@ import useCart from '@/lib/api/useCart'
 import ModalNavbar from './ModalNavbar'
 import ThemeIcon from './ThemeIcon';
 import SearchIcon from './SearchIcon'
+import CartModal from './CartModal'
 type Props = {}
 
 function Navbar({}: Props) {
@@ -41,14 +42,13 @@ function Navbar({}: Props) {
     const [darkMode, setDarkMode] = useState<boolean>(typeof window !='undefined'&&window.localStorage.getItem('theme')==='dark'?true:false)
     const {setTheme} = useTheme()
     const [isOpen, setIsOpen] = useState(false)
-    useEffect(()=>{
-    },[darkMode])
+    const [cartModal, setCartModal] = useState(false)
     darkMode?setTheme('dark'):setTheme('light')
 
     useUpdateEmailSession()
   return (
     <>
-    <nav className={`hidden lg:flex w-full items-center justify-between px-12 z-40 sticky top-0 py-4 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
+    <nav className={`hidden xl:flex w-full items-center justify-between px-12 z-40 sticky top-0 py-4 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
         <Logo color={topScreen?'text-main transition': undefined}/>
         <div className='flex gap-10 pt-3'>
             {
@@ -88,36 +88,10 @@ function Navbar({}: Props) {
             <ThemeIcon darkMode={darkMode}  setDarkMode={setDarkMode} topScreen={topScreen}/> 
         </div>
         <div className={`flex items-center ${session?.user?'gap-10 ml-10 translate-y-2 ':'gap-3 pt-3'}`}>
-            <Popover className="relative mt-2 z-30">
-            {({ open, close }) => (
-                <>
-                <Popover.Button className='focus-within:outline-none relative'>
-                    <ShoppingBag className={`font-bold transition duration-150 cursor-pointer ${open?'text-main ':'text-lighterText hover:text-main '} `}/>
-                    {cart.data&&cart.data.length>0&&<span className={`absolute top-0 right-0 w-3 h-3 rounded-full bg-main text-[0.5rem] pr-[0.07rem] pt-[0.1rem] text-header flex items-center justify-center`}>{cart.data.length}</span>}
-                </Popover.Button>
-                <AnimatePresence mode='wait'>
-                    {
-                        open && <motion.span initial={{opacity:'0'}} animate={{opacity:1}} exit={{opacity:'0'}} onMouseLeave={()=>close()}>
-                                        <Popover.Panel className="absolute bg-slate-50 dark:bg-stone-800 rounded-b-2xl left-1/2 -translate-x-1/2 translate-y-4">
-                                        <div className="px-2 py-2 flex flex-col w-[275px] h-[250px] overflow-y-scroll overscroll-none mb-6 relative after:content-[''] after:fixed after:-translate-y-8 after:bottom-0 after:left-0 after:w-full after:h-[20%] after:bg-gradient-to-b after:from-transparent after:via-slate-50/50 dark:after:via-stone-800/50 dark:after:to-stone-800 after:to-slate-50">
-                                            <p className='text-center mx-auto font-header font-bold text-xl text-header dark:text-stone-300 pb-2'>سلة التسوق</p>
-                                            {
-                                                cart.data&&cart.data?.length>0?cart?.data.map((cartItem)=>{
-                                                    return(
-                                                        <ItemCart key={cartItem.name} close={close}  image={cartItem.mealImgUrl} name={cartItem.name} totalPrice={cartItem.totalPrice} status={cartItem.additions} quantity={cartItem.amount}/>
-                                                    )
-                                                }):<NotFound name='أطباق'/>
-                                            }
-                                        </div>
-                                        <Link href={'/cart'} onClick={()=>close()}  className='absolute z-[100] bottom-0 w-[275px] bg-main text-slate-50 dark:text-stone-900 font-bold text-center rounded-b-2xl py-2 font-header'>عرض السلة</Link>
-                                    </Popover.Panel>
-                                    </motion.span>
-                    }
-                </AnimatePresence>
-                </>
-            )
-            }
-            </Popover>
+            <div className='relative cursor-pointer' onClick={()=>{setCartModal(true)}} >
+                {cart.data&&cart.data.length>0&&<span className={`absolute top-0 right-0 w-3 h-3 rounded-full bg-main text-[0.5rem] pl-[0.02rem] pt-[0.1rem] text-header flex items-center justify-center`}>{cart.data.length}</span>}
+                <ShoppingBag className={`font-bold transition duration-150 ${cartModal?'text-main ':'text-lighterText hover:text-main '} `}/>
+            </div>
             {status==='authenticated'?
             <>
                 <UserPopover/>
@@ -133,12 +107,12 @@ function Navbar({}: Props) {
             }
         </div>
     </nav>
-    <nav className={`sticky lg:hidden z-40 top-0 w-full flex items-center justify-between px-6 py-5 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
+    <nav className={`sticky xl:hidden z-40 top-0 w-full flex items-center justify-between px-6 py-5 ${!topScreen?'bg-slate-50/75 dark:bg-stone-800/75 backdrop-blur-xl':''}`}>
         <Logo color={topScreen?'text-main transition': undefined} iconColor={`${!topScreen?'text-stone-600 dark:text-main':'text-main'}`} fontSize='text-2xl' iconSize='24'/>
         <div className='flex items-center justify-center gap-8'>
             <SearchIcon topScreen={topScreen}  mobile={true}/>
             <ThemeIcon mobile={true} darkMode={darkMode} setDarkMode={setDarkMode} topScreen={topScreen}/>   
-            <AlignLeft onClick={()=>setIsOpen(true)} className={` ${!topScreen?'text-stone-600 dark:text-main':'text-main'}`}/>
+            <AlignLeft onClick={()=>setIsOpen(true)} className={`cursor-pointer ${!topScreen?'text-stone-600 dark:text-main':'text-main'}`}/>
         </div>
         <AnimatePresence mode='wait'>
             {
@@ -178,6 +152,11 @@ function Navbar({}: Props) {
     }
     </AnimatePresence>
     <SearchDialog/>
+    <AnimatePresence mode='wait'>
+        {
+            cartModal&&<CartModal isOpen={cartModal} setIsOpen={setCartModal}/>
+        }
+    </AnimatePresence>
     </>
   )
 }
