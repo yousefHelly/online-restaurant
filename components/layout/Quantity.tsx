@@ -8,12 +8,13 @@ type Props = {
     page?:'cart'|'nav',
     setQuantityChange: (q: number)=>void
     action?: ()=>void,
-    enableZero?: boolean
+    enableZero?: boolean,
+    type?:'grid' | 'row'
 }
 
-function Quantity({quantityChange, price, setQuantityChange, page, action, enableZero= false}: Props) {
+function Quantity({quantityChange, price, setQuantityChange, page, action, enableZero= false, type}: Props) {
   return (
-    <div className='mt-[55px] lg:mt-0 flex items-center justify-between'>
+    <div className={`flex items-center justify-between`}>
             {price&&
                 <div className={`text-main font-bold ${page==='cart'?'text-lg py-1':''}`}>
                     {price} ج

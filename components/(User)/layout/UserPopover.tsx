@@ -15,7 +15,7 @@ type Props = {
 function UserPopover({text}: Props) {
     const {data:session} = useSession()
   return (
-    <Popover className="relative mt-2">
+    <Popover className="relative mt-2 z-[9999]">
     {({ open, close }) => (
         <>
         <Popover.Button className={`focus-within:outline-none flex ${text==='left'?' items-center gap-3':'flex-col justify-center items-center'}`}>

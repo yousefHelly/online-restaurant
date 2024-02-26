@@ -4,7 +4,8 @@ import axios, { axiosAuth } from './axios';
 import { useRouter } from 'next/navigation';
 import useAxiosAuth from '../hooks/useAxiosAuth';
 import toast from 'react-hot-toast';
-import { useCategory } from './useCategories';
+import { revalidateChefs } from '@/app/action';
+import { startTransition } from 'react';
 
 function useChefs(initialData?: Chef[]) {
     const {data, isLoading, isError} = useQuery<Chef[]>({
@@ -68,6 +69,11 @@ export function PostChef() {
       formData.append('ChefImg', chefData.ChefImg)
       axiosAuth.post(`/api/chef`,formData, {headers:{'Content-Type':'multipart/form-data'}}).then((res)=>{clientQuery.invalidateQueries(['chefs']);toast.success((res as any).data.message);router.push('/admin/chefs')}).catch((err)=> toast.error((err as any).response.data as string))
     },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateChefs()
+      })
+    },
   })
 }
 export function UpdateChef() {
@@ -82,6 +88,11 @@ export function UpdateChef() {
       chefData.ChefImg&&formData.append('ChefImg', chefData.ChefImg)
       axiosAuth.put(`/api/chef/${chefData.id}`,formData, {headers:{'Content-Type':'multipart/form-data'}}).then((res)=>{clientQuery.invalidateQueries(['chefs']);toast.success((res as any).data.message);router.push('/admin/chefs')}).catch((err)=> toast.error((err as any).response.data as string))
     },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateChefs()
+      })
+    },
   })
 }
 
@@ -92,6 +103,11 @@ export function DeleteChef() {
   return useMutation({
     mutationFn: ({ id }: { id: number }): any=>{
       axiosAuth.delete(`/api/chef/${id}`).then((res)=>{clientQuery.invalidateQueries(['chefs']);toast.success((res as any).data.message)}).catch((err)=> toast.error((err as any).response.data as string))
+    },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateChefs()
+      })
     },
   })
 }

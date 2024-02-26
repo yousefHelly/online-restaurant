@@ -6,13 +6,15 @@ import toast from 'react-hot-toast';
 import { DishFormType } from '@/model/Dish';
 import { useRouter } from 'next/navigation';
 import { convert } from '../ConvertArabicURL';
+import { startTransition } from 'react';
+import { revalidateDishes } from '@/app/action';
 
 function useDish(mealName: (string|undefined), initialData?: Dish) {
     const {data: returnData, isLoading, isError, isLoadingError} = useQuery<Dish>({
       queryKey:['dish', mealName],
       initialData:initialData,
       queryFn:async ()=>(await axiosAuth.get(`/api/meal?name=${mealName}`)).data,
-      refetchInterval:1500
+      // refetchInterval:1500
     })
 const newAdditions = returnData?.mealAdditions?.map((add)=>{
   return {
@@ -119,6 +121,11 @@ export function PostDish() {
         },250)
       }).catch((err)=> toast.error((err as any).response.data as string))
     },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateDishes()
+      })
+    },
   })
 }
 
@@ -180,6 +187,11 @@ export function UpdateDish(mealName: string) {
         },250)
       }).catch((err)=> toast.error((err as any).response.data as string))
     },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateDishes()
+      })
+    },
   })
 }
 
@@ -191,6 +203,11 @@ export function DeleteDish() {
   return useMutation({
     mutationFn: ({ name }: { name: string }): any=>{
       axiosAuth.delete(`/api/meal/${name}`).then((res)=>{clientQuery.invalidateQueries(['dishes']);toast.success((res as any).data.message)}).catch((err)=> toast.error((err as any).response.data as string))
+    },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateDishes()
+      })
     },
   })
 }

@@ -4,7 +4,7 @@ type Props = {}
 
 function Header({heading , desc}:{heading:string, desc:string}){
     return(
-        <div className='mx-0 flex flex-col gap-3 text-center py-5 lg:py-10 bg-slate-50/75 dark:bg-stone-800/75 rounded-2xl mt-5'>
+        <div className='mx-0 mb-5 lg:mb-0 px-5 lg:px-0 flex flex-col lg:gap-3 text-center py-5 lg:py-10 bg-slate-50/75 dark:bg-stone-800/75 rounded-2xl mt-5'>
         <h2 className='text-3xl text-header dark:text-stone-300 font-bold py-4 xl:leading-[4rem]'>
             {heading}
         </h2>
@@ -17,7 +17,7 @@ function Header({heading , desc}:{heading:string, desc:string}){
 function Features({}: Props) {
   return (
     <section>
-        <div className='mt-20 flex flex-col gap-5'>
+        <div className='mt-32 lg:mt-20 flex flex-col gap-5'>
             <Header heading='طعم غير عادي بسبب خبرتنا الكبيرة في المجال' desc='كل الشيفات لدينا في المطبخ لديهم خبره لا تقل عن 10 اعوام في مختلف الأصناف'/>
             <Feature
             dir='r' 

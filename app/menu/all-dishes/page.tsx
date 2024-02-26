@@ -9,8 +9,6 @@ export const metadata: Metadata = {
   title: 'كل الأطباق'
 }
 
-
-
 async function AllDishesPage() {
   const categroiesData = await getCategories()
   const chefsData = await getChefs()

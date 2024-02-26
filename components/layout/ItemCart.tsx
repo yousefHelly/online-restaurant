@@ -25,17 +25,17 @@ function ItemCart({image, name, status, quantity, totalPrice, page='nav', close 
         mutateAmount.mutate({name:name, amount:quantityChange})
     },[quantityChange, quantity])
   return (
-    <div ref={item} className='flex items-start rounded-2xl border dark:border-stone-600 shadow-md my-2 transition duration-150 hover:bg-main/5'>
-    <Link onClick={()=>close!()} href={`/menu/${name}`} className='self-stretch'>
+    <div ref={item} className={`flex items-start rounded-2xl border dark:border-stone-600 shadow-md my-2 transition duration-150 hover:bg-main/5 h-[150px]`}>
+    <Link onClick={()=>close!()} href={`/menu/${name}`} className={`self-stretch ${page==='cart'?'w-[100px] h-full md:w-[150px]':'w-[75px]'}`}>
     <Image
     src={image}
     alt={name}
     width={150}
     height={150}
-    className={`object-cover rounded-r-2xl h-full ${page==='cart'?'w-[150px] h-[150px]':'w-[75px]'}`}
+    className={`object-cover rounded-r-2xl h-full ${page==='cart'?'w-full md:w-[150px]':'w-[75px]'}`}
     />
     </Link>
-    <div className='flex flex-col justify-center flex-1 m-1 p-1 '>
+    <div className='flex flex-col h-full justify-evenly flex-1 m-1 px-2 lg:p-1 '>
         <div className='flex justify-between items-center'>
             <Link  onClick={()=>close()} href={`/menu/${name}`} className={`${page==='cart'?'text-xl':'text-sm'} text-header dark:text-stone-300 font-bold hover:text-main transition duration-150`}>
                 {name}
@@ -50,7 +50,7 @@ function ItemCart({image, name, status, quantity, totalPrice, page='nav', close 
             })}
         </div>
         }
-        <Quantity quantityChange={quantityChange} setQuantityChange={setQuantityChange} price={totalPrice} page={page}/>
+        <Quantity type='row' quantityChange={quantityChange} setQuantityChange={setQuantityChange} price={totalPrice} page={page}/>
     </div>
 </div>
   )

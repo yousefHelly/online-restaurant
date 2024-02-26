@@ -9,7 +9,7 @@ type Props = {}
 function Landing({}: Props) {
   return (
     <div  
-    className='flex flex-col-reverse -mt-16 lg:mt-0 xl:flex-row justify-center items-center relative z-0 lg:after:absolute lg:after:bg-waves lg:after:-left-[8.2rem] lg:after:-bottom-32 lg:after:-z-10 lg:after:w-[16rem] lg:after:h-[17rem] lg:after:rotate-180'
+    className='flex flex-col-reverse mt-10 lg:mt-0 xl:flex-row justify-center items-center relative z-0 lg:after:absolute lg:after:bg-waves lg:after:-left-[8.2rem] lg:after:-bottom-32 lg:after:-z-10 lg:after:w-[16rem] lg:after:h-[17rem] lg:after:rotate-180'
     >
         <motion.div
         initial={{

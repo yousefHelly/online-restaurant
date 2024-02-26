@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
 
-async function CreateSession(stripe: Stripe) {
+async function CreateSession(stripe: Stripe, order: PostOrder) {
     return async function (staticAdditionOrders: PostOrder['staticAdditionOrders']) {
         let stripeOrders: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
@@ -63,7 +63,7 @@ async function CreateSession(stripe: Stripe) {
                                 }
                             },
                             fixed_amount:{
-                                amount:25 * 100,
+                                amount:order.totalPrice>=250?0:25 * 100,
                                 currency:'egp',
                             },
                             type:'fixed_amount'
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
     const stripe = new Stripe(process.env.STRIPE_API_KEY!)
     const cookieStore = cookies()
     try{
-        const newSession = await CreateSession(stripe)
+        const newSession = await CreateSession(stripe, order)
         const addSideDishes = await newSession(order.staticAdditionOrders)
         const addMeals = await addSideDishes(order.mealOrders)
         const url =  await addMeals()   

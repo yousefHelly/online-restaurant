@@ -65,7 +65,7 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
     },[quantityChange])
     const toggleWishlist = ToggleWishlist()
   return (
-    <motion.div initial={{opacity:0, y:15}} whileInView={{opacity:1, y:0, transition:{duration:0.15}}} viewport={{amount:0.4, once:true}} className={`group border dark:border-stone-600 bg-slate-50/40 dark:bg-stone-600/40 dark:hover:bg-main/20 transition duration-300 hover:bg-main/20 relative flex ${cardView==='grid'?'flex-col':''} gap-2 shadow-md max-h-[400px] overflow-x-hidden`}>
+    <motion.div initial={{opacity:0, y:15}} whileInView={{opacity:1, y:0, transition:{duration:0.15}}} viewport={{amount:0.4, once:true}} className={`group border dark:border-stone-600 bg-slate-50/40 dark:bg-stone-600/40 dark:hover:bg-main/20 transition duration-300 hover:bg-main/20 relative flex ${cardView==='grid'?'flex-col max-h-[400px]':' h-[225px]'} gap-2 shadow-md overflow-x-hidden`}>
     <figure className={`${cardView==='grid'?'w-full h-[175px]':'w-2/6 lg:w-[200px] h-full'} overflow-hidden relative`}>
         <Link href={`/menu/${name}`} >
         <Image 
@@ -80,7 +80,7 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
             <Heart className={`${(dish.data?.isFavourite||favourate)?'fill-red-500 dark:text-stone-900':'text-red-500 hover:fill-red-500'}  transition duration-150`}/>
         </span>
     </figure>
-    <div className='flex-1 flex flex-col gap-2 justify-center'>
+    <div className={`flex-1 flex flex-col gap-2 ${cardView==='row'?'justify-evenly pl-1 lg:pl-0 lg:justify-center':'justify-center'}`}>
         <Link href={`/menu/${name}`} className={`font-header dark:text-stone-300 dark:hover:text-main font-bold ${cardView==='grid'?'text-xl px-4':'text-md lg:text-xl px-1 lg:px-4'} mt-2 hover:text-main transition duration-150`}>{name}</Link>
         <div className={`w-full flex justify-between items-center ${cardView==='grid'?'px-4':' px-1 lg:px-4'}`}>
             <div className='flex items-center gap-1 '>
@@ -127,7 +127,7 @@ function DishCard({name, image, chef, category, rating, ratingCount, price, oldP
 
                 {
                     cart.quriedItem&&<button className={`flex items-center border border-transparent transition duration-150 gap-3 border-main bg-slate-100 dark:bg-stone-800 text-main px-3 py-2 rounded-2xl hover:bg-slate-50 dark:hover:bg-stone-950  font-bold`}>
-                    <Quantity quantityChange={cart.quriedItem.amount || quantityChange} setQuantityChange={setQuantityChange} enableZero={true}/>
+                    <Quantity type={cardView} quantityChange={cart.quriedItem.amount || quantityChange} setQuantityChange={setQuantityChange} enableZero={true}/>
                     </button>
                 }
 

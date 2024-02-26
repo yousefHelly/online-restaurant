@@ -3,7 +3,7 @@ import { Dialog } from '@headlessui/react'
 import React from 'react'
 import { motion } from 'framer-motion';
 import FilterAccordion from './FilterAccordion';
-import { QueryClient } from 'react-query';
+import { QueryClient, useQueryClient } from 'react-query';
 import * as Slider from '@radix-ui/react-slider';
 
 type Props = {
@@ -44,7 +44,7 @@ type Props = {
     }
 }
 function FiltersModal({isOpen, setIsOpen, categories, chefs, dishes, filterList, setFilterList}: Props) {
-    const queryClient = new QueryClient()
+    const queryClient =  useQueryClient()
     return (
       <Dialog
       open={isOpen}

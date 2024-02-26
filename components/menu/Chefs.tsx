@@ -20,7 +20,7 @@ function Chefs({initialData, count = 'all', admin}: Props) {
   return (
     <>
     <LoadingErrorFetching data={data} isLoading={isLoading} isAdmin={admin} isError={isError} name='شيفات'/>
-    <div className={`grid grid-cols-${count==='all'?4:count} gap-5 w-full`}>
+    <div className={`grid grid-cols-4 gap-5 w-full`}>
       {
         !admin&&
           count!='all'?data&&data.length>0?data.map((chef, i)=>{

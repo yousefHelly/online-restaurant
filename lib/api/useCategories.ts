@@ -4,6 +4,8 @@ import axios, {axiosAuth} from './axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import useAxiosAuth from '../hooks/useAxiosAuth';
+import { startTransition } from 'react';
+import { revalidateCategories } from '@/app/action';
 
 export default function useCategories(initialData?: Category[]) {
     const {data, isLoading, isError} = useQuery<Category[]>({
@@ -35,6 +37,11 @@ export function PostCategory() {
       formData.append('CategoryImg', catData.CategoryImg)
       axiosAuth.post(`/api/category`,formData, {headers:{'Content-Type':'multipart/form-data'}}).then((res)=>{clientQuery.invalidateQueries(['categories']);toast.success((res as any).data.message);router.push('/admin/categories')}).catch((err)=> toast.error((err as any).response.data as string))
     },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateCategories()
+      })
+    },
   })
 }
 
@@ -49,6 +56,11 @@ export function UpdateCategory() {
       catData.CategoryImg&&formData.append('CategoryImg', catData.CategoryImg)
       axiosAuth.put(`/api/category/${catData.id}`,formData, {headers:{'Content-Type':'multipart/form-data'}}).then((res)=>{clientQuery.invalidateQueries(['categories']);toast.success((res as any).data.message);router.push('/admin/categories')}).catch((err)=> toast.error((err as any).response.data as string))
     },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateCategories()
+      })
+    },
   })
 }
 
@@ -58,6 +70,11 @@ export function DeleteCategory() {
   return useMutation({
     mutationFn: ({ id }: { id: number }): any=>{
       axiosAuth.delete(`/api/category/${id}`).then((res)=>{clientQuery.invalidateQueries(['categories']);clientQuery.invalidateQueries(['chefs']);clientQuery.invalidateQueries(['dishes']);toast.success((res as any).data.message)}).catch((err)=> toast.error((err as any).response.data as string))
+    },
+    onSuccess(data, variables, context) {
+      startTransition(()=>{
+        revalidateCategories()
+      })
     },
   })
 }
