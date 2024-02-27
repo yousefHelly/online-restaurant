@@ -96,3 +96,56 @@ meter::-moz-meter-optimum::-moz-meter-bar{
 meter::-webkit-meter-optimum-value{
   background: #ffa006
 }
+
+@media (max-width: 768px) {
+  .slide {
+    flex: 0 0 calc((100% - (1.25rem * 1.5)) / 2);
+    min-width: 0;
+  }
+}
+@media (min-width: 769px) {
+  .slide {
+    flex: 0 0 calc((100% - (1.25rem * 2.5)) / 3);
+    min-width: 0;
+  }
+}
+
+@media (min-width: 991px) {
+  .slide {
+    flex: 0 0 calc((100% - (1.25rem * 3.5)) / 4);
+    min-width: 0;
+  }
+}
+@media (min-width: 1280px) {
+  .slide {
+    flex: 0 0 calc((100% - (1.25rem * 4.5)) / 5);
+    min-width: 0;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .chef_slide,.dish_slide {
+    flex: 0 0 calc((100% - (1.25rem * 0.5)) / 1);
+    min-width: 0;
+  }
+}
+@media (min-width: 769px) {
+  .chef_slide,.dish_slide {
+    flex: 0 0 calc((100% - (1.25rem * 1.5)) / 2);
+    min-width: 0;
+  }
+}
+
+@media (min-width: 991px) {
+  .chef_slide,.dish_slide {
+    flex: 0 0 calc((100% - (1.25rem * 2.5)) / 3);
+    min-width: 0;
+  }
+}
+@media (min-width: 1280px) {
+  .chef_slide,.dish_slide {
+    flex: 0 0 calc((100% - (1.25rem * 3.5)) / 4);
+    min-width: 0;
+  }
+}

@@ -7,7 +7,7 @@ type Props = {}
 
 function Footer({}: Props) {
   return (
-    <footer className='py-10 md:py-20 bg-main/10 dark:bg-main/75 px-12'>
+    <footer className='py-10 md:py-20 mt-auto bg-main/10 dark:bg-main/75 px-12'>
         <div className='container mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-10'>
             <Logo/>
             <div className='flex flex-col items-center lg:items-start gap-5'>
