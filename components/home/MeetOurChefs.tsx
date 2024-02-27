@@ -16,7 +16,7 @@ async function MeetOurChefs({}: Props) {
 نحن فخورون بأن نقدم لكم شيفاتنا الموهوبين والمتميزين، الذين يعملون بجد لإعداد أشهى الأطباق لكم. لدينا شيفات من مختلف الثقافات والخلفيات، ولكل منهم قصة فريدة ومميزة.</p>
             </div>
         </div>
-        <Chefs count={3} initialData={chefsData}/>
+        <Chefs showSlider={true} initialData={chefsData}/>
         <Link href={'/menu/chefs'} className='self-center text-slate-50 dark:text-stone-900 dark:hover:text-main font-bold bg-main px-3 py-2 rounded-2xl  transition duration-150 hover:bg-transparent hover:text-main'>المزيد!</Link>
     </div>
   )

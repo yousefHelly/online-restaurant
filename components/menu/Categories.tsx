@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Category } from './Category'
 import useCategories from '@/lib/api/useCategories'
 import LoadingErrorFetching from '../layout/LoadingErrorFetching'
@@ -7,21 +7,35 @@ import NotFound from '../layout/NotFound'
 import AdminCategory from '../(Admin)/categories/AdminCategory'
 import Link from 'next/link'
 import { PlusSquare } from 'lucide-react'
+import Slider from '../layout/Slider'
 
 type Props = {
   initialData?: Category[],
   count?: 'all' | number,
-  admin?: boolean
+  admin?: boolean,
+  showSlider?: boolean
 }
 
 
 
-function Categories({initialData, count = 'all', admin}: Props) {
+function Categories({initialData, count = 'all', admin, showSlider=false}: Props) {
   const {data, isLoading, isError} = useCategories(initialData)
   return (
     <>
     <LoadingErrorFetching data={data} isLoading={isLoading} isError={isError} name='تصنيفات'/>
-    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 md:w-full'>
+    {
+      showSlider&&<Slider showArrows={data&&data?.length>0 || false}>
+                    {
+                      data&&data?.length>0?data?.map((category, i)=>{
+                        return <div key={category.name} className='slide'>
+                            <Category key={i} name={category.name} image={category.categoryImg} amount={category.numOfMeals} chefs={category.numOfChefs}/>
+                        </div>
+                      }):<NotFound name='تصنيفات'/>
+                    }
+                  </Slider>               
+    }
+    {
+      !showSlider&&    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 md:w-full'>
       {
         (!admin && count!='all')?data&&data.length>0?data.map((category, i)=>{
           return(
@@ -48,6 +62,8 @@ function Categories({initialData, count = 'all', admin}: Props) {
         })
       }
     </div>
+    }
+
     </>
   )
 }

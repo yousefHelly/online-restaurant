@@ -58,10 +58,10 @@ async function MenuPage() {
   return (
     <main className="flex min-h-max flex-col items-start pb-5 md:pb-10 px-8 md:px-24 overflow-x-hidden">
         <FilterationTypeHeader filter='التصنيف' link='categories'>
-          {categroiesData?<Categories count={5} initialData={categroiesData}/>:<NotFound name='تصنيفات'/>}
+          {categroiesData?<Categories showSlider={true} initialData={categroiesData}/>:<NotFound name='تصنيفات'/>}
         </FilterationTypeHeader>
         <FilterationTypeHeader filter='الشيف' link='chefs'>
-          {chefsData?<Chefs count={4} initialData={chefsData}/>:<NotFound name='شيفات'/>}
+          {chefsData?<Chefs showSlider={true} initialData={chefsData}/>:<NotFound name='شيفات'/>}
         </FilterationTypeHeader>
         <div className='flex flex-col gap-10 w-full my-5'>
           <div className='flex justify-between items-center dark:text-stone-300'>

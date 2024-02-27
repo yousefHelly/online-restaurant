@@ -1,8 +1,8 @@
+import axios from "@/lib/api/axios"
 import NextAuth from "next-auth"
 import { Session } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from 'next-auth/providers/google'
-import axios from 'axios';
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
     providers:[
@@ -12,7 +12,7 @@ const handler = NextAuth({
                 password: { label: "password", type: "password" }
               },
               async authorize(credentials, req) {
-                const res =await axios.post<AuthResponse>(`https://localhost:7166/api/Auth/token`, JSON.stringify({email:credentials?.email, password:credentials?.password}), { headers: { "Content-Type": "application/json" }})
+                const res =await axios.post<AuthResponse>(`/api/Auth/token`, JSON.stringify({email:credentials?.email, password:credentials?.password}), { headers: { "Content-Type": "application/json" }})
                 const user =  res.data
                 if(user && res.data.isAuthenticated){
                     return user
@@ -40,7 +40,7 @@ const handler = NextAuth({
             formData.append('UserName', user.name!)
             formData.append('Value', 'google')
             formData.append('UserImg', (profile as any).picture||user.image!)
-            axios.post(`https://localhost:7166/api/auth/gmail`,
+            axios.post(`/api/auth/gmail`,
             formData
             )
               return true

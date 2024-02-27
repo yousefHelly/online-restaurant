@@ -7,20 +7,33 @@ import NotFound from '../layout/NotFound'
 import { PlusSquare } from 'lucide-react'
 import Link from 'next/link';
 import AdminChef from '../(Admin)/chefs/AdminChef'
+import Slider from '../layout/Slider'
 
 type Props = {
   initialData?:Chef[],
   count?: 'all' | number,
-  admin?: boolean
+  admin?: boolean,
+  showSlider?: boolean
 }
 
-function Chefs({initialData, count = 'all', admin}: Props) {
+function Chefs({initialData, count = 'all', admin, showSlider=false}: Props) {
   const {data, isLoading, isError} = useChefs(initialData)
   
   return (
     <>
     <LoadingErrorFetching data={data} isLoading={isLoading} isAdmin={admin} isError={isError} name='شيفات'/>
-    <div className={`grid grid-cols-4 gap-5 w-full`}>
+    {showSlider&&
+    <Slider className='h-[350px]' showArrows={data&&data?.length>0 || false}>
+      {
+        data&&data?.length>0?data?.map((chef)=>{
+          return <div key={chef.name} className='chef_slide'>
+            <Chef key={chef.name} name={chef.name} category={chef.categoryName} mealsCount={chef.numOfMeals} rating={chef.rate} image={chef.chefImgUrl} rateNum={chef.numOfRate}/>
+          </div>
+        }):<NotFound name='شيفات'/>
+      }
+    </Slider>
+    }{!showSlider&&
+      <div className={`grid grid-cols-4 gap-5 w-full`}>
       {
         !admin&&
           count!='all'?data&&data.length>0?data.map((chef, i)=>{
@@ -43,6 +56,7 @@ function Chefs({initialData, count = 'all', admin}: Props) {
         })
       }
     </div>
+    }
     </>
   )
 }
