@@ -8,7 +8,7 @@ import React from 'react'
 export async function generateMetadata(): Promise<Metadata> {
   const categroiesData = await getCategories()
   let names: string[] = []
-  categroiesData?.map((cat)=>{
+  categroiesData?.categories?.map((cat)=>{
     names.push(cat.name)
   })
   return {
@@ -28,7 +28,7 @@ async function CategoriesPage() {
     <main className="flex min-h-max flex-col items-start pb-5 md:pb-20 px-8 md:px-24 overflow-x-hidden">
         <PageHeaderWithoutLink header='كل التصنيفات'>
           {
-            categroiesData?<Categories initialData={categroiesData}/>:<NotFound name='تصنيفات'/>
+            categroiesData?<Categories initialData={categroiesData} size={10}/>:<NotFound name='تصنيفات'/>
           }
         </PageHeaderWithoutLink>
     </main>

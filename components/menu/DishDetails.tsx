@@ -18,7 +18,7 @@ function DishDetails({dish}: Props) {
     <>
         <div className='col-span-full md:col-span-1 h-[325px]'>
             <Image
-            src={dish?.data?.image || ""}
+            src={dish?.data?.image||''}
             alt={dish?.data?.name || ""}
             className='object-cover rounded-2xl h-full w-[400px]'
             width={400}

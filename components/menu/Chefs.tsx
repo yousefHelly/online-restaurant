@@ -8,24 +8,27 @@ import { PlusSquare } from 'lucide-react'
 import Link from 'next/link';
 import AdminChef from '../(Admin)/chefs/AdminChef'
 import Slider from '../layout/Slider'
+import { useSearchParams } from 'next/navigation'
+import PaginationProvider from '@/lib/PaginationProvider'
 
 type Props = {
-  initialData?:Chef[],
-  count?: 'all' | number,
+  initialData?:{chefs:Chef[]}&WithPagination,
   admin?: boolean,
-  showSlider?: boolean
+  showSlider?: boolean,
+  size?: number
 }
 
-function Chefs({initialData, count = 'all', admin, showSlider=false}: Props) {
-  const {data, isLoading, isError} = useChefs(initialData)
-  
+function Chefs({initialData, admin, showSlider=false, size}: Props) {
+  const {get} = useSearchParams()
+
+  const {data, isLoading, isError} = useChefs(initialData, parseInt(get('page') || '1'), size)
   return (
     <>
     <LoadingErrorFetching data={data} isLoading={isLoading} isAdmin={admin} isError={isError} name='شيفات'/>
     {showSlider&&
-    <Slider className='h-[350px]' showArrows={data&&data?.length>0 || false}>
+    <Slider className='h-[350px]' showArrows={data&&data?.chefs.length>0 || false}>
       {
-        data&&data?.length>0?data?.map((chef)=>{
+        data&&data?.chefs.length>0?data?.chefs.map((chef)=>{
           return <div key={chef.name} className='chef_slide'>
             <Chef key={chef.name} name={chef.name} category={chef.categoryName} mealsCount={chef.numOfMeals} rating={chef.rate} image={chef.chefImgUrl} rateNum={chef.numOfRate}/>
           </div>
@@ -33,12 +36,10 @@ function Chefs({initialData, count = 'all', admin, showSlider=false}: Props) {
       }
     </Slider>
     }{!showSlider&&
+      <PaginationProvider totalPages={data?.numOfPages || 1} showPagination={data&&data.chefs.length>0}>
       <div className={`grid grid-cols-4 gap-5 w-full`}>
       {
-        !admin&&
-          count!='all'?data&&data.length>0?data.map((chef, i)=>{
-            return i+1<=count&&<Chef key={chef.name} name={chef.name} category={chef.categoryName} mealsCount={chef.numOfMeals} rating={chef.rate} image={chef.chefImgUrl} rateNum={chef.numOfRate}/>
-          }):(!isLoading && !isError && !admin)&&<NotFound name='شيفات'/>:!admin&&data&&data.length>0?data.map((chef)=>{
+         !admin&&data&&data.chefs.length>0?data.chefs.map((chef)=>{
             return <Chef key={chef.name} name={chef.name} category={chef.categoryName} mealsCount={chef.numOfMeals} rating={chef.rate} image={chef.chefImgUrl} rateNum={chef.numOfRate}/>
           }):(!isLoading&& !isError && !admin)&&<NotFound name='شيفات'/>
       }
@@ -51,11 +52,12 @@ function Chefs({initialData, count = 'all', admin, showSlider=false}: Props) {
       </Link>
       }
       {
-        admin&&data&&data.length>0&&data.map((chef)=>{
+        admin&&data&&data.chefs.length>0&&data.chefs.map((chef)=>{
           return <AdminChef key={chef.name} id={chef.id} name={chef.name} category={chef.categoryName} mealsCount={chef.numOfMeals} rating={chef.rate} image={chef.chefImgUrl} rateNum={chef.numOfRate}/>
         })
       }
-    </div>
+      </div>
+    </PaginationProvider>
     }
     </>
   )

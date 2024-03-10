@@ -36,12 +36,12 @@ function useOrders() {
     })
   }
 
-  export function useAllOrders(initialData: AllUsersOrders[]) {
+  export function useAllOrders(initialData: {orders:AllUsersOrders[]}&WithPagination, page?: number, size?: number) {
     useAxiosAuth()
-    const {data, isLoading, isError} = useQuery<AllUsersOrders[]>({
+    const {data, isLoading, isError} = useQuery<{orders:AllUsersOrders[]}&WithPagination>({
           queryKey:['all-orders'],
           initialData:initialData,
-          queryFn:()=>axiosAuth.get(`/api/Order/GetAllOrders`).then((res)=>res.data)
+          queryFn:()=>axiosAuth.get(`/api/Order/GetAllOrders?Page=${page??1}&Size=${size??8}`).then((res)=>res.data)
         })
     return {data, isLoading, isError}
   }

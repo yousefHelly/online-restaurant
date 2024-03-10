@@ -5,11 +5,11 @@ import { useSession } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import useAxiosAuth from '../hooks/useAxiosAuth';
 
-function useWishlist() {
+function useWishlist(page?: number, size?: number) {
   useAxiosAuth()
   const {data, isLoading, isError} = useQuery<Wishlist>({
         queryKey:['dishes', 'wishlist'],
-        queryFn:()=>axiosAuth.get(`/api/wishlist`).then((res)=>res.data)
+        queryFn:()=>axiosAuth.get(`/api/wishlist?Page=${page??1}&Size=${size??8}`).then((res)=>res.data)
       })
   return {data, isLoading, isError}
 }

@@ -1,7 +1,7 @@
-export async function getUsers(): Promise<User[]|undefined> {
+export async function getUsers(): Promise<{users:User[]}&WithPagination|undefined> {
     try{
     const text = await (await fetch(`${process.env.BACK_END_URL}/api/Auth/GetAllUsers`, {next:{revalidate:0}})).text()
-    const data: User[] = JSON.parse(text)
+    const data: {users:User[]}&WithPagination = JSON.parse(text)
     return data
     }
     catch(err) {
