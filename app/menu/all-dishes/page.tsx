@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 }
 
 async function AllDishesPage() {
-  const categroiesData = await getCategories()
-  const chefsData = await getChefs()
+  const categroiesData = await getCategories(1, 100)
+  const chefsData = await getChefs(1, 100)
   const dishesData = await getDishes()
   return (
     <main className='flex min-h-max flex-col items-start pb-10 md:pb-20 px-8 md:px-24 overflow-hidden'>

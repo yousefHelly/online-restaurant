@@ -4,11 +4,9 @@ import { motion } from 'framer-motion';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import axios from '@/lib/api/axios';
-import  emailjs  from 'emailjs-com';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
-import { Eye, EyeOff, XOctagon } from 'lucide-react';
-import { z } from 'zod';
+import { XOctagon } from 'lucide-react';
 import  Link  from 'next/link';
 import ShowHidePassword from '../input/ShowHidePassword';
 import { Register, RegisterSchema } from '@/model/Register';
@@ -47,17 +45,7 @@ function DataRegisteration({setVerCode, setLoginData, setStep}: Props) {
                     }>('/api/Auth/register',bodyFormData,{headers: { "Content-Type": "multipart/form-data" }})
                     .then(async(res)=>{
                         setVerCode(res.data.verificationCode)
-                        await emailjs.send(
-                            process.env.EMAIL_SERVICE_ID!,
-                            process.env.EMAIL_TEMPLATE_ID!,
-                            {
-                                from_name: "GO fast food",
-                                to_name: vals.firstName,
-                                message: `${res.data.verificationCode} : رمز تأكيد بريدك الإلكتروني هو`,
-                                reply_to: vals.email
-                            },
-                            process.env.EMAIL_USER_ID!
-                        );   
+                          
                     }).then(()=>{setLoginData({email:vals.email, password:vals.password});setStep(2);}).catch((err: AxiosError)=>toast.error(err.response?.data as string))
                 }}
                 >{

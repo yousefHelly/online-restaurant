@@ -25,13 +25,13 @@ type Props = {
         search: string}
     )=>void,
     categories: {
-        data: Category[] | undefined;
+        data: { categories: Category[] } & WithPagination | undefined;
         isLoading: boolean;
         isError: boolean;
     },
     chefs: {
-        data: Chef[] | undefined;
-        isLoading: boolean;
+      data: { chefs: Chef[] } & WithPagination | undefined;
+      isLoading: boolean;
         isError: boolean;
     },
     dishes: {
@@ -44,11 +44,11 @@ type Props = {
 function AllDishesFilters({categories, chefs, dishes, filterList, setFilterList}: Props) {
     const queryClient = useQueryClient()
   return (
-    <aside className='hidden lg:flex flex-col border-l dark:border-stone-600 h-screen'>
+    <aside className='hidden lg:flex flex-col border-l dark:border-stone-600 min-h-screen'>
           {/* filter content */}    
           <FilterAccordion open={true} name='التصنيفات'  setFilterArray={()=>setFilterList({...filterList, categories:[]})} selectedCount={filterList.categories.length>0?filterList.categories.length : undefined} queryClient={queryClient}>
             {
-              categories.data&&categories.data.map((category, i)=>{                
+              categories.data&&categories.data.categories.map((category, i)=>{                
                 return(
                   <motion.div onClick={
                     !filterList.categories.includes(category.name)?
@@ -70,7 +70,7 @@ function AllDishesFilters({categories, chefs, dishes, filterList, setFilterList}
           </FilterAccordion>
           <FilterAccordion open={true} name='الشيفات' setFilterArray={()=>setFilterList({...filterList, chefs:[]})} selectedCount={filterList.chefs.length>0?filterList.chefs.length : undefined} queryClient={queryClient}>
           {
-            chefs.data&&chefs.data.map((chef, i)=>{
+            chefs.data&&chefs.data.chefs.map((chef, i)=>{
               return(
                 <motion.div onClick={
                   !filterList.chefs.includes(chef.name)?
