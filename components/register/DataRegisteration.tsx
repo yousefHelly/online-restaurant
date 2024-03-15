@@ -3,26 +3,21 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
-import axios from '@/lib/api/axios';
-import  emailjs  from 'emailjs-com';
-import { AxiosError } from 'axios';
-import toast from 'react-hot-toast';
-import { Eye, EyeOff, XOctagon } from 'lucide-react';
-import { z } from 'zod';
+import { XOctagon } from 'lucide-react';
 import  Link  from 'next/link';
 import ShowHidePassword from '../input/ShowHidePassword';
 import { Register, RegisterSchema } from '@/model/Register';
+import { useRegister } from '@/lib/api/useAuth';
 
 type Props = {
-    setVerCode: (verCode: string)=>void,
     setLoginData: ({email, password}:{email: string, password: string})=>void,
     setStep: (step: 1|2|3)=>void
 }
 
-function DataRegisteration({setVerCode, setLoginData, setStep}: Props) {
+function DataRegisteration({setLoginData, setStep}: Props) {
     
     const [eyeSign, setEyeSign] = useState<boolean>(false)
-
+    const register = useRegister()
   return (
     <motion.div key={1} exit={{opacity:0, x:25}} className='w-full lg:w-4/5 lg:px-5 lg:mx-auto'>
                 <h3 className='hidden lg:block text-3xl font-bold text-header dark:text-stone-300 font-header'>إنشاء حساب جديد</h3>
@@ -36,29 +31,13 @@ function DataRegisteration({setVerCode, setLoginData, setStep}: Props) {
                 }}
                 validationSchema={toFormikValidationSchema(RegisterSchema)}
                 onSubmit={async(vals)=>{
-                    const bodyFormData = new FormData();
-                    bodyFormData.append('FirstName', vals.firstName)
-                    bodyFormData.append('LastName', vals.lastName)
-                    bodyFormData.append('UserName', vals.userName)
-                    bodyFormData.append('Email', vals.email)
-                    bodyFormData.append('Password', vals.password)
-                    await axios.post<AuthResponse&{
-                        verificationCode: string
-                    }>('/api/Auth/register',bodyFormData,{headers: { "Content-Type": "multipart/form-data" }})
-                    .then(async(res)=>{
-                        setVerCode(res.data.verificationCode)
-                        await emailjs.send(
-                            process.env.EMAIL_SERVICE_ID!,
-                            process.env.EMAIL_TEMPLATE_ID!,
-                            {
-                                from_name: "GO fast food",
-                                to_name: vals.firstName,
-                                message: `${res.data.verificationCode} : رمز تأكيد بريدك الإلكتروني هو`,
-                                reply_to: vals.email
-                            },
-                            process.env.EMAIL_USER_ID!
-                        );   
-                    }).then(()=>{setLoginData({email:vals.email, password:vals.password});setStep(2);}).catch((err: AxiosError)=>toast.error(err.response?.data as string))
+                    register.mutate(vals,{
+                        onSuccess(data, variables, context) {
+                            const {email, password} = vals
+                            setLoginData({email, password})
+                            setStep(2)
+                        },
+                    })
                 }}
                 >{
                     ({errors,touched, isSubmitting, values, initialValues})=>{
