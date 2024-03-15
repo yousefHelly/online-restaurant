@@ -18,7 +18,7 @@ function Addresses({}: Props) {
     <div className='w-full flex flex-col justify-start items-start gap-3 lg:px-8'>
         <AnimatePresence mode='wait'>
         {
-        data&&data.length>0?data.map((address, i)=>{
+        data&&data.addresses.length>0?data.addresses.map((address, i)=>{
             return (
             <AddressItem key={address.id} address={address} i={i} setIsOpen={setIsOpen} setSelectedAddress={setSelectedAddress}/>
             )
