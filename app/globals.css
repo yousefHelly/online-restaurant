@@ -149,3 +149,7 @@ meter::-webkit-meter-optimum-value{
     min-width: 0;
   }
 }
+.m-326d024a:where([data-active]){
+  background-color: #ffa006;
+
+}

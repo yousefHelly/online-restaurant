@@ -7,11 +7,12 @@ import useAxiosAuth from '../hooks/useAxiosAuth';
 import { startTransition } from 'react';
 import { revalidateCategories } from '@/app/action';
 
-export default function useCategories(initialData?: Category[]) {
-    const {data, isLoading, isError} = useQuery<Category[]>({
-        queryKey:'categories',
+export default function useCategories(initialData?: {categories:Category[]}&WithPagination, page?: number, size?: number) {
+    const {data, isLoading, isError} = useQuery<{categories:Category[]}&WithPagination>({
+        queryKey:['categories', page],
         initialData:initialData,
-        queryFn:()=>axios.get(`/api/Category`).then((res)=>res.data)
+        keepPreviousData:true,
+        queryFn:()=>axios.get(`/api/Category?Page=${page??1}&Size=${size??8}`).then((res)=>res.data)
       })
       return {data, isLoading, isError}
 }

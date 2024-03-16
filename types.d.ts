@@ -89,13 +89,15 @@ type MealCard =  {
 
 type Dishes  = {
     meals:MealCard[], 
-    maxprice: number
+    maxprice: number,
+    nextPage: boolean
 }
 
 type Wishlist = {
-    wishListId: number,
-    meals?: MealCard[]
-}[]
+    wishListMeals: { wishListId: number, meals: MealCard[] }[],
+    nextPage: boolean,
+    numOfPages: number
+}
 
 type Sort = 'PD' | 'PA' | 'SD' | 'RD'
 
@@ -220,4 +222,9 @@ type User = {
     userName: string,
     userImgUrl: string | null,
     role: Role
+}
+
+type WithPagination = {
+    nextPage: boolean,
+    numOfPages: number
 }

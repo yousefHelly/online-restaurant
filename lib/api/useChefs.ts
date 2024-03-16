@@ -7,11 +7,12 @@ import toast from 'react-hot-toast';
 import { revalidateChefs } from '@/app/action';
 import { startTransition } from 'react';
 
-function useChefs(initialData?: Chef[]) {
-    const {data, isLoading, isError} = useQuery<Chef[]>({
-        queryKey:'chefs',
+function useChefs(initialData?: {chefs:Chef[]}&WithPagination, page?: number, size?: number) {
+    const {data, isLoading, isError} = useQuery<{chefs:Chef[]}&WithPagination>({
+        queryKey:['chefs', page],
         initialData:initialData,
-        queryFn:()=>axios.get(`/api/Chef/GetAllChefs`).then((res)=>res.data)
+        keepPreviousData:true,
+        queryFn:()=>axios.get(`/api/Chef/GetAllChefs?Page=${page??1}&Size=${size??8}`).then((res)=>res.data)
       })
       return {data, isLoading, isError}
 }
@@ -27,7 +28,7 @@ export function useChef(id: string|undefined) {
     })
     const chefs =  useChefs()
     if(id){
-      const chef = chefs.data?.find((chef)=>chef.id===+id)
+      const chef = chefs.data?.chefs?.find((chef)=>chef.id===+id)
       const chefCateogryName = chef?.categoryName
       const queriedChef = {
         ...data,

@@ -13,8 +13,8 @@ import { AnimatePresence } from 'framer-motion'
 import FiltersModal from './FiltersModal'
 
 type Props  = {
-    initialCategories?: Category[],
-    initialChefs?: Chef[],
+    initialCategories?: { categories: Category[] } & WithPagination,
+    initialChefs?: { chefs: Chef[] } & WithPagination,
     initialDishes?: Dishes
 }
 

@@ -4,14 +4,19 @@ import React from 'react'
 import { Table } from '@mantine/core'
 import { Search } from 'lucide-react'
 import UserItem from './UserItem'
+import { useSearchParams } from 'next/navigation'
+import PaginationProvider from '@/lib/PaginationProvider'
 
 type Props = {
-    initialData: User[]
+    initialData: {users:User[]}&WithPagination,
+    size?: number
 }
 
-function AllUsers({initialData}: Props) {
-    const users = useUsers(initialData)
+function AllUsers({initialData, size}: Props) {
+  const {get} = useSearchParams()
+    const users = useUsers(initialData, parseInt(get('page') || '1'), size)
     return (
+      <PaginationProvider totalPages={users.data?.numOfPages || 1} showPagination={users.data&&users?.data?.users.length>0}>
         <div className='flex flex-col gap-5'>
             <div className='w-full self-center flex items-center justify-center'>
                 <input type="search" placeholder='إبحث عن الأعضاء...' className='border dark:border-stone-600 dark:text-stone-300 px-3 w-1/3 py-2 rounded-r-md focus-within:border-dotted focus-within:border-main dark:focus-within:border-main focus-within:outline-none' />
@@ -30,11 +35,12 @@ function AllUsers({initialData}: Props) {
               </Table.Thead>
               <Table.Tbody>
                 {
-                    users?.data?.map((u)=><UserItem key={u.userId} userData={u}/>)
+                    users?.data?.users?.map((u)=><UserItem key={u.userId} userData={u}/>)
                 }
               </Table.Tbody>
         </Table>
-    </div>
+        </div>
+      </PaginationProvider>
   )
 }
 

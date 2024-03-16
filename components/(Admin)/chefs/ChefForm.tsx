@@ -25,7 +25,7 @@ function ChefForm({id, ChefData}: Props) {
     const [catoptions, setCatOptions] = useState<{value: number, label: string}[]>([])
     const [isDisabled, setIsDisabled] = useState<boolean>(false)
     const options = useMemo(() => {
-      return categories.data?.map((cat) => ({
+      return categories.data?.categories.map((cat) => ({
         value: cat.id,
         label: cat.name,
       })) || [];

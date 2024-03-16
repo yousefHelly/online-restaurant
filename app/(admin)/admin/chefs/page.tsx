@@ -13,7 +13,7 @@ async function AllChefsPage() {
   const chefsData = await getChefs()
   return (
     <PageHeaderWithoutLink header='كل الشيفات'>
-        <Chefs admin={true} initialData={chefsData}/>
+        <Chefs admin={true} initialData={chefsData} size={7}/>
     </PageHeaderWithoutLink>
   )
 }

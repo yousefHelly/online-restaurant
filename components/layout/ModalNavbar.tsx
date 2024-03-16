@@ -33,7 +33,7 @@ function ModalNavbar({isOpen, setIsOpen}: Props) {
     className='relative z-[999]'
   >
     <div className="fixed inset-0 dark:bg-stone-950/30 bg-black/30 backdrop-blur-md" aria-hidden="true" />
-    <motion.div initial={{x:-25, opacity:0}} animate={{x:0,opacity:1}} exit={{x:-25, opacity:0}} className="fixed left-0 top-0 p-4 h-screen flex w-64 items-start justify-start bg-stone-100 dark:bg-stone-800 border-r dark:border-stone-600">
+    <motion.div initial={{x:-25, opacity:0}} animate={{x:0,opacity:1}} exit={{x:-25, opacity:0}} className="fixed left-0 top-0 p-4 min-h-screen flex w-64 items-start justify-start bg-stone-100 dark:bg-stone-800 border-r dark:border-stone-600">
       <Dialog.Panel className='w-full py-2 px-5'>
         <div className='w-full flex flex-col items-center gap-5'>
         <Logo onClick={()=>setIsOpen(false)} color={'text-main transition'} iconColor={`text-stone-600 dark:text-main`} fontSize='text-xl font-bold' iconSize='24'/>

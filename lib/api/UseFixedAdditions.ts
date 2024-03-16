@@ -7,12 +7,12 @@ import toast from 'react-hot-toast';
 import { startTransition } from 'react';
 import { revalidateFixedAdditions } from '@/app/action';
 
-function useFixedAdditions(initialData?: FixedAddition[]) {
+function useFixedAdditions(initialData?: {additions:FixedAddition[]}&WithPagination, page?: number, size?: number) {
 
-  const {data, isLoading, isError} = useQuery<FixedAddition[]>({
+  const {data, isLoading, isError} = useQuery<{additions:FixedAddition[]}&WithPagination>({
         queryKey:['dishes','fixed additions'],
         initialData:initialData,
-        queryFn:()=>axiosAuth.get(`/api/StaticAddition`).then((res)=>res.data),
+        queryFn:()=>axiosAuth.get(`/api/StaticAddition?Page=${page??1}&Size=${size??8}`).then((res)=>res.data),
       })
   return {data, isLoading, isError}
 }

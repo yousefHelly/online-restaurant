@@ -14,7 +14,7 @@ async function AdminCategories() {
 
   return (
     <PageHeaderWithoutLink header='كل التصنيفات'>
-      <Categories admin={true} initialData={categroiesData}/>
+      <Categories admin={true} initialData={categroiesData} size={9}/>
     </PageHeaderWithoutLink>
   )
 }

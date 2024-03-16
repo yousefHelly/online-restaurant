@@ -12,7 +12,7 @@ async function AllSideDishesPage() {
   const sideDishesData = await getFixedAdditions()
   return (
     <PageHeaderWithoutLink header='كل الأطباق الجانبية'>
-      <AllSideDishes initialData={sideDishesData}/>
+      <AllSideDishes initialData={sideDishesData} size={7}/>
     </PageHeaderWithoutLink>
   )
 }

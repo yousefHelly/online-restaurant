@@ -36,7 +36,7 @@ type Choice = {
 function DishForm({name, initialData:DishData}: Props) {
   const arabicName = name ? convert(name) : undefined
     const [preview, setPreview] = useState<{url: null | string}>({url:DishData?.image||null})
-    const categories = useCategories()
+    const categories = useCategories(undefined, 1, 100)
     const postDish = PostDish()
     const updateDish =  UpdateDish(arabicName || "")
     const deleteAdds = DeleteAdditions()
@@ -44,7 +44,7 @@ function DishForm({name, initialData:DishData}: Props) {
     const [catoptions, setCatOptions] = useState<{value: number, label: string}[]>([])
     //category options
     const options = useMemo(() => {
-      return categories.data?.map((cat) => ({
+      return categories.data?.categories?.map((cat) => ({
         value: cat.id,
         label: cat.name,
       })) || [];

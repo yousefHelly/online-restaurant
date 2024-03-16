@@ -13,12 +13,12 @@ import { getDishes } from '@/lib/api/server api calls/getDishes'
 export async function generateMetadata(): Promise<Metadata> {
   const categroiesData = await getCategories()
   let catnames: string[] = []
-  categroiesData?.map((cat)=>{
+  categroiesData?.categories?.map((cat)=>{
     catnames.push(cat.name)
   })
   const chefsData = await getChefs()
   let chefsnames: string[] = []
-  chefsData?.map((chef)=>{
+  chefsData?.chefs.map((chef)=>{
     chefsnames.push(chef.name)
   })
   const dishesData = await getDishes()

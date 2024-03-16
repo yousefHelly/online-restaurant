@@ -9,7 +9,7 @@ import React from 'react'
 export async function generateMetadata(): Promise<Metadata> {
   const chefsData = await getChefs()
   let names: string[] = []
-  chefsData?.map((ch)=>{
+  chefsData?.chefs?.map((ch)=>{
     names.push(ch.name)
   })
   return {

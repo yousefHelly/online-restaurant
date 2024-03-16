@@ -2,15 +2,14 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { axiosAuth } from './axios';
 import useAxiosAuth from '../hooks/useAxiosAuth';
-import toast from 'react-hot-toast';
 import { useSession } from 'next-auth/react';
 
-function useUsers(initialData: User[]) {
+function useUsers(initialData: {users:User[]}&WithPagination, page?: number, size?: number) {
     useAxiosAuth()
-  const {data, isLoading, isError} = useQuery<User[]>({
+  const {data, isLoading, isError} = useQuery<{users:User[]}&WithPagination>({
         queryKey:['admin','allUsers'],
         initialData:initialData,
-        queryFn:()=>axiosAuth.get(`/api/Auth/GetAllUsers`).then((res)=>res.data),
+        queryFn:()=>axiosAuth.get(`/api/Auth/GetAllUsers?Page=${page??1}&Size=${size??8}`).then((res)=>res.data),
       })
   return {data, isLoading, isError}
 }
