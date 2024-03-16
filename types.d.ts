@@ -111,6 +111,12 @@ type Address = {
     phoneNumber: string
 }
 
+type Addresses = {
+    addresses: Address[],
+    nextPage: boolean,
+    numOfPages: number
+}
+
 type AuthResponse = {
     id:string,
     message: string | null,

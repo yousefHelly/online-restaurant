@@ -20,6 +20,7 @@ import ModalNavbar from './ModalNavbar'
 import ThemeIcon from './ThemeIcon';
 import SearchIcon from './SearchIcon'
 import CartModal from './CartModal'
+import { useMantineColorScheme } from '@mantine/core'
 type Props = {}
 
 function Navbar({}: Props) {
@@ -41,10 +42,16 @@ function Navbar({}: Props) {
     const [hovered, setHovered] = useState(pathname)
     const [darkMode, setDarkMode] = useState<boolean>(typeof window !='undefined'&&window.localStorage.getItem('theme')==='dark'?true:false)
     const {setTheme} = useTheme()
+    const {setColorScheme} = useMantineColorScheme()
     const [isOpen, setIsOpen] = useState(false)
     const [cartModal, setCartModal] = useState(false)
-    darkMode?setTheme('dark'):setTheme('light')
-
+    if(darkMode){
+        setTheme('dark')
+        setColorScheme('dark')
+    } else{
+        setTheme('light')
+        setColorScheme('light')
+    }
     useUpdateEmailSession()
   return (
     <>

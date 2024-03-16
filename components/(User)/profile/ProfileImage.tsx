@@ -1,6 +1,6 @@
 'use client'
-import { UpdateProfileImage } from '@/lib/api/useUser';
-import { Trash2Icon } from 'lucide-react';
+import { DeleteProfileImage, UpdateProfileImage } from '@/lib/api/useUser';
+import { Info, Trash2Icon } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
@@ -11,6 +11,7 @@ function ProfileImage({}: Props) {
     const {data:session} = useSession()
     const [image, setImage] = useState<FileList | null>()
     const updateImage = UpdateProfileImage()
+    const deleteImage = DeleteProfileImage()
     useEffect(()=>{
         if(image!=null){
           updateImg(image)
@@ -44,8 +45,18 @@ function ProfileImage({}: Props) {
                         />
                 </div>
             }
-                <p className='text-lighterText font-bold text-sm my-2'>{session?.user.userName}</p>
-            {session?.user.provider==='credentials'&&session?.user.userImgUrl&&<Trash2Icon onClick={()=>updateImg(null)} className='text-red-500 cursor-pointer hover:bg-red-500 hover:text-slate-50 dark:hover:text-stone-900 transition duration-150 p-2 rounded-full w-10 h-10 flex items-center justify-center'/>}
+            <p className='text-lighterText font-bold text-sm my-1'>{session?.user.userName}</p>
+            {session?.user.provider!='google'&&<span className='flex items-center gap-2 mt-2 pb-1 text-xs font-bold text-lighterText dark:text-stone-400'><Info size={14}/> إضغط علي الصورة لتفوم بتحديثها</span>}
+            {session?.user.provider!='google'&&session?.user.userImgUrl&&<button onClick={()=>{
+                deleteImage.mutate(undefined,{
+                    onSuccess(data, variables, context) {
+                        setImage(null)
+                    },
+                })
+                }} className='mx-auto flex gap-2 items-center justify-center bg-red-500 text-slate-50 transition duration-150 hover:bg-red-600 rounded-md px-2 py-1 my-1 text-xs' type="submit">
+                <Trash2Icon/>
+                حذف الصورة الشخصية
+            </button>}
         </div>
   )
 }

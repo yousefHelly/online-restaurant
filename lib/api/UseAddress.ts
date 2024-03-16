@@ -6,9 +6,9 @@ import toast from 'react-hot-toast';
 
 function useAddress() {
 
-  const {data, isLoading, isError} = useQuery<Address[]>({
+  const {data, isLoading, isError} = useQuery<Addresses>({
         queryKey:['profile','address'],
-        queryFn:()=>axiosAuth.get(`/api/Address`).then((res)=>res.data),
+        queryFn:()=>axiosAuth.get(`/api/Address?page=1&size=16`).then((res)=>res.data),
       })
   return {data, isLoading, isError}
 }

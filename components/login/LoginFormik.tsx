@@ -7,7 +7,6 @@ import { XOctagon } from 'lucide-react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
-import { PasswordInput } from '@mantine/core';
 
 type Props = {
     searchParams?: Record<'callbackUrl' | 'error', string>;
@@ -45,6 +44,7 @@ function LoginFormik({searchParams}: Props) {
                         <ShowHidePassword eyeSign={eyeSign} setEyeSign={setEyeSign}/>
                     </div>
                     {(errors.password && touched.password)&&<span title='خطأ' className='flex items-center gap-1 text-xs text-red-500 dark:text-red-600 font-bold'><XOctagon size={16} className='mt-1'/><ErrorMessage name='password' id='password'/></span>}
+                    <Link href={'/reset-password'} className='text-xs font-bold py-1 text-stone-300 dark:text-stone-300 lg:text-lighterText lg:dark:text-stone-400 hover:underline'>نسيت كلمة المرور؟</Link>
                 </div>
                 <button 
                 disabled={

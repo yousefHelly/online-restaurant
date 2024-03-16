@@ -6,6 +6,7 @@ import { Search } from 'lucide-react'
 import { spotlight } from '@mantine/spotlight'
 import { useTheme } from 'next-themes'
 import ThemeIcon from './../layout/ThemeIcon';
+import { useMantineColorScheme } from '@mantine/core'
 
 type Props = {}
 
@@ -30,7 +31,14 @@ function AdminNavBar({}: Props) {
   const memoizedSearch = useMemo(() => <SearchComponent onClick={() => spotlight.open()} />, []);
   const [darkMode, setDarkMode] = useState<boolean>(typeof window !='undefined'&&window.localStorage.getItem('theme')==='dark'?true:false)
   const {setTheme} = useTheme()
-  darkMode?setTheme('dark'):setTheme('light')
+  const { setColorScheme } = useMantineColorScheme()
+  if(darkMode){
+    setTheme('dark')
+    setColorScheme('dark')
+} else{
+    setTheme('light')
+    setColorScheme('light')
+}
   return (
     <nav className=' bg-stone-800 dark:bg-stone-900 h-[8%] flex justify-between items-center mb-2 pr-1'>
       {memoizedSearch}
