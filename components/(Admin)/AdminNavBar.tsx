@@ -1,14 +1,13 @@
-'use client'
-import React, { useEffect, useMemo, useState } from 'react'
-import SearchDialog from '../layout/SearchDialog'
-import UserPopover from '../(User)/layout/UserPopover'
-import { Search } from 'lucide-react'
-import { spotlight } from '@mantine/spotlight'
-import { useTheme } from 'next-themes'
-import ThemeIcon from './../layout/ThemeIcon';
-import { useMantineColorScheme } from '@mantine/core'
+"use client";
+import React, { useEffect, useMemo, useState } from "react";
+import SearchDialog from "../layout/SearchDialog";
+import UserPopover from "../(User)/layout/UserPopover";
+import { Search } from "lucide-react";
+import { spotlight } from "@mantine/spotlight";
+import { useTheme } from "next-themes";
+import ThemeIcon from "./../layout/ThemeIcon";
 
-type Props = {}
+type Props = {};
 
 type SearchComponentProps = {
   onClick: () => void;
@@ -22,35 +21,50 @@ const SearchComponent = React.memo(({ onClick }: SearchComponentProps) => (
     }}
     className='bg-stone-700 flex gap-5 items-center w-80 h-10 rounded-md px-3 py-2 cursor-pointer hover:bg-stone-600 transition duration-150'
   >
-    <Search className='text-stone-800'/>
+    <Search className='text-stone-800' />
     <span className='text-lighterText text-sm'>إبحث هنا...</span>
   </div>
 ));
-SearchComponent.displayName = 'SearchComponent';
+SearchComponent.displayName = "SearchComponent";
 function AdminNavBar({}: Props) {
-  const memoizedSearch = useMemo(() => <SearchComponent onClick={() => spotlight.open()} />, []);
-  const [darkMode, setDarkMode] = useState<boolean>(typeof window !='undefined'&&window.localStorage.getItem('theme')==='dark'?true:false)
-  const {setTheme} = useTheme()
-  const { setColorScheme } = useMantineColorScheme()
-  if(darkMode){
-    setTheme('dark')
-    setColorScheme('dark')
-} else{
-    setTheme('light')
-    setColorScheme('light')
-}
+  const memoizedSearch = useMemo(
+    () => <SearchComponent onClick={() => spotlight.open()} />,
+    []
+  );
+  const [darkMode, setDarkMode] = useState<boolean>(
+    typeof window != "undefined" &&
+      window.localStorage.getItem("theme") === "dark"
+      ? true
+      : false
+  );
+  const { setTheme } = useTheme();
+  if (darkMode && typeof document != "undefined") {
+    setTheme("dark");
+    document
+      .querySelector("html")
+      ?.setAttribute("data-mantine-color-scheme", "dark");
+  } else if (typeof document != "undefined") {
+    setTheme("light");
+    document
+      .querySelector("html")
+      ?.setAttribute("data-mantine-color-scheme", "light");
+  }
   return (
     <nav className=' bg-stone-800 dark:bg-stone-900 h-[8%] flex justify-between items-center mb-2 pr-1'>
       {memoizedSearch}
-    <div className='ml-10 mb-2 flex items-center gap-5'>
-      <div className='pt-3'>
-        <ThemeIcon darkMode={darkMode}  setDarkMode={setDarkMode} topScreen={true}/> 
+      <div className='ml-10 mb-2 flex items-center gap-5'>
+        <div className='pt-3'>
+          <ThemeIcon
+            darkMode={darkMode}
+            setDarkMode={setDarkMode}
+            topScreen={true}
+          />
+        </div>
+        <UserPopover text={"left"} />
       </div>
-        <UserPopover text={'left'}/>
-    </div>
-    <SearchDialog/>
+      <SearchDialog />
     </nav>
-  )
+  );
 }
 
-export default AdminNavBar
+export default AdminNavBar;
