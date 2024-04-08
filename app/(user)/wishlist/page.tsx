@@ -1,22 +1,22 @@
-import FavouriteDishes from '@/components/(User)/wishlist/FavouriteDishes'
-import PageHeaderWithoutLink from '@/components/layout/PageHeaderWithoutLink'
-import { Metadata } from 'next'
-import React from 'react'
+import FavouriteDishes from "@/components/(User)/wishlist/FavouriteDishes";
+import PageHeaderWithoutLink from "@/components/layout/PageHeaderWithoutLink";
+import { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
-  title: 'المفضلة',
-}
+  title: "المفضلة",
+};
 
-type Props = {}
+type Props = {};
 
 function WishlistPage({}: Props) {
   return (
     <PageHeaderWithoutLink header='المفضلة'>
-      <div className='py-5'>
-        <FavouriteDishes/>
+      <div className='py-5 flex flex-col'>
+        <FavouriteDishes />
       </div>
     </PageHeaderWithoutLink>
-  )
+  );
 }
 
-export default WishlistPage
+export default WishlistPage;
