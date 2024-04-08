@@ -2,14 +2,13 @@
 import React from "react";
 import useDishes from "@/lib/api/useDishes";
 import DishCard from "@/components/layout/DishCard";
-import useWishlist from "@/lib/api/useWishlist";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import NotFound from "../layout/NotFound";
-import LoadingErrorFetching from "../layout/LoadingErrorFetching";
 import AdminDishCard from "../(Admin)/dishes/AdminDishCard";
 import Link from "next/link";
 import { PlusSquare } from "lucide-react";
 import Slider from "../layout/Slider";
+import Loading from "@/app/loading";
 
 function TopDishes({
   filter,
@@ -36,15 +35,8 @@ function TopDishes({
     filter,
     initialData
   );
-  if (!admin && !data && isLoading) {
-    return (
-      <LoadingErrorFetching
-        data={data}
-        isError={isError}
-        isLoading={isLoading}
-        name='أطباق'
-      />
-    );
+  if (isLoading && !data?.meals) {
+    return <Loading />;
   }
   return (
     <>
