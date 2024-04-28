@@ -18,6 +18,14 @@ function useOrders(page?: number, size?: number) {
 export default useOrders
 
 
+export function useOrder(id: string) {
+  useAxiosAuth()
+  return useQuery<PostOrderResponse>({
+    queryKey: ['order', id],
+    queryFn: () => axiosAuth.get(`/Order/${id}`).then((res) => res.data),
+  })
+}
+
 export function PostOrder() {
   useAxiosAuth()
   return useMutation({
@@ -36,7 +44,7 @@ export function ConfirmOrder() {
   })
 }
 
-export function useAllOrders(initialData: { orders: AllUsersOrders[] } & WithPagination, page?: number, size?: number) {
+export function useAllOrders(initialData?: { orders: AllUsersOrders[] } & WithPagination, page?: number, size?: number) {
   useAxiosAuth()
   const { data, isLoading, isError } = useQuery<{ orders: AllUsersOrders[] } & WithPagination>({
     queryKey: ['all-orders'],

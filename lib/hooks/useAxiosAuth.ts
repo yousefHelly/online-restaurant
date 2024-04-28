@@ -2,24 +2,25 @@
 
 import { useSession } from "next-auth/react"
 
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 import { axiosAuth } from "../api/axios"
 
 const useAxiosAuth = () => {
-    const {data: session} = useSession()
+    const { data: session } = useSession()
     useEffect(
-        ()=>{
-            const requestIntercept = axiosAuth.interceptors.request.use((config)=>{
-                if(!config.headers["token"] && session?.user.token != undefined){
+        () => {
+            const requestIntercept = axiosAuth.interceptors.request.use((config) => {
+                if (!config.headers['Authorization'] && session?.user.token != undefined) {
                     config.headers["token"] = `${session?.user.token}`
+                    config.headers['Authorization'] = `Bearer ${session?.user.token}`
                 }
                 return config
             })
-            return ()=>{
-                axiosAuth.interceptors.request.eject(requestIntercept)            
+            return () => {
+                axiosAuth.interceptors.request.eject(requestIntercept)
             }
         }
-    ,[session]);
+        , [session]);
     return axiosAuth;
 };
 export default useAxiosAuth

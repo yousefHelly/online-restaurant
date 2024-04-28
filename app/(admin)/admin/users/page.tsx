@@ -1,24 +1,18 @@
-import AllUsers from '@/components/(Admin)/users/AllUsers'
-import PageHeaderWithoutLink from '@/components/layout/PageHeaderWithoutLink'
-import { getUsers } from '@/lib/api/server api calls/getUsers'
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import React from 'react'
+import AllUsers from "@/components/(Admin)/users/AllUsers";
+import PageHeaderWithoutLink from "@/components/layout/PageHeaderWithoutLink";
+import { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
-    title: 'كل الأعضاء',
-}
+  title: "كل الأعضاء",
+};
 
-async function AdminUsersPage() {
-    const usersData = await getUsers()
-    if(!usersData){
-        return notFound()
-    }
+function AdminUsersPage() {
   return (
     <PageHeaderWithoutLink header='كل الأعضاء'>
-        <AllUsers initialData={usersData}/>
-  </PageHeaderWithoutLink>
-  )
+      <AllUsers />
+    </PageHeaderWithoutLink>
+  );
 }
 
-export default AdminUsersPage
+export default AdminUsersPage;

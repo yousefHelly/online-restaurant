@@ -1,39 +1,37 @@
-import TrackingOrder from '@/components/(User)/my-orders/TrackingOrder'
-import { getOrderStatus } from '@/lib/api/server api calls/getOrderStatus'
-import { notFound } from 'next/navigation'
-import React from 'react'
-import { Metadata } from "next"
-import PageHeaderWithoutLink from '@/components/layout/PageHeaderWithoutLink'
+import TrackingOrder from "@/components/(User)/my-orders/TrackingOrder";
+import { getOrderStatus } from "@/lib/api/server api calls/getOrderStatus";
+import { notFound } from "next/navigation";
+import React from "react";
+import { Metadata } from "next";
+import PageHeaderWithoutLink from "@/components/layout/PageHeaderWithoutLink";
 
 type Props = {
-    searchParams?: {[key: string]: string | string[] | undefined}
-}
+  searchParams?: { [key: string]: string | string[] | undefined };
+};
 
-export async function generateMetadata({searchParams}: Props): Promise<Metadata> {
-    const data = await getOrderStatus(searchParams?.o as string)
-    if(!data){
-        return {
-            title:'حالة طلبية غير موجودة'
-        }
-    }
+export async function generateMetadata({
+  searchParams,
+}: Props): Promise<Metadata> {
+  const data = searchParams?.o as string;
+  if (!data) {
     return {
-        title:`حالة الطلبية كود ${data.id}`,
-    }
+      title: "حالة طلبية غير موجودة",
+    };
+  }
+  return {
+    title: `حالة الطلبية`,
+  };
 }
 
-async function TrackOrderPage({searchParams}: Props) {
-    if( !searchParams || !searchParams?.o){
-        notFound()
-    }
-    const data = await getOrderStatus(searchParams?.o as string)
-    if(!data){
-        notFound()
-    }
+function TrackOrderPage({ searchParams }: Props) {
+  if (!searchParams?.o) {
+    return notFound();
+  }
   return (
     <PageHeaderWithoutLink header='حالة طلبيتك'>
-        <TrackingOrder order={data}/>
+      <TrackingOrder id={searchParams?.o as string} />
     </PageHeaderWithoutLink>
-  )
+  );
 }
 
-export default TrackOrderPage
+export default TrackOrderPage;

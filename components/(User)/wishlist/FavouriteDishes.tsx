@@ -1,6 +1,7 @@
 "use client";
 import Loading from "@/app/loading";
 import DishCard from "@/components/layout/DishCard";
+import NotFound from "@/components/layout/NotFound";
 import PaginationProvider from "@/lib/PaginationProvider";
 import useWishlist from "@/lib/api/useWishlist";
 import { useSearchParams } from "next/navigation";
@@ -10,7 +11,7 @@ type Props = {};
 
 function FavouriteDishes({}: Props) {
   const { get } = useSearchParams();
-  let { data, isError, isLoading } = useWishlist(parseInt(get("page") || "1"));
+  let { data, isLoading } = useWishlist(parseInt(get("page") || "1"));
   if (isLoading && !data) {
     return <Loading />;
   }
@@ -21,7 +22,7 @@ function FavouriteDishes({}: Props) {
     >
       <div className='flex flex-col gap-5'>
         {data?.wishListMeals[0]?.meals &&
-          data?.wishListMeals[0]?.meals.length > 0 &&
+        data?.wishListMeals[0]?.meals.length > 0 ? (
           data?.wishListMeals[0]?.meals.map((dish, i) => {
             return (
               <DishCard
@@ -39,7 +40,10 @@ function FavouriteDishes({}: Props) {
                 favourate={dish.isFavourite}
               />
             );
-          })}
+          })
+        ) : (
+          <NotFound name='أطباق' />
+        )}
       </div>
     </PaginationProvider>
   );

@@ -35,9 +35,9 @@ function TopDishes({
     filter,
     initialData
   );
-  if (isLoading && !data?.meals) {
-    return <Loading />;
-  }
+  // if (isLoading && !data?.meals) {
+  //   return <Loading />;
+  // }
   return (
     <>
       {showSlider && (
